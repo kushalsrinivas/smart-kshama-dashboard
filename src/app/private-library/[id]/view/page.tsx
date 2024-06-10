@@ -14,7 +14,28 @@ function Page() {
   const [index, setIndex] = useState<number>(0);
   const params = useParams<{ id: string }>();
   const [data, setData] = useState<MeetingDetails>();
+  const getData = async () => {
+    const formData = new URLSearchParams();
+    formData.append("clientID", params.id);
+    try {
+      const response = await fetch("http://localhost:8080/getRecording", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
+      const data: MeetingDetails = await response.json();
+      setData(data);
+      console.log(data);
+    } catch (error) {
+      console.error("Fetch error: ", error);
+      return error;
+    }
+  };
+  useEffect(() => {
+    void getData();
+  }, []);
   return (
     <div className="flex flex-row">
       <div className="h-screen w-full bg-zinc-100">
