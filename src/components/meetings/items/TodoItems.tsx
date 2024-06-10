@@ -1,8 +1,10 @@
 "use client";
 
 import { Checkbox } from "~/components/ui/checkbox";
-
-export function TodoItem() {
+interface Todo {
+  data: string;
+}
+export function TodoItem(data: Todo) {
   return (
     <div className="flex items-center space-x-2">
       <Checkbox id="terms" />
@@ -10,7 +12,7 @@ export function TodoItem() {
         htmlFor="terms"
         className="text-xl font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
       >
-        some random stuff
+        {data.data}
       </label>
     </div>
   );

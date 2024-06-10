@@ -8,27 +8,26 @@ import Aichat from "~/components/meetings/Aichat";
 import Todo from "~/components/meetings/Todo";
 import Keypoints from "~/components/meetings/Keypoints";
 import Tldr from "~/components/meetings/Tldr";
-import { type MeetingDetails } from "~/@types/meetingInfo";
+import { Meeting } from "~/app/@types/meeting";
+import { createClient } from "@supabase/supabase-js";
+import { Video } from "~/components/meetings/video";
+import Speakers from "~/components/meetings/Speakers";
 
 function Page() {
   const [index, setIndex] = useState<number>(0);
   const params = useParams<{ id: string }>();
-  const [data, setData] = useState<MeetingDetails>();
+  const [data, setData] = useState<Meeting>();
+  const supabase = createClient(
+    "https://fodgwycudmbhoywjyfft.supabase.co",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZvZGd3eWN1ZG1iaG95d2p5ZmZ0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTY0NDIzOTUsImV4cCI6MjAzMjAxODM5NX0.0cbuJgNEkAqDN7qoco3cCi5qP8cYvSAe7OBi6OEXAu0",
+  );
   const getData = async () => {
-    const formData = new URLSearchParams();
-    formData.append("clientID", params.id);
     try {
-      const response = await fetch(
-        "https://server.smartdonna.com/getRecording",
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        },
-      );
-
-      const data: MeetingDetails = await response.json();
+      const { error, data } = await supabase
+        .from("overveiw")
+        .select("*")
+        .eq("uuid", params.id)
+        .single();
       setData(data);
       console.log(data);
     } catch (error) {
@@ -45,16 +44,11 @@ function Page() {
         <div className="flex w-full flex-row gap-5 p-20">
           <Card className="w-full">
             <CardHeader>
-              <div className="h-96 w-full bg-slate-300"></div>
+              <Video url={data?.recordings[0].recorded_video_url_aws}></Video>
             </CardHeader>
             <CardContent>
               <h1>Synopsis</h1>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo, a.
-                Ducimus porro voluptatibus aperiam veniam natus, itaque
-                possimus, harum quia incidunt temporibus ex? Atque pariatur
-                aperiam harum et architecto doloribus?
-              </p>
+              <p>{data ? JSON.parse(data.agenda)[0] : ""}</p>
             </CardContent>
           </Card>
           <Card className="w-full">
@@ -99,9 +93,7 @@ function Page() {
             <CardContent className="h-full">
               <div className="h-full ">
                 {index === 0 && (
-                  <>
-                    <Todo></Todo>
-                  </>
+                  <>{data && <Todo data={data?.ActionPoints[0]}></Todo>}</>
                 )}
                 {index === 1 && (
                   <>
