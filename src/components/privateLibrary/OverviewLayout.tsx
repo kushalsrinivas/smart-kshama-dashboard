@@ -2,9 +2,11 @@
 import React, { useEffect, useState } from "react";
 import { type Meeting } from "~/@types/meeting";
 import OverviewCard from "./OverviewCard";
+import ShimmerEffect from "./ShimmerEffect";
 
 const OverviewLayout = () => {
   const [data, setData] = useState<Meeting[]>();
+  const [loading, setLoading] = useState(true);  // State to track loading status
 
   const getData = async () => {
     try {
@@ -16,12 +18,11 @@ const OverviewLayout = () => {
       });
 
       const data: Meeting[] = await response.json();
-      console.log(data);
       setData(data);
-      return data;
     } catch (error) {
       console.error("Fetch error: ", error);
-      return error;
+    } finally {
+      setLoading(false);  // Set loading to false once the data is fetched or fails
     }
   };
 
@@ -31,10 +32,14 @@ const OverviewLayout = () => {
 
   return (
     <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ">
-      {data ? (
-        data?.map((meeting, id) => {
-          return <OverviewCard key={id} data={meeting} />;
-        })
+      {loading ? (
+        Array(4).fill(null).map((_, idx) => (  // Render 4 shimmer boxes
+          <ShimmerEffect key={idx} />
+        ))
+      ) : data?.length ? (
+        data.map((meeting, id) => (
+          <OverviewCard key={id} data={meeting} />
+        ))
       ) : (
         <div className="m-auto pt-24">No meetings to display</div>
       )}
