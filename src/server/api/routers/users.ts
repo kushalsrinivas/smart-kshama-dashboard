@@ -6,7 +6,7 @@ import { users } from "~/server/db/schema";
 
 export const userRouter = createTRPCRouter({
   updateUserName: protectedProcedure
-    .input(z.object({ name: z.string().min(1), field: z.string() }))
+    .input(z.object({ name: z.string().min(1) }))
     .mutation(async ({ ctx, input }) => {
       await ctx.db
         .update(users)
@@ -15,8 +15,8 @@ export const userRouter = createTRPCRouter({
         })
         .where(eq(users.id, ctx.session.user.id));
     }),
-    updateUserImage: protectedProcedure
-    .input(z.object({ image: z.string(), field: z.string() }))
+  updateUserImage: protectedProcedure
+    .input(z.object({ image: z.string() }))
     .mutation(async ({ ctx, input }) => {
       await ctx.db
         .update(users)

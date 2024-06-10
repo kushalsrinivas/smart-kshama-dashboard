@@ -23,7 +23,7 @@ const JoinMeeting = () => {
   const [meetLink, setMeetLink] = useState("");
 
   const joinMeet = async () => {
-    toast("Dona Ai notetaker request is underprocess");
+    toast("Donna Ai notetaker request is underprocess");
     const formData = new URLSearchParams();
     formData.append("meetLink", meetLink);
 
