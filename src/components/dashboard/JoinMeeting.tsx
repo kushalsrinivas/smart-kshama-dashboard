@@ -57,7 +57,7 @@ const JoinMeeting = () => {
           onChange={(e) => setMeetLink(e.target.value)}
           placeholder="Please enter a Zoom/Google Meet/Teams Meeting Link"
         />
-        <Button onClick={joinMeet}>join meeting</Button>
+        <Button onClick={joinMeet}>Join Meeting</Button>
       </CardContent>
     </Card>
   );
