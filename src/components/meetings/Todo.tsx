@@ -1,14 +1,16 @@
 import React from "react";
 import { TodoItem } from "./items/TodoItems";
-
-function Todo() {
+interface Actionitems {
+  data: string[];
+}
+function Todo(data: Actionitems) {
   const arr = [1, 2, 3, 4, 5, 6];
   return (
     <div className="flex flex-col gap-2">
-      {arr.map((id, temp) => {
+      {data.data.map((temp, id) => {
         return (
           <div key={id}>
-            <TodoItem></TodoItem>
+            <TodoItem data={temp}></TodoItem>
           </div>
         );
       })}
