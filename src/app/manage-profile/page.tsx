@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import React from "react";
 import FileUpload from "~/components/common/FileUpload";
+import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
@@ -39,6 +40,9 @@ const page = async () => {
               <div>Email Id</div>
               <Input value={email!} disabled />
             </div>
+          </div>
+          <div className="flex w-full justify-end">
+            <Button className="mt-4">Save</Button>
           </div>
         </CardContent>
       </Card>

@@ -18,12 +18,15 @@ function Page() {
     const formData = new URLSearchParams();
     formData.append("clientID", params.id);
     try {
-      const response = await fetch("http://localhost:8080/getRecording", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        "https://server.smartdonna.com/getRecording",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
         },
-      });
+      );
 
       const data: MeetingDetails = await response.json();
       setData(data);

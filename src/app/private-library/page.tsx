@@ -11,6 +11,7 @@ import {
 import { type Meeting } from "../../@types/meeting";
 import { redirect } from "next/navigation";
 import { getServerAuthSession } from "~/server/auth";
+import OverviewLayout from "~/components/privateLibrary/OverviewLayout";
 
 interface FilterDropdownProps {
   label: string;
@@ -38,25 +39,6 @@ const page = async () => {
   }
   const options = ["Google Meet", "Discord", "Zoom", "Teams"];
 
-  const getData = async () => {
-    try {
-      const response = await fetch("http://localhost:8080/overview", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      const data = await response.json();
-      console.log(data);
-      return data;
-    } catch (error) {
-      console.error("Fetch error: ", error);
-      return error;
-    }
-  };
-  const data: Meeting[] = await getData();
-
   return (
     <div>
       <div className="flex w-full flex-col gap-10 px-4 py-6 sm:px-10 sm:py-20 md:px-20 lg:px-40">
@@ -67,11 +49,7 @@ const page = async () => {
           <FilterDropdown options={options} label="Recorded By" />
           <FilterDropdown options={options} label="Clients" />
         </div>
-        <div className="flex flex-row gap-10">
-          {data.map((meeting, id) => {
-            return <OverviewCard key={id} data={meeting}></OverviewCard>;
-          })}
-        </div>
+        <OverviewLayout />
       </div>
     </div>
   );
