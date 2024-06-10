@@ -1,10 +1,19 @@
 import { Pencil } from "lucide-react";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import ConnectCalender from "~/components/dashboard/ConnectCalender";
 import JoinMeeting from "~/components/dashboard/JoinMeeting";
+import { getServerAuthSession } from "~/server/auth";
 
 export default async function Home() {
-  const name = "Harsh Makwana";
+  const session = await getServerAuthSession();
+
+  if (!session) {
+    redirect("/api/auth/signin");
+  }
+
+  const name = session?.user.name;
+
   return (
     <div className="flex flex-col gap-8 p-4">
       <div className="flex flex-col justify-start gap-2">

@@ -1,25 +1,31 @@
+import { redirect } from "next/navigation";
 import React from "react";
 import FileUpload from "~/components/common/FileUpload";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
+import { getServerAuthSession } from "~/server/auth";
 
-const page = () => {
-  const name = "Harsh Makwana";
-  const email = "harshmakwana22211@gmail.com";
+const page = async () => {
+  const session = await getServerAuthSession();
+
+  if (!session) {
+    redirect("/api/auth/signin");
+  }
+
+  const name = session?.user.name;
+  const email = session?.user.email;
+  const image = session?.user.image;
   return (
     <div className="flex flex-col gap-8 p-4">
       <Card>
         <CardHeader>
           <CardTitle>User Profile</CardTitle>
           <div>
-            <div className="flex mt-4 flex-row items-center gap-2">
-              <FileUpload
-                className="h-10 w-10"
-                value="https://avatars.githubusercontent.com/u/47269252?v=4"
-              />
-              <div className="text-3xl">Kushal Srinivas</div>
+            <div className="mt-4 flex flex-row items-center gap-2">
+              <FileUpload className="h-10 w-10" value={image!} />
+              <div className="text-3xl">{name}</div>
             </div>
           </div>
         </CardHeader>
@@ -27,11 +33,11 @@ const page = () => {
           <div className="flex flex-row items-center justify-between gap-5">
             <div className="w-full">
               <div>Display Name</div>
-              <Input value={name}  />
+              <Input value={name!} />
             </div>
             <div className="w-full">
               <div>Email Id</div>
-              <Input value={email} disabled />
+              <Input value={email!} disabled />
             </div>
           </div>
         </CardContent>

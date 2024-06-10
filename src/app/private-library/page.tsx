@@ -9,6 +9,8 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import { type Meeting } from "../../@types/meeting";
+import { redirect } from "next/navigation";
+import { getServerAuthSession } from "~/server/auth";
 
 interface FilterDropdownProps {
   label: string;
@@ -29,6 +31,11 @@ const FilterDropdown: FC<FilterDropdownProps> = ({ label, options }) => (
 );
 
 const page = async () => {
+  const session = await getServerAuthSession();
+
+  if (!session) {
+    redirect("/api/auth/signin");
+  }
   const options = ["Google Meet", "Discord", "Zoom", "Teams"];
 
   const getData = async () => {
