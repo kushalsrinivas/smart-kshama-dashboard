@@ -1,8 +1,6 @@
-import { Link } from "lucide-react";
 import React, { type FC } from "react";
 import OverviewCard from "~/components/privateLibrary/OverviewCard";
 import { Button } from "~/components/ui/button";
-
 import { DatePickerWithRange } from "~/components/ui/datePicker";
 import {
   DropdownMenu,
@@ -10,7 +8,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
-import { Meeting } from "../@types/meeting";
+import { type Meeting } from "../../@types/meeting";
 
 interface FilterDropdownProps {
   label: string;
@@ -51,6 +49,7 @@ const page = async () => {
     }
   };
   const data: Meeting[] = await getData();
+
   return (
     <div>
       <div className="flex w-full flex-col gap-10 px-4 py-6 sm:px-10 sm:py-20 md:px-20 lg:px-40">

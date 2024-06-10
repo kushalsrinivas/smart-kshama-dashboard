@@ -27,7 +27,7 @@ const page = () => {
           <div className="flex flex-row items-center justify-between gap-5">
             <div className="w-full">
               <div>Display Name</div>
-              <Input value={name} />
+              <Input value={name}  />
             </div>
             <div className="w-full">
               <div>Email Id</div>

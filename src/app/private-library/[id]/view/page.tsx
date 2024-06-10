@@ -8,7 +8,7 @@ import Aichat from "~/components/meetings/Aichat";
 import Todo from "~/components/meetings/Todo";
 import Keypoints from "~/components/meetings/Keypoints";
 import Tldr from "~/components/meetings/Tldr";
-import { MeetingDetails } from "~/app/@types/meetingInfo";
+import { type MeetingDetails } from "~/@types/meetingInfo";
 
 function Page() {
   const [index, setIndex] = useState<number>(0);
@@ -59,7 +59,7 @@ function Page() {
               <CardTitle>
                 <div className="flex flex-row justify-center gap-5">
                   <Button
-                    variant={"ghost"}
+                    variant="neutral"
                     onClick={() => {
                       setIndex(0);
                     }}
@@ -67,7 +67,7 @@ function Page() {
                     ToDo
                   </Button>
                   <Button
-                    variant={"ghost"}
+                    variant="neutral"
                     onClick={() => {
                       setIndex(1);
                     }}
@@ -75,7 +75,7 @@ function Page() {
                     Keypoints
                   </Button>
                   <Button
-                    variant={"ghost"}
+                    variant="neutral"
                     onClick={() => {
                       setIndex(2);
                     }}
@@ -83,7 +83,7 @@ function Page() {
                     Ai Chat
                   </Button>
                   <Button
-                    variant={"ghost"}
+                    variant="neutral"
                     onClick={() => {
                       setIndex(3);
                     }}
