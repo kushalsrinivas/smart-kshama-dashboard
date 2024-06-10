@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import React, { useState } from "react";
 import {
   Card,
@@ -10,35 +10,37 @@ import {
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { toast } from "sonner";
-
+interface joinCallData {
+  message: string;
+  status: number;
+}
+interface JoinCallResponse {
+  clientID: string;
+  data: joinCallData;
+}
 const JoinMeeting = () => {
   const [meetLink, setMeetLink] = useState("");
 
   const joinMeet = async () => {
-    // Create the form body as a JSON object
-    const formBody = {
-      meetingUrl: meetLink,
-      botName: "Dona Ai",
-      client_client_id: "123",
-    };
+    toast("Dona Ai notetaker request is underprocess");
+    const formData = new URLSearchParams();
+    formData.append("meetLink", meetLink);
 
     try {
-      const response = await fetch("https://api.goodmeetings.ai/v2/call/join", {
+      const response = await fetch("http://localhost:8080/join", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjU0MmYwZjU0Yjg4MjAwMGU0NzE0ZDQiLCJpYXQiOjE3MTY4MTA0NTQsImV4cCI6MTc0ODM0NjQ1NCwidHlwZSI6ImFjY2VzcyJ9.OQLGGqS4jShahdC3wTaJ5yj4g4MYkeXv-jBXi-AD1sM`,
+          "Content-Type": "application/x-www-form-urlencoded",
         },
-        body: JSON.stringify(formBody),
+        body: formData.toString(),
       });
-    //   const data = await response.json();
-      toast("Dona Ai notetaker request is under process");
-    //   console.log(data);
+
+      const data: JoinCallResponse = await response.json();
+      console.log(data);
     } catch (error) {
       console.error("Fetch error: ", error);
     }
   };
-
   return (
     <Card>
       <CardHeader>
