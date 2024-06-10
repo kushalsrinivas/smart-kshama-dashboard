@@ -7,6 +7,7 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { api } from "~/trpc/react";
 import { createClient } from "@supabase/supabase-js";
+import { signOut } from "next-auth/react";
 
 interface EditUserProps {
   name: string;
@@ -88,7 +89,10 @@ const EditUser: React.FC<EditUserProps> = ({
         </div>
         <div className="flex w-full justify-end">
           <Button onClick={handleSave} className="mt-4">
-            Save
+              Save
+            </Button>
+          <Button onClick={() => signOut()} className="mt-4 ml-2">
+              Logout
           </Button>
         </div>
       </CardContent>
