@@ -8,7 +8,7 @@ import Aichat from "~/components/meetings/Aichat";
 import Todo from "~/components/meetings/Todo";
 import Keypoints from "~/components/meetings/Keypoints";
 import Tldr from "~/components/meetings/Tldr";
-import { Meeting } from "~/app/@types/meeting";
+import { Meeting } from "~/@types/meeting";
 import { createClient } from "@supabase/supabase-js";
 import { Video } from "~/components/meetings/video";
 
@@ -27,7 +27,7 @@ function Page() {
         .select("*")
         .eq("uuid", params.id)
         .single();
-      setData(data);
+      setData(data as Meeting);
       console.log(data);
     } catch (error) {
       console.error("Fetch error: ", error);
@@ -43,11 +43,15 @@ function Page() {
         <div className="flex w-full flex-col gap-5 md:p-20 p-2 md:flex-row">
           <Card className="w-full">
             <CardHeader>
-              <Video url={data?.recordings[0].recorded_video_url_aws}></Video>
+              {data?.recordings[0] ? (
+                <Video url={data.recordings[0].recorded_video_url_aws}></Video>
+              ) : (
+                <Video url=""></Video>
+              )}
             </CardHeader>
             <CardContent>
               <h1>Synopsis</h1>
-              <p>{data ? JSON.parse(data.agenda)[0] : ""}</p>
+              <p>{data && JSON.parse(data.agenda)[0] ? JSON.parse(data.agenda)[0] : ""}</p>
             </CardContent>
           </Card>
           <Card className="w-full">
@@ -91,9 +95,9 @@ function Page() {
             </CardHeader>
             <CardContent className="h-full">
               <div className="h-full ">
-                {index === 0 && (
-                  <>{data && <Todo data={data?.ActionPoints[0]}></Todo>}</>
-                )}
+              {index === 0 && (
+                <>{data && <Todo data={data?.ActionPoints[0] ?? []}></Todo>}</>
+              )}
                 {index === 1 && (
                   <>
                     <Keypoints></Keypoints>
