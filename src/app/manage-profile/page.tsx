@@ -1,6 +1,5 @@
 import { redirect } from "next/navigation";
 import React from "react";
-import AccesControl from "~/components/manage-user/AccesControl";
 import EditUser from "~/components/manage-user/EditUser";
 
 import { getServerAuthSession } from "~/server/auth";
@@ -18,7 +17,7 @@ const page = async () => {
   return (
     <div className="flex flex-col gap-8 p-4">
       <EditUser name={name!} email={email!} image={image!} />
-      <AccesControl />
+      {/* <AccesControl /> */}
     </div>
   );
 };

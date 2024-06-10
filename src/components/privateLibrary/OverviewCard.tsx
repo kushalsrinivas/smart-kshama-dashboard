@@ -22,9 +22,9 @@ const OverviewCard: React.FC<OverviewCardProps> = ({ data }) => {
           {/* <CardTitle>{JSON.parse(data.agenda)[0]}</CardTitle> */}
           <CardDescription>{data.created_at.substring(0, 10)}</CardDescription>
         </CardHeader>
-        <CardFooter className="flex flex-row gap-2 p-0 px-3 pb-3 justify-between">
+        <CardFooter className="flex flex-row justify-between gap-2 p-0 px-3 pb-3">
           <Button>More Options</Button>
-          <Link href={`/private-library/${data.uuid}/view`}>
+          <Link href={`/library/${data.uuid}/view`}>
             <Button>View Details</Button>
           </Link>
         </CardFooter>

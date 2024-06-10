@@ -39,8 +39,8 @@ function Page() {
   }, []);
   return (
     <div className="flex flex-row">
-      <div className="w-full h-screen">
-        <div className="flex w-full flex-col gap-5 p-20 md:flex-row">
+      <div className="h-screen w-full">
+        <div className="flex w-full flex-col gap-5 md:p-20 p-2 md:flex-row">
           <Card className="w-full">
             <CardHeader>
               <Video url={data?.recordings[0].recorded_video_url_aws}></Video>
