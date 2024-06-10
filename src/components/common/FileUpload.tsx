@@ -6,14 +6,20 @@ import { cn } from "~/lib/utils";
 interface FileUploadProps {
   value: string;
   className?: string;
+  onFileChange: (file: File) => void;
 }
 
-const FileUpload: React.FC<FileUploadProps> = ({ value, className }) => {
+const FileUpload: React.FC<FileUploadProps> = ({
+  value,
+  className,
+  onFileChange,
+}) => {
   const [image, setImage] = useState<string | null>(value);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
+      onFileChange(file);
       const reader = new FileReader();
       reader.onloadend = () => {
         setImage(reader.result as string);

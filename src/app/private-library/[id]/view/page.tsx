@@ -11,7 +11,6 @@ import Tldr from "~/components/meetings/Tldr";
 import { Meeting } from "~/app/@types/meeting";
 import { createClient } from "@supabase/supabase-js";
 import { Video } from "~/components/meetings/video";
-import Speakers from "~/components/meetings/Speakers";
 
 function Page() {
   const [index, setIndex] = useState<number>(0);
@@ -40,8 +39,8 @@ function Page() {
   }, []);
   return (
     <div className="flex flex-row">
-      <div className="h-screen w-full bg-zinc-100">
-        <div className="flex w-full flex-row gap-5 p-20">
+      <div className="w-full h-screen">
+        <div className="flex w-full flex-col gap-5 p-20 md:flex-row">
           <Card className="w-full">
             <CardHeader>
               <Video url={data?.recordings[0].recorded_video_url_aws}></Video>

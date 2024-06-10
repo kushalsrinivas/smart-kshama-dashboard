@@ -41,7 +41,7 @@ const page = async () => {
 
   return (
     <div>
-      <div className="flex w-full flex-col gap-10 px-4 py-6 sm:px-10 sm:py-20 md:px-20 lg:px-40">
+      <div className="flex w-full flex-col gap-10 px-4 py-6 justify-center">
         <div className="flex w-full flex-row gap-5 overflow-x-auto p-2">
           <FilterDropdown options={options} label="All Platforms" />
           <FilterDropdown options={options} label="Meeting Source" />

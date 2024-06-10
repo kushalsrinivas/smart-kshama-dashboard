@@ -16,13 +16,13 @@ interface OverviewCardProps {
 const OverviewCard: React.FC<OverviewCardProps> = ({ data }) => {
   return (
     <>
-      <Card>
+      <Card className="">
         <CardHeader>
           <div className="h-40 w-full bg-slate-300"></div>
-          <CardTitle>{JSON.parse(data.agenda)[0]}</CardTitle>
+          {/* <CardTitle>{JSON.parse(data.agenda)[0]}</CardTitle> */}
           <CardDescription>{data.created_at.substring(0, 10)}</CardDescription>
         </CardHeader>
-        <CardFooter className="flex flex-row justify-between gap-10">
+        <CardFooter className="flex flex-row gap-2 p-0 px-3 pb-3 justify-between">
           <Button>More Options</Button>
           <Link href={`/private-library/${data.uuid}/view`}>
             <Button>View Details</Button>

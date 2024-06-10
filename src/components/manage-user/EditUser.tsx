@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 "use client";
 import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
@@ -5,6 +6,7 @@ import FileUpload from "../common/FileUpload";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { api } from "~/trpc/react";
+import { createClient } from "@supabase/supabase-js";
 
 interface EditUserProps {
   name: string;
@@ -18,22 +20,57 @@ const EditUser: React.FC<EditUserProps> = ({
   image,
 }) => {
   const [name, setName] = useState(propName);
+  const [file, setFile] = useState<File | null>(null);
 
   const userName = api.user.updateUserName.useMutation();
 
-  const handleSave = () => {
+  // const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  // const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  // const supabase = createClient(supabaseUrl!, supabaseKey!);
+
+  // const uploadImage = async (file: File) => {
+  //   try {
+  //     const { data, error } = await supabase.storage
+  //       .from("your-bucket-name")
+  //       .upload(`${Date.now()}-${file.name}`, file, {
+  //         cacheControl: "3600",
+  //         upsert: false,
+  //       });
+
+  //     if (error) {
+  //       return { error: { message: error.message } };
+  //     }
+
+  //     return data?.path;
+  //   } catch (error) {
+  //     return { error: { message: "Error uploading image" } };
+  //   }
+  // };
+
+  const handleSave = async () => {
     if (name !== propName) {
       userName.mutate({ name });
     }
+
+    // if (file) {
+    //   const location = await uploadImage(file);
+    //   console.log("location", location);
+    // }
   };
-  
+
   return (
     <Card>
       <CardHeader>
         <CardTitle>User Profile</CardTitle>
         <div>
           <div className="mt-4 flex flex-row items-center gap-2">
-            <FileUpload className="h-10 w-10" value={image} />
+            <FileUpload
+              onFileChange={(file) => {
+                setFile(file);
+              }}
+              className="h-10 w-10"
+              value={image}
+            />
             <div className="text-3xl">{name}</div>
           </div>
         </div>

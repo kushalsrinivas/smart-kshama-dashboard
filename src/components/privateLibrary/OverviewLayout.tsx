@@ -30,7 +30,7 @@ const OverviewLayout = () => {
   }, []);
 
   return (
-    <div className="flex flex-row gap-10">
+    <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ">
       {data ? (
         data?.map((meeting, id) => {
           return <OverviewCard key={id} data={meeting} />;
