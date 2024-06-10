@@ -30,9 +30,9 @@ const FilterDropdown: FC<FilterDropdownProps> = ({ label, options }) => (
   </DropdownMenu>
 );
 
-const page = () => {
+const page = async () => {
   const options = ["Google Meet", "Discord", "Zoom", "Teams"];
-  const id = "1";
+
   const getData = async () => {
     try {
       const response = await fetch("http://localhost:8080/overview", {
@@ -62,7 +62,9 @@ const page = () => {
           <FilterDropdown options={options} label="Clients" />
         </div>
         <div className="flex flex-row gap-10">
-          <OverviewCard></OverviewCard>
+          {data.map((meeting, id) => {
+            return <OverviewCard key={id} data={meeting}></OverviewCard>;
+          })}
         </div>
       </div>
     </div>

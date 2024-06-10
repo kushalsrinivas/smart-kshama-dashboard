@@ -20,11 +20,11 @@ const OverviewCard: React.FC<OverviewCardProps> = ({ data }) => {
         <CardHeader>
           <div className="h-40 w-full bg-slate-300"></div>
           <CardTitle>{JSON.parse(data.agenda)[0]}</CardTitle>
-          <CardDescription>{data.created_at}</CardDescription>
+          <CardDescription>{data.created_at.substring(0, 10)}</CardDescription>
         </CardHeader>
         <CardFooter className="flex flex-row justify-between gap-10">
           <Button>More Options</Button>
-          <Link href={`/dashboard/privateLibrary/${data.uuid}/view`}>
+          <Link href={`/private-library/${data.uuid}/view`}>
             <Button>View Details</Button>
           </Link>
         </CardFooter>
