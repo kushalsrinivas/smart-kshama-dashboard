@@ -18,16 +18,17 @@ interface JoinCallResponse {
   clientID: string;
   data: joinCallData;
 }
+
 const JoinMeeting = () => {
   const [meetLink, setMeetLink] = useState("");
 
   const joinMeet = async () => {
-    toast("Dona Ai notetaker request is underprocess");
+    toast("Donna Ai notetaker request is underprocess");
     const formData = new URLSearchParams();
     formData.append("meetLink", meetLink);
 
     try {
-      const response = await fetch("http://localhost:8080/join", {
+      const response = await fetch("https://server.smartdonna.com/join", {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
@@ -41,6 +42,7 @@ const JoinMeeting = () => {
       console.error("Fetch error: ", error);
     }
   };
+  
   return (
     <Card>
       <CardHeader>

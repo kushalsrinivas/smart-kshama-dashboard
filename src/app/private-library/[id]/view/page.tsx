@@ -11,6 +11,7 @@ import Tldr from "~/components/meetings/Tldr";
 import { Meeting } from "~/app/@types/meeting";
 import { createClient } from "@supabase/supabase-js";
 import { Video } from "~/components/meetings/video";
+import Speakers from "~/components/meetings/Speakers";
 
 function Page() {
   const [index, setIndex] = useState<number>(0);
@@ -55,7 +56,7 @@ function Page() {
               <CardTitle>
                 <div className="flex flex-row justify-center gap-5">
                   <Button
-                    variant={"ghost"}
+                    variant="neutral"
                     onClick={() => {
                       setIndex(0);
                     }}
@@ -63,7 +64,7 @@ function Page() {
                     ToDo
                   </Button>
                   <Button
-                    variant={"ghost"}
+                    variant="neutral"
                     onClick={() => {
                       setIndex(1);
                     }}
@@ -71,7 +72,7 @@ function Page() {
                     Keypoints
                   </Button>
                   <Button
-                    variant={"ghost"}
+                    variant="neutral"
                     onClick={() => {
                       setIndex(2);
                     }}
@@ -79,7 +80,7 @@ function Page() {
                     Ai Chat
                   </Button>
                   <Button
-                    variant={"ghost"}
+                    variant="neutral"
                     onClick={() => {
                       setIndex(3);
                     }}

@@ -1,10 +1,14 @@
+import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
 const Header = () => {
   return (
     <div className="flex justify-between p-4">
-      <h1 className="text-2xl font-bold">Smart Donna</h1>
+      <Link href="/" className="text-2xl font-bold">
+        <Image src="/logo.svg" alt="Smart Donna" width={50} height={50} />
+        Smart Donna
+      </Link>
       <div className="flex gap-4">
         <Link href="/">Home</Link>
         <Link href="/private-library">Private Library</Link>

@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "~/components/ui/card";
-import { Meeting } from "~/app/@types/meeting";
+import { type Meeting } from "~/@types/meeting";
 
 interface OverviewCardProps {
   data: Meeting;
