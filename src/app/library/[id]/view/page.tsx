@@ -25,8 +25,7 @@ function Page() {
   };
 
   const getData = async () => {
-    const url =
-      "https://api.goodmeetings.ai/v2/call/get-meeting-instance-info?callInstanceId=";
+    const url = "https://api.goodmeetings.ai/v2/transcript/get?callInstanceId=";
     try {
       const response = await fetch(url + params.id, { headers });
       const data = await response.json();

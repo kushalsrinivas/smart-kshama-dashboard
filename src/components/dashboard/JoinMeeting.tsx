@@ -64,6 +64,7 @@ const JoinMeeting: React.FC<JoinMeetingProps> = ({ currentUserId }) => {
           meetingUrl: meetLink,
           botName: "Smart Donna",
           client_client_id: currentUserId,
+          workspace: "Smart_donna",
         }),
       });
 
