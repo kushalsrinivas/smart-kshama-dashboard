@@ -6,9 +6,11 @@ import ShimmerEffect from "./ShimmerEffect";
 
 interface Meeting {
   userId: string;
+  startDate: string;
+  endDate: string;
 }
 
-const OverviewLayout: FC<Meeting> = ({ userId }) => {
+const OverviewLayout: FC<Meeting> = ({ userId, startDate, endDate}) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true); // State to track loading status
   const currentUserId = "b859fc67-572b-4d49-a458-28a6a9aec0de";
@@ -29,8 +31,8 @@ const OverviewLayout: FC<Meeting> = ({ userId }) => {
           },
 
           body: JSON.stringify({
-            start_date: "2024-05-04",
-            end_date: "2024-06-12",
+            start_date: startDate,
+            end_date: endDate,
             client_emailId: [],
             hostEmailId: "contact@smartdonna.com",
             client_client_id: userId,

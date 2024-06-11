@@ -41,17 +41,20 @@ const page = async () => {
   }
   const options = ["Google Meet", "Discord", "Zoom", "Teams"];
 
+  const startDate = '2024-05-04';
+  const endDate = '2024-06-20';
+  
   return (
     <div>
       <div className="flex w-full flex-col justify-center gap-10 px-4 py-6">
         <div className="flex w-full flex-row gap-5 overflow-x-auto p-2">
-          <FilterDropdown options={options} label="All Platforms" />
-          <FilterDropdown options={options} label="Meeting Source" />
-          <DatePickerWithRange />
-          <FilterDropdown options={options} label="Recorded By" />
-          <FilterDropdown options={options} label="Clients" />
+          {/* <FilterDropdown options={options} label="All Platforms" />
+          <FilterDropdown options={options} label="Meeting Source" /> */}
+          <DatePickerWithRange  />
+          {/* <FilterDropdown options={options} label="Recorded By" />
+          <FilterDropdown options={options} label="Clients" /> */}
         </div>
-        <OverviewLayout userId={userId!} />
+        <OverviewLayout startDate={startDate} endDate={endDate} userId={userId!} />
       </div>
     </div>
   );
