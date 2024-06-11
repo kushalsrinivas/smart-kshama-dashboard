@@ -30,7 +30,6 @@ const OverviewCard: React.FC<OverviewCardProps> = ({ data }) => {
           <CardDescription>{data.created_at}</CardDescription>
         </CardHeader>
         <CardFooter className="flex flex-row justify-between gap-2 p-0 px-3 pb-3">
-          <Button>More Options</Button>
           <Link href={`/library/${data.uuid}/view`}>
             <Button>View Details</Button>
           </Link>

@@ -68,4 +68,5 @@ interface Speaker {
     summary: string;
     recordings: Recording[];
     meetingId: string;
+    host_image: string;
   }
