@@ -155,7 +155,7 @@ function Page() {
                   </>
                 )}
                 {index === 2 && <Aichat id={params.id} />}
-                {index === 3 && <Tldr  />}
+                {index === 3 && <Tldr data={synopsis.tldr[1]} />}
               </div>
             </CardContent>
           </Card>

@@ -1,16 +1,15 @@
 import React from "react";
 
-function Tldr() {
+interface TldrProps {
+  data: string;
+}
+
+const Tldr: React.FC<TldrProps> = ({ data }) => {
   return (
     <div>
-      <div>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo adipisci
-        soluta dolores magni, commodi architecto? Ab sequi impedit tenetur illo
-        minima dolorem, deleniti doloribus facere saepe sit iste culpa.
-        Consectetur!
-      </div>
+      <div>{data}</div>
     </div>
   );
-}
+};
 
 export default Tldr;
