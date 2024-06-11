@@ -13,6 +13,7 @@ export default async function Home() {
   }
 
   const name = session?.user.name;
+  const currentUserId = session?.user.id;
 
   return (
     <div className="flex flex-col gap-8 p-4">
@@ -28,7 +29,8 @@ export default async function Home() {
         </Link>
       </div>
       <ConnectCalender />
-      <JoinMeeting />
+      <JoinMeeting currentUserId={currentUserId} />
     </div>
   );
 }
+
