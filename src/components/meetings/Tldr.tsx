@@ -1,7 +1,7 @@
 import React from "react";
 
 interface TldrProps {
-  data: string;
+  data: string | undefined;
 }
 
 const Tldr: React.FC<TldrProps> = ({ data }) => {

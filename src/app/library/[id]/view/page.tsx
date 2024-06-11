@@ -4,29 +4,23 @@ import React, { useEffect, useState } from "react";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { useParams } from "next/navigation";
-import Aichat from "~/components/meetings/Aichat";
 import Todo from "~/components/meetings/Todo";
 import Keypoints from "~/components/meetings/Keypoints";
 import Tldr from "~/components/meetings/Tldr";
 import { type Meeting } from "~/@types/meeting";
 import { Video } from "~/components/meetings/video";
 
-interface MeetingData {
-  transcript: {
-    text: string;
-    name: string;
-  };
-  instance: {
-    summary: string;
-    tldr: string;
-  };
+interface Synopsis {
+  summary: string;
+  keypoints: string[][];
+  tldr: string;
 }
 
 function Page() {
-  const [index, setIndex] = useState<number>(0);
+  const [index, setIndex] = useState<number>(1);
   const params = useParams<{ id: string }>();
   const [data, setData] = useState<Meeting>();
-  const [synopsis, setSynopsis] = useState();
+  const [synopsis, setSynopsis] = useState<Synopsis>();
 
   const bearerToken =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjU0MmYwZjU0Yjg4MjAwMGU0NzE0ZDQiLCJpYXQiOjE3MTY4MTA0NTQsImV4cCI6MTc0ODM0NjQ1NCwidHlwZSI6ImFjY2VzcyJ9.OQLGGqS4jShahdC3wTaJ5yj4g4MYkeXv-jBXi-AD1sM";
@@ -53,8 +47,8 @@ function Page() {
       console.log("transcriptData", transcriptData);
       console.log("instanceData", instanceData);
       const data = {
-        // transcript: transcriptData.data,
-        summary: instanceData.data[0].summary.summary_time_data,
+        summary: instanceData.data[0].summary.summary_text[0],
+        keypoints: instanceData.data[0].summary.summary_time_data,
         tldr: instanceData.data[0].summary.tldr,
       };
       setSynopsis(data);
@@ -83,40 +77,13 @@ function Page() {
             </CardHeader>
             <CardContent>
               <h1 className="mb-6 text-xl">Synopsis</h1>
-              {/* <p>
-                {data && JSON.parse(data.agenda)[0]
-                  ? JSON.parse(data.agenda)[0]
-                  : ""}
-              </p> */}
-              {/* {synopsis?.transcript?.length > 0 &&
-                synopsis.transcript?.map((item) => (
-                  <p key={item.name} className="my-4 text-lg">
-                    <span className="font-semibold">{item.name}: &nbsp;</span>
-                    {item.text}
-                  </p>
-                ))} */}
-              {synopsis?.summary[0]
-                ? synopsis.summary[0].map((item) => (
-                    <p key={item.name} className="text-semibold text-lg">
-                      {item[0]}
-                      {item.text}
-                    </p>
-                  ))
-                : ""}
+              <p>{synopsis?.summary}</p>
             </CardContent>
           </Card>
           <Card className="w-full">
             <CardHeader>
               <CardTitle>
                 <div className="flex flex-row justify-center gap-5">
-                  <Button
-                    variant="neutral"
-                    onClick={() => {
-                      setIndex(0);
-                    }}
-                  >
-                    ToDo
-                  </Button>
                   <Button
                     variant="neutral"
                     onClick={() => {
@@ -128,19 +95,19 @@ function Page() {
                   <Button
                     variant="neutral"
                     onClick={() => {
-                      setIndex(2);
-                    }}
-                  >
-                    Ai Chat
-                  </Button>
-                  <Button
-                    variant="neutral"
-                    onClick={() => {
                       setIndex(3);
                     }}
                   >
                     TLDR
                   </Button>
+                  {/* <Button
+                    variant="neutral"
+                    onClick={() => {
+                      setIndex(0);
+                    }}
+                  >
+                    ToDo
+                  </Button> */}
                 </div>
               </CardTitle>
             </CardHeader>
@@ -151,11 +118,11 @@ function Page() {
                 )}
                 {index === 1 && (
                   <>
-                    <Keypoints></Keypoints>
+                    <Keypoints data={synopsis?.keypoints[0]} />
                   </>
                 )}
-                {index === 2 && <Aichat id={params.id} />}
-                {index === 3 && <Tldr data={synopsis.tldr[1]} />}
+                {/* {index === 2 && <Aichat id={params.id} />} */}
+                {index === 3 && <Tldr data={synopsis?.tldr[1]} />}
               </div>
             </CardContent>
           </Card>
