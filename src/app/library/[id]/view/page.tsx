@@ -8,12 +8,14 @@ import Todo from "~/components/meetings/Todo";
 import Keypoints from "~/components/meetings/Keypoints";
 import Tldr from "~/components/meetings/Tldr";
 import { type Meeting } from "~/@types/meeting";
-import { Video } from "~/components/meetings/video";
+import Video from "next-video";
+// import { Video } from "~/components/meetings/video";
 
 interface Synopsis {
   summary: string;
   keypoints: string[][];
   tldr: string;
+  video: string;
 }
 
 function Page() {
@@ -44,16 +46,16 @@ function Page() {
         summary: instanceData.data[0].summary.summary_text[0],
         keypoints: instanceData.data[0].summary.summary_time_data,
         tldr: instanceData.data[0].summary.tldr,
+        video: instanceData.data[0].recordings[0].recorded_video_url_aws,
       };
       setSynopsis(data);
     } catch (error) {
       return { data: "error" };
     } finally {
-      setLoading(false); // Set loading state to false
+      setLoading(false);
     }
   };
 
-  console.log("synopsis", synopsis);
 
   useEffect(() => {
     void getData();
@@ -65,15 +67,15 @@ function Page() {
         <div className="flex w-full flex-col gap-5 p-2 md:flex-row md:p-20">
           <Card className="w-full">
             <CardHeader>
-              {data?.recordings[0] ? (
-                <Video url={data.recordings[0].recorded_video_url_aws}></Video>
+              {synopsis?.video ? (
+                <Video src={synopsis?.video} />
               ) : (
-                <Video url=""></Video>
+                <Video src=""></Video>
               )}
             </CardHeader>
             <CardContent>
               <h1 className="mb-6 text-xl">Synopsis</h1>
-              {loading ? ( // Show loading state
+              {loading ? (
                 <p>Loading...</p>
               ) : synopsis?.summary ? (
                 <p>{synopsis.summary}</p>
