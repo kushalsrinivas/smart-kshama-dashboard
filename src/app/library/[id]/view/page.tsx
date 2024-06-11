@@ -77,7 +77,11 @@ function Page() {
             </CardHeader>
             <CardContent>
               <h1 className="mb-6 text-xl">Synopsis</h1>
-              <p>{synopsis?.summary}</p>
+              {synopsis?.summary ? (
+                <p>{synopsis.summary}</p>
+              ) : (
+                <p>Nothing to display here</p>
+              )}
             </CardContent>
           </Card>
           <Card className="w-full">

@@ -7,7 +7,7 @@ interface TldrProps {
 const Tldr: React.FC<TldrProps> = ({ data }) => {
   return (
     <div>
-      <div>{data}</div>
+      <div>{data ? data : "Nothing to display here"}</div>
     </div>
   );
 };

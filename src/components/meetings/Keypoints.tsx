@@ -10,7 +10,7 @@ const Keypoints: React.FC<KeypointsProps> = ({ data }) => {
     <div className="flex flex-col gap-2">
       {data
         ? data.map((item) => <KeypointsItems key={item[0]} data={item[0]!} />)
-        : ""}
+        : "Nothing to display here"}
     </div>
   );
 };
