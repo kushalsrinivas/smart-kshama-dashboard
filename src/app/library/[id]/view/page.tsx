@@ -31,20 +31,20 @@ function Page() {
   };
 
   const getData = async () => {
-    const transcriptUrl =
-      "https://api.goodmeetings.ai/v2/transcript/get?callInstanceId=";
+    // const transcriptUrl =
+    //   "https://api.goodmeetings.ai/v2/transcript/get?callInstanceId=";
     const instanceUrl =
       "https://api.goodmeetings.ai/v2/call/get-meeting-instance-info?callInstanceId=";
     try {
-      const transcriptResponse = await fetch(transcriptUrl + params.id, {
-        headers,
-      });
+      // const transcriptResponse = await fetch(transcriptUrl + params.id, {
+      //   headers,
+      // });
       const instanceResponse = await fetch(instanceUrl + params.id, {
         headers,
       });
-      const transcriptData = await transcriptResponse.json();
+      // const transcriptData = await transcriptResponse.json();
       const instanceData = await instanceResponse.json();
-      console.log("transcriptData", transcriptData);
+      // console.log("transcriptData", transcriptData);
       console.log("instanceData", instanceData);
       const data = {
         summary: instanceData.data[0].summary.summary_text[0],
