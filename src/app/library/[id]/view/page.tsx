@@ -42,20 +42,28 @@ function Page() {
         headers,
       });
       const instanceData = await instanceResponse.json();
+      console.log("instanceData", instanceData);
       const data = {
-        summary: instanceData.data[0].summary.summary_text[0],
-        keypoints: instanceData.data[0].summary.summary_time_data,
-        tldr: instanceData.data[0].summary.tldr,
-        video: instanceData.data[0].recordings[0].recorded_video_url_aws,
+        summary:
+          instanceData.data?.[0]?.summary?.summary_text?.[0] ?? undefined,
+        keypoints:
+          instanceData.data?.[0]?.summary?.summary_time_data ?? undefined,
+        tldr: instanceData.data?.[0]?.summary?.tldr ?? undefined,
+        video:
+          instanceData.data?.[0]?.recordings?.[0]?.recorded_video_url_aws ??
+          undefined,
       };
+
       setSynopsis(data);
     } catch (error) {
+      console.log("error", error);
       return { data: "error" };
     } finally {
       setLoading(false);
     }
   };
 
+  console.log("synopsis", synopsis, params.id);
 
   useEffect(() => {
     void getData();
@@ -124,7 +132,7 @@ function Page() {
                       <p>Loading...</p>
                     ) : (
                       <>
-                        <Keypoints data={synopsis?.keypoints[0]} />
+                        <Keypoints data={synopsis?.keypoints?.[0]} />
                       </>
                     )}
                   </>
