@@ -8,7 +8,7 @@ import Todo from "~/components/meetings/Todo";
 import Keypoints from "~/components/meetings/Keypoints";
 import Tldr from "~/components/meetings/Tldr";
 import { type Meeting } from "~/@types/meeting";
-import Video from "next-video";
+import Player from "next-video/player";
 // import { Video } from "~/components/meetings/video";
 
 interface Synopsis {
@@ -76,9 +76,9 @@ function Page() {
           <Card className="w-full">
             <CardHeader>
               {synopsis?.video ? (
-                <Video src={synopsis?.video} />
+                <Player src={synopsis?.video} />
               ) : (
-                <Video src=""></Video>
+                <Player src="" />
               )}
             </CardHeader>
             <CardContent>
