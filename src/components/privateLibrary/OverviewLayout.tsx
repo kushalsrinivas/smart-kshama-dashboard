@@ -11,6 +11,7 @@ interface Meeting {
 const OverviewLayout: FC<Meeting> = ({ userId }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true); // State to track loading status
+  const currentUserId = "b859fc67-572b-4d49-a458-28a6a9aec0de";
 
   const getData = async () => {
     try {
@@ -32,13 +33,13 @@ const OverviewLayout: FC<Meeting> = ({ userId }) => {
             end_date: "2024-06-12",
             client_emailId: [],
             hostEmailId: "contact@smartdonna.com",
-            client_client_id: userId,
+            client_client_id: currentUserId,
           }),
         },
       );
 
       const data = await response.json();
-      console.log("data", data);
+      console.log("data", data.data);
       setData(data.data);
     } catch (error) {
       console.error("Fetch error: ", error);

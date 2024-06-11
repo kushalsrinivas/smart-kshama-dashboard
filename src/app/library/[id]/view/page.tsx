@@ -9,35 +9,36 @@ import Todo from "~/components/meetings/Todo";
 import Keypoints from "~/components/meetings/Keypoints";
 import Tldr from "~/components/meetings/Tldr";
 import { type Meeting } from "~/@types/meeting";
-import { createClient } from "@supabase/supabase-js";
 import { Video } from "~/components/meetings/video";
 
 function Page() {
   const [index, setIndex] = useState<number>(0);
   const params = useParams<{ id: string }>();
   const [data, setData] = useState<Meeting>();
-  const supabase = createClient(
-    "https://fodgwycudmbhoywjyfft.supabase.co",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZvZGd3eWN1ZG1iaG95d2p5ZmZ0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTY0NDIzOTUsImV4cCI6MjAzMjAxODM5NX0.0cbuJgNEkAqDN7qoco3cCi5qP8cYvSAe7OBi6OEXAu0",
-  );
 
-  const oldGetData = async () => {
+  const bearerToken =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjU0MmYwZjU0Yjg4MjAwMGU0NzE0ZDQiLCJpYXQiOjE3MTY4MTA0NTQsImV4cCI6MTc0ODM0NjQ1NCwidHlwZSI6ImFjY2VzcyJ9.OQLGGqS4jShahdC3wTaJ5yj4g4MYkeXv-jBXi-AD1sM";
+
+  const headers = {
+    Authorization: `Bearer ${bearerToken}`,
+    "Content-Type": "application/x-www-form-urlencoded",
+  };
+
+  const getData = async () => {
+    const url =
+      "https://api.goodmeetings.ai/v2/call/get-meeting-instance-info?callInstanceId=";
     try {
-      const { error, data } = await supabase
-        .from("overveiw")
-        .select("*")
-        .eq("uuid", params.id)
-        .single();
-      setData(data as Meeting);
-      console.log(data);
+      const response = await fetch(url + params.id, { headers });
+      const data = await response.json();
+      console.log("data", data);
+      // setData(data);
     } catch (error) {
-      console.error("Fetch error: ", error);
-      return error;
+      return { data: "error" };
     }
   };
 
   useEffect(() => {
-    void oldGetData();
+    void getData();
   }, []);
 
   return (
