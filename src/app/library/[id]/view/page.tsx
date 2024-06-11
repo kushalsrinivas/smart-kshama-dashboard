@@ -11,6 +11,17 @@ import Tldr from "~/components/meetings/Tldr";
 import { type Meeting } from "~/@types/meeting";
 import { Video } from "~/components/meetings/video";
 
+interface MeetingData {
+  transcript: {
+    text: string;
+    name: string;
+  };
+  instance: {
+    summary: string;
+    tldr: string;
+  };
+}
+
 function Page() {
   const [index, setIndex] = useState<number>(0);
   const params = useParams<{ id: string }>();
@@ -26,14 +37,27 @@ function Page() {
   };
 
   const getData = async () => {
-    const url = "https://api.goodmeetings.ai/v2/transcript/get?callInstanceId=";
-    // const url =
-    //   "https://api.goodmeetings.ai/v2/call/get-meeting-instance-info?callInstanceId=";
+    const transcriptUrl =
+      "https://api.goodmeetings.ai/v2/transcript/get?callInstanceId=";
+    const instanceUrl =
+      "https://api.goodmeetings.ai/v2/call/get-meeting-instance-info?callInstanceId=";
     try {
-      const response = await fetch(url + params.id, { headers });
-      const data = await response.json();
-      console.log("data", data.data);
-      setSynopsis(data.data);
+      const transcriptResponse = await fetch(transcriptUrl + params.id, {
+        headers,
+      });
+      const instanceResponse = await fetch(instanceUrl + params.id, {
+        headers,
+      });
+      const transcriptData = await transcriptResponse.json();
+      const instanceData = await instanceResponse.json();
+      console.log("transcriptData", transcriptData);
+      console.log("instanceData", instanceData);
+      const data = {
+        // transcript: transcriptData.data,
+        summary: instanceData.data[0].summary.summary_time_data,
+        tldr: instanceData.data[0].summary.tldr,
+      };
+      setSynopsis(data);
     } catch (error) {
       return { data: "error" };
     }
@@ -58,19 +82,27 @@ function Page() {
               )}
             </CardHeader>
             <CardContent>
-              <h1>Synopsis</h1>
+              <h1 className="mb-6 text-xl">Synopsis</h1>
               {/* <p>
                 {data && JSON.parse(data.agenda)[0]
                   ? JSON.parse(data.agenda)[0]
                   : ""}
               </p> */}
-              {synopsis?.length > 0 &&
-                synopsis?.map((item) => (
+              {/* {synopsis?.transcript?.length > 0 &&
+                synopsis.transcript?.map((item) => (
                   <p key={item.name} className="my-4 text-lg">
                     <span className="font-semibold">{item.name}: &nbsp;</span>
                     {item.text}
                   </p>
-                ))}
+                ))} */}
+              {synopsis?.summary[0]
+                ? synopsis.summary[0].map((item) => (
+                    <p key={item.name} className="text-semibold text-lg">
+                      {item[0]}
+                      {item.text}
+                    </p>
+                  ))
+                : ""}
             </CardContent>
           </Card>
           <Card className="w-full">
@@ -115,17 +147,15 @@ function Page() {
             <CardContent className="h-full">
               <div className="h-full ">
                 {index === 0 && (
-                  <>
-                    {data && <Todo data={data?.ActionPoints[0] ?? []}></Todo>}
-                  </>
+                  <>{data && <Todo data={data?.ActionPoints[0] ?? []} />}</>
                 )}
                 {index === 1 && (
                   <>
                     <Keypoints></Keypoints>
                   </>
                 )}
-                {index === 2 && <Aichat id={params.id}></Aichat>}
-                {index === 3 && <Tldr></Tldr>}
+                {index === 2 && <Aichat id={params.id} />}
+                {index === 3 && <Tldr  />}
               </div>
             </CardContent>
           </Card>
