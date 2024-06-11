@@ -15,6 +15,7 @@ function Page() {
   const [index, setIndex] = useState<number>(0);
   const params = useParams<{ id: string }>();
   const [data, setData] = useState<Meeting>();
+  const [synopsis, setSynopsis] = useState();
 
   const bearerToken =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjU0MmYwZjU0Yjg4MjAwMGU0NzE0ZDQiLCJpYXQiOjE3MTY4MTA0NTQsImV4cCI6MTc0ODM0NjQ1NCwidHlwZSI6ImFjY2VzcyJ9.OQLGGqS4jShahdC3wTaJ5yj4g4MYkeXv-jBXi-AD1sM";
@@ -26,15 +27,19 @@ function Page() {
 
   const getData = async () => {
     const url = "https://api.goodmeetings.ai/v2/transcript/get?callInstanceId=";
+    // const url =
+    //   "https://api.goodmeetings.ai/v2/call/get-meeting-instance-info?callInstanceId=";
     try {
       const response = await fetch(url + params.id, { headers });
       const data = await response.json();
-      console.log("data", data);
-      // setData(data);
+      console.log("data", data.data);
+      setSynopsis(data.data);
     } catch (error) {
       return { data: "error" };
     }
   };
+
+  console.log("synopsis", synopsis);
 
   useEffect(() => {
     void getData();
@@ -54,11 +59,18 @@ function Page() {
             </CardHeader>
             <CardContent>
               <h1>Synopsis</h1>
-              <p>
+              {/* <p>
                 {data && JSON.parse(data.agenda)[0]
                   ? JSON.parse(data.agenda)[0]
                   : ""}
-              </p>
+              </p> */}
+              {synopsis?.length > 0 &&
+                synopsis?.map((item) => (
+                  <p key={item.name} className="my-4 text-lg">
+                    <span className="font-semibold">{item.name}: &nbsp;</span>
+                    {item.text}
+                  </p>
+                ))}
             </CardContent>
           </Card>
           <Card className="w-full">
