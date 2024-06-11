@@ -21,6 +21,7 @@ function Page() {
   const params = useParams<{ id: string }>();
   const [data, setData] = useState<Meeting>();
   const [synopsis, setSynopsis] = useState<Synopsis>();
+  const [loading, setLoading] = useState<boolean>(false); // Add loading state
 
   const bearerToken =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjU0MmYwZjU0Yjg4MjAwMGU0NzE0ZDQiLCJpYXQiOjE3MTY4MTA0NTQsImV4cCI6MTc0ODM0NjQ1NCwidHlwZSI6ImFjY2VzcyJ9.OQLGGqS4jShahdC3wTaJ5yj4g4MYkeXv-jBXi-AD1sM";
@@ -31,21 +32,14 @@ function Page() {
   };
 
   const getData = async () => {
-    // const transcriptUrl =
-    //   "https://api.goodmeetings.ai/v2/transcript/get?callInstanceId=";
+    setLoading(true); // Set loading state to true
     const instanceUrl =
       "https://api.goodmeetings.ai/v2/call/get-meeting-instance-info?callInstanceId=";
     try {
-      // const transcriptResponse = await fetch(transcriptUrl + params.id, {
-      //   headers,
-      // });
       const instanceResponse = await fetch(instanceUrl + params.id, {
         headers,
       });
-      // const transcriptData = await transcriptResponse.json();
       const instanceData = await instanceResponse.json();
-      // console.log("transcriptData", transcriptData);
-      console.log("instanceData", instanceData);
       const data = {
         summary: instanceData.data[0].summary.summary_text[0],
         keypoints: instanceData.data[0].summary.summary_time_data,
@@ -54,6 +48,8 @@ function Page() {
       setSynopsis(data);
     } catch (error) {
       return { data: "error" };
+    } finally {
+      setLoading(false); // Set loading state to false
     }
   };
 
@@ -77,7 +73,9 @@ function Page() {
             </CardHeader>
             <CardContent>
               <h1 className="mb-6 text-xl">Synopsis</h1>
-              {synopsis?.summary ? (
+              {loading ? ( // Show loading state
+                <p>Loading...</p>
+              ) : synopsis?.summary ? (
                 <p>{synopsis.summary}</p>
               ) : (
                 <p>Nothing to display here</p>
@@ -104,29 +102,42 @@ function Page() {
                   >
                     TLDR
                   </Button>
-                  {/* <Button
-                    variant="neutral"
-                    onClick={() => {
-                      setIndex(0);
-                    }}
-                  >
-                    ToDo
-                  </Button> */}
                 </div>
               </CardTitle>
             </CardHeader>
             <CardContent className="h-full">
               <div className="h-full ">
                 {index === 0 && (
-                  <>{data && <Todo data={data?.ActionPoints[0] ?? []} />}</>
+                  <>
+                    {loading ? (
+                      <p>Loading...</p>
+                    ) : (
+                      <>{data && <Todo data={data?.ActionPoints[0] ?? []} />}</>
+                    )}
+                  </>
                 )}
                 {index === 1 && (
                   <>
-                    <Keypoints data={synopsis?.keypoints[0]} />
+                    {loading ? (
+                      <p>Loading...</p>
+                    ) : (
+                      <>
+                        <Keypoints data={synopsis?.keypoints[0]} />
+                      </>
+                    )}
                   </>
                 )}
-                {/* {index === 2 && <Aichat id={params.id} />} */}
-                {index === 3 && <Tldr data={synopsis?.tldr[1]} />}
+                {index === 3 && (
+                  <>
+                    {loading ? (
+                      <p>Loading...</p>
+                    ) : (
+                      <>
+                        <Tldr data={synopsis?.tldr[1]} />
+                      </>
+                    )}
+                  </>
+                )}
               </div>
             </CardContent>
           </Card>
