@@ -34,6 +34,8 @@ const FilterDropdown: FC<FilterDropdownProps> = ({ label, options }) => (
 const page = async () => {
   const session = await getServerAuthSession();
 
+  const userId = session?.user?.id;
+
   if (!session) {
     redirect("/api/auth/signin");
   }
@@ -41,7 +43,7 @@ const page = async () => {
 
   return (
     <div>
-      <div className="flex w-full flex-col gap-10 px-4 py-6 justify-center">
+      <div className="flex w-full flex-col justify-center gap-10 px-4 py-6">
         <div className="flex w-full flex-row gap-5 overflow-x-auto p-2">
           <FilterDropdown options={options} label="All Platforms" />
           <FilterDropdown options={options} label="Meeting Source" />
@@ -49,7 +51,7 @@ const page = async () => {
           <FilterDropdown options={options} label="Recorded By" />
           <FilterDropdown options={options} label="Clients" />
         </div>
-        <OverviewLayout />
+        <OverviewLayout userId={userId!} />
       </div>
     </div>
   );

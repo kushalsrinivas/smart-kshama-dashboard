@@ -8,7 +8,7 @@ import Aichat from "~/components/meetings/Aichat";
 import Todo from "~/components/meetings/Todo";
 import Keypoints from "~/components/meetings/Keypoints";
 import Tldr from "~/components/meetings/Tldr";
-import { Meeting } from "~/@types/meeting";
+import { type Meeting } from "~/@types/meeting";
 import { createClient } from "@supabase/supabase-js";
 import { Video } from "~/components/meetings/video";
 
@@ -20,7 +20,8 @@ function Page() {
     "https://fodgwycudmbhoywjyfft.supabase.co",
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZvZGd3eWN1ZG1iaG95d2p5ZmZ0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTY0NDIzOTUsImV4cCI6MjAzMjAxODM5NX0.0cbuJgNEkAqDN7qoco3cCi5qP8cYvSAe7OBi6OEXAu0",
   );
-  const getData = async () => {
+
+  const oldGetData = async () => {
     try {
       const { error, data } = await supabase
         .from("overveiw")
@@ -34,13 +35,15 @@ function Page() {
       return error;
     }
   };
+
   useEffect(() => {
-    void getData();
+    void oldGetData();
   }, []);
+
   return (
     <div className="flex flex-row">
       <div className="h-screen w-full">
-        <div className="flex w-full flex-col gap-5 md:p-20 p-2 md:flex-row">
+        <div className="flex w-full flex-col gap-5 p-2 md:flex-row md:p-20">
           <Card className="w-full">
             <CardHeader>
               {data?.recordings[0] ? (
@@ -51,7 +54,11 @@ function Page() {
             </CardHeader>
             <CardContent>
               <h1>Synopsis</h1>
-              <p>{data && JSON.parse(data.agenda)[0] ? JSON.parse(data.agenda)[0] : ""}</p>
+              <p>
+                {data && JSON.parse(data.agenda)[0]
+                  ? JSON.parse(data.agenda)[0]
+                  : ""}
+              </p>
             </CardContent>
           </Card>
           <Card className="w-full">
@@ -95,9 +102,11 @@ function Page() {
             </CardHeader>
             <CardContent className="h-full">
               <div className="h-full ">
-              {index === 0 && (
-                <>{data && <Todo data={data?.ActionPoints[0] ?? []}></Todo>}</>
-              )}
+                {index === 0 && (
+                  <>
+                    {data && <Todo data={data?.ActionPoints[0] ?? []}></Todo>}
+                  </>
+                )}
                 {index === 1 && (
                   <>
                     <Keypoints></Keypoints>

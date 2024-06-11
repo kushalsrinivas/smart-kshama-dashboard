@@ -6,7 +6,6 @@ import {
   CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
 } from "~/components/ui/card";
 import { type Meeting } from "~/@types/meeting";
 
@@ -20,7 +19,7 @@ const OverviewCard: React.FC<OverviewCardProps> = ({ data }) => {
         <CardHeader>
           <div className="h-40 w-full bg-slate-300"></div>
           {/* <CardTitle>{JSON.parse(data.agenda)[0]}</CardTitle> */}
-          <CardDescription>{data.created_at.substring(0, 10)}</CardDescription>
+          <CardDescription>{data.created_at}</CardDescription>
         </CardHeader>
         <CardFooter className="flex flex-row justify-between gap-2 p-0 px-3 pb-3">
           <Button>More Options</Button>

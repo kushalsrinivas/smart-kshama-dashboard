@@ -26,7 +26,6 @@ interface JoinMeetingProps {
 
 const JoinMeeting: React.FC<JoinMeetingProps> = ({ currentUserId }) => {
   const [meetLink, setMeetLink] = useState("");
-  
 
   const joinMeet = async () => {
     toast("Donna Ai notetaker request is underprocess");
@@ -50,21 +49,21 @@ const JoinMeeting: React.FC<JoinMeetingProps> = ({ currentUserId }) => {
   };
 
   const newJoinMeet = async () => {
-
     toast("Donna Ai notetaker request is underprocess");
 
     try {
-      const bearerToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjU0MmYwZjU0Yjg4MjAwMGU0NzE0ZDQiLCJpYXQiOjE3MTY4MTA0NTQsImV4cCI6MTc0ODM0NjQ1NCwidHlwZSI6ImFjY2VzcyJ9.OQLGGqS4jShahdC3wTaJ5yj4g4MYkeXv-jBXi-AD1sM";
+      const bearerToken =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjU0MmYwZjU0Yjg4MjAwMGU0NzE0ZDQiLCJpYXQiOjE3MTY4MTA0NTQsImV4cCI6MTc0ODM0NjQ1NCwidHlwZSI6ImFjY2VzcyJ9.OQLGGqS4jShahdC3wTaJ5yj4g4MYkeXv-jBXi-AD1sM";
       const response = await fetch("https://api.goodmeetings.ai/v2/call/join", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${bearerToken}`,
+          Authorization: `Bearer ${bearerToken}`,
         },
         body: JSON.stringify({
-          "meetingUrl": meetLink,
-          "botName": "Smart Donna",
-          "client_client_id": currentUserId
+          meetingUrl: meetLink,
+          botName: "Smart Donna",
+          client_client_id: currentUserId,
         }),
       });
 
@@ -73,9 +72,8 @@ const JoinMeeting: React.FC<JoinMeetingProps> = ({ currentUserId }) => {
     } catch (error) {
       console.error("Fetch error: ", error);
     }
+  };
 
-  }
-  
   return (
     <Card>
       <CardHeader>
