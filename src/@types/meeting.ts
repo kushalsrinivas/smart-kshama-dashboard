@@ -67,4 +67,5 @@ interface Speaker {
     speakers: Speaker[];
     summary: string;
     recordings: Recording[];
+    meetingId: string;
   }
