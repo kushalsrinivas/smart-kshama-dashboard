@@ -122,7 +122,7 @@ function Page() {
                     {loading ? (
                       <p>Loading...</p>
                     ) : (
-                      <>{data && <Todo data={data?.ActionPoints[0] ?? []} />}</>
+                      <>{data && <Todo data={data?.ActionPoints?.[0] ?? []} />}</>
                     )}
                   </>
                 )}
@@ -143,7 +143,7 @@ function Page() {
                       <p>Loading...</p>
                     ) : (
                       <>
-                        <Tldr data={synopsis?.tldr[1]} />
+                        <Tldr data={synopsis?.tldr?.[1]} />
                       </>
                     )}
                   </>
