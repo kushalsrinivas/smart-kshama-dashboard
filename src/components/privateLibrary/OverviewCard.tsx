@@ -13,7 +13,9 @@ import { type Meeting } from "~/@types/meeting";
 interface OverviewCardProps {
   data: Meeting;
 }
-const OverviewCard: React.FC<OverviewCardProps> = ({ data }) => {
+const OverviewCard: React.FC<OverviewCardProps> = ({
+  data,
+}: OverviewCardProps) => {
   console.log("sentData", data);
 
   function epochToDate(epochTime: number): string {
@@ -37,9 +39,20 @@ const OverviewCard: React.FC<OverviewCardProps> = ({ data }) => {
           ) : (
             <div className="h-40 w-full bg-slate-300"></div>
           )}
-          <CardTitle>{data.meetingId}</CardTitle>
+          <CardTitle>
+            Title: {data.title == "" ? "N/A" : data.title}
+          </CardTitle>
           <CardDescription>
             {epochToDate(Number(data.meetingStartTime))}
+            <br />
+            <br />
+            Attendees:
+            <br />
+            {data.attendees.length > 0
+              ? data?.attendees?.map((speaker) => {
+                  return speaker.name;
+                })
+              : "Smart Donna"}
           </CardDescription>
         </CardHeader>
         <CardFooter className="flex flex-row justify-between gap-2 p-0 px-3 pb-3">
