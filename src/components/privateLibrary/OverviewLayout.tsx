@@ -13,7 +13,7 @@ interface Meeting {
 const OverviewLayout: FC<Meeting> = ({ userId, startDate, endDate }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true); // State to track loading status
-  const currentUserId = "b859fc67-572b-4d49-a458-28a6a9aec0de";
+  //const currentUserId = "b859fc67-572b-4d49-a458-28a6a9aec0de";
 
   const getData = async () => {
     try {
@@ -35,7 +35,7 @@ const OverviewLayout: FC<Meeting> = ({ userId, startDate, endDate }) => {
             end_date: endDate,
             client_emailId: [],
             hostEmailId: "",
-            client_client_id: currentUserId,
+            client_client_id: userId,
           }),
         },
       );
