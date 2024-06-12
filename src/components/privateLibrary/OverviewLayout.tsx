@@ -14,7 +14,7 @@ const OverviewLayout: FC<Meeting> = ({ userId, startDate, endDate }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true); // State to track loading status
   const currentUserId = "b859fc67-572b-4d49-a458-28a6a9aec0de";
-
+  
   const getData = async () => {
     try {
       const bearerToken =
@@ -35,7 +35,8 @@ const OverviewLayout: FC<Meeting> = ({ userId, startDate, endDate }) => {
             end_date: endDate,
             client_emailId: [],
             hostEmailId: "",
-            client_client_id: userId,
+            // client_client_id: userId,
+            client_client_id: currentUserId,
           }),
         },
       );
@@ -74,10 +75,15 @@ const OverviewLayout: FC<Meeting> = ({ userId, startDate, endDate }) => {
       ) : (
         <div className="m-auto pt-24">
           <div className="mb-5">No meetings yet.</div>
-          <div className="mb-5">If you just had one, then please note it takes about 5 minutes for insights to show up here.</div>
-          <div>And also you just had a meeting, Take a walk and come back, your donna is extracting all the crazy insights for you.</div>
+          <div className="mb-5">
+            If you just had one, then please note it takes about 5 minutes for
+            insights to show up here.
+          </div>
+          <div>
+            And also you just had a meeting, Take a walk and come back, your
+            donna is extracting all the crazy insights for you.
+          </div>
         </div>
-        
       )}
     </div>
   );

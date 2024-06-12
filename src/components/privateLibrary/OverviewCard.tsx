@@ -16,6 +16,18 @@ interface OverviewCardProps {
 const OverviewCard: React.FC<OverviewCardProps> = ({ data }) => {
   console.log("sentData", data);
 
+  function epochToDate(epochTime: number): string {
+    const date = new Date(epochTime);
+    return date.toLocaleString("en-US", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+    });
+  }
+
   return (
     <>
       <Card className="">
@@ -26,7 +38,9 @@ const OverviewCard: React.FC<OverviewCardProps> = ({ data }) => {
             <div className="h-40 w-full bg-slate-300"></div>
           )}
           <CardTitle>{data.meetingId}</CardTitle>
-          <CardDescription>{data.created_at}</CardDescription>
+          <CardDescription>
+            {epochToDate(Number(data.meetingStartTime))}
+          </CardDescription>
         </CardHeader>
         <CardFooter className="flex flex-row justify-between gap-2 p-0 px-3 pb-3">
           {/* <Link href={`/library/5884254a-fcdd-4470-9652-1726030596dd/view`}> */}

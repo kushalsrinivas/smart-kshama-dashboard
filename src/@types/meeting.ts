@@ -70,4 +70,5 @@ interface Speaker {
     meetingId: string;
     host_image: string;
     callInstanceId: string;
+    meetingStartTime: string;
   }

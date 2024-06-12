@@ -14,14 +14,17 @@ import Player from "next-video/player";
 interface Synopsis {
   summary: string;
   keypoints: string[][];
-  tldr: string;
   video: string;
+  transcript: {
+    name: string;
+    text: string;
+  }[];
+  actionItems: string[];
 }
 
 function Page() {
   const [index, setIndex] = useState<number>(1);
   const params = useParams<{ id: string }>();
-  const [data, setData] = useState<Meeting>();
   const [synopsis, setSynopsis] = useState<Synopsis>();
   const [loading, setLoading] = useState<boolean>(false); // Add loading state
 
@@ -34,24 +37,34 @@ function Page() {
   };
 
   const getData = async () => {
-    setLoading(true); // Set loading state to true
+    setLoading(true);
+    const transcriptUrl =
+      "https://api.goodmeetings.ai/v2/transcript/get?callInstanceId=";
     const instanceUrl =
       "https://api.goodmeetings.ai/v2/call/get-meeting-instance-info?callInstanceId=";
     try {
+      const transcriptResponse = await fetch(transcriptUrl + params.id, {
+        headers,
+      });
       const instanceResponse = await fetch(instanceUrl + params.id, {
         headers,
       });
+
+      const transcriptData = await transcriptResponse.json();
       const instanceData = await instanceResponse.json();
+
+      console.log("transcriptData", transcriptData);
       console.log("instanceData", instanceData);
       const data = {
+        transcript: transcriptData.data,
         summary:
           instanceData.data?.[0]?.summary?.summary_text?.[0] ?? undefined,
         keypoints:
           instanceData.data?.[0]?.summary?.summary_time_data ?? undefined,
-        tldr: instanceData.data?.[0]?.summary?.tldr ?? undefined,
         video:
           instanceData.data?.[0]?.recordings?.[0]?.recorded_video_url_aws ??
           undefined,
+        actionItems: instanceData.data?.[0]?.summary?.action_items ?? undefined,
       };
 
       setSynopsis(data);
@@ -110,7 +123,15 @@ function Page() {
                       setIndex(3);
                     }}
                   >
-                    TLDR
+                    Transcript
+                  </Button>
+                  <Button
+                    variant="neutral"
+                    onClick={() => {
+                      setIndex(0);
+                    }}
+                  >
+                    Action Items
                   </Button>
                 </div>
               </CardTitle>
@@ -122,7 +143,7 @@ function Page() {
                     {loading ? (
                       <p>Loading...</p>
                     ) : (
-                      <>{data && <Todo data={data?.ActionPoints?.[0] ?? []} />}</>
+                      <>{<Todo data={synopsis?.actionItems ?? []} />}</>
                     )}
                   </>
                 )}
@@ -143,7 +164,7 @@ function Page() {
                       <p>Loading...</p>
                     ) : (
                       <>
-                        <Tldr data={synopsis?.tldr?.[1]} />
+                        <Tldr data={synopsis?.transcript} />
                       </>
                     )}
                   </>
