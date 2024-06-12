@@ -12,13 +12,10 @@ import { Calendar } from "./calendar";
 export function DatePickerWithRange({
   className,
 }: React.HTMLAttributes<HTMLDivElement>) {
-
-
   const [date, setDate] = React.useState<DateRange | undefined>({
-    from: new Date(2022, 0, 20),
-    to: addDays(new Date(2024, 0, 20), 20),
+    from: new Date(new Date().getTime() - 15 * 24 * 60 * 60 * 1000),
+    to: new Date(),
   });
-
 
   return (
     <div className={cn("grid gap-2", className)}>
