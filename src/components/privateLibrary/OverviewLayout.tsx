@@ -72,7 +72,12 @@ const OverviewLayout: FC<Meeting> = ({ userId, startDate, endDate }) => {
       ) : data.length > 0 ? (
         data.map((meeting, id) => <OverviewCard key={id} data={meeting} />)
       ) : (
-        <div className="m-auto pt-24">No meetings to display</div>
+        <div className="m-auto pt-24">
+          <div className="mb-5">No meetings yet.</div>
+          <div className="mb-5">If you just had one, then please note it takes about 5 minutes for insights to show up here.</div>
+          <div>And also you just had a meeting, Take a walk and come back, your donna is extracting all the crazy insights for you.</div>
+        </div>
+        
       )}
     </div>
   );
