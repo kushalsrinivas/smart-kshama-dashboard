@@ -34,7 +34,7 @@ const OverviewLayout: FC<Meeting> = ({ userId, startDate, endDate }) => {
             start_date: startDate,
             end_date: endDate,
             client_emailId: [],
-            hostEmailId: "contact@smartdonna.com",
+            hostEmailId: "",
             client_client_id: userId,
           }),
         },
