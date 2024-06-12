@@ -4,6 +4,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "../ui/card";
@@ -28,7 +29,7 @@ const JoinMeeting: React.FC<JoinMeetingProps> = ({ currentUserId }) => {
   const [meetLink, setMeetLink] = useState("");
 
   const joinMeet = async () => {
-    toast("Donna Ai notetaker request is underprocess");
+    toast("Donna is joining your meeting in a minute, no time for small talk then.");
     const formData = new URLSearchParams();
     formData.append("meetLink", meetLink);
 
@@ -49,7 +50,7 @@ const JoinMeeting: React.FC<JoinMeetingProps> = ({ currentUserId }) => {
   };
 
   const newJoinMeet = async () => {
-    toast("Donna Ai notetaker request is underprocess");
+    toast("Donna is joining your meeting in a 60 seconds.");
 
     try {
       const bearerToken =
@@ -91,6 +92,11 @@ const JoinMeeting: React.FC<JoinMeetingProps> = ({ currentUserId }) => {
         />
         <Button onClick={newJoinMeet}>Join Meeting</Button>
       </CardContent>
+      <CardFooter>
+        <CardDescription>
+            Please note: It takes about a minute for her to join.
+        </CardDescription>
+      </CardFooter>
     </Card>
   );
 };
