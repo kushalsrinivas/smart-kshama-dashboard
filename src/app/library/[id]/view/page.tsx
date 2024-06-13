@@ -95,7 +95,7 @@ function Page() {
               )}
             </CardHeader>
             <CardContent>
-              <h1 className="mb-6 text-xl">Synopsis</h1>
+              <h1 className="mb-6 text-xl">Summary</h1>
               {loading ? (
                 <p>Loading...</p>
               ) : synopsis?.summary ? (
@@ -120,18 +120,18 @@ function Page() {
                   <Button
                     variant="neutral"
                     onClick={() => {
-                      setIndex(3);
-                    }}
-                  >
-                    Transcript
-                  </Button>
-                  <Button
-                    variant="neutral"
-                    onClick={() => {
                       setIndex(0);
                     }}
                   >
                     Action Items
+                  </Button>
+                  <Button
+                    variant="neutral"
+                    onClick={() => {
+                      setIndex(3);
+                    }}
+                  >
+                    Transcript
                   </Button>
                 </div>
               </CardTitle>
