@@ -112,25 +112,25 @@ function Page() {
                 <Player src="" />
               )}
             </CardHeader>
-            {loading ? (
-              <p className="mx-auto flex w-full justify-center py-2">Loading...</p>
-            ) : synopsis?.summary ?? synopsis?.speakers ? (
-              <div>
-                <p className="p-2">Date: {synopsis.date}</p>
-                <div className="flex flex-col gap-2 p-2">
-                  <p>Summary: {synopsis.summary}</p>
-                  <p className="font-semibold">Speakers:</p>
-                  <div className="flex flex-col gap-1">
-                    <div className=""></div>
-                    {synopsis.speakers?.map((speaker, index) => (
+            <CardContent>
+              <h1 className="mb-6 text-xl">Summary</h1>
+              {loading ? (
+                <p>Loading...</p>
+              ) : synopsis?.summary ? (
+                <>
+                  <p>{synopsis.summary}</p>
+                  <p className="my-4">{synopsis.date}</p>
+                  <h1 className="mb-2 text-xl">Speakers</h1>
+                  <div className="flex flex-wrap gap-2">
+                    {synopsis?.speakers?.map((speaker, index) => (
                       <p key={index}>{speaker.name}</p>
                     ))}
                   </div>
-                </div>
-              </div>
-            ) : (
-              <p>Nothing to display here</p>
-            )}
+                </>
+              ) : (
+                <p>Nothing to display here</p>
+              )}
+            </CardContent>
           </Card>
           <Card className="w-full">
             <CardHeader>
