@@ -40,7 +40,7 @@ const OverviewCard: React.FC<OverviewCardProps> = ({
             <div className="h-40 w-full bg-slate-300"></div>
           )}
           <CardTitle>
-            Title: {data.title == "" ? "N/A" : data.title}
+            {data.title == "" ? "N/A" : data.title}
           </CardTitle>
           <CardDescription>
             {epochToDate(Number(data.meetingStartTime))}

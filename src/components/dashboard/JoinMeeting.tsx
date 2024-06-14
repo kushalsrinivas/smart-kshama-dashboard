@@ -50,7 +50,7 @@ const JoinMeeting: React.FC<JoinMeetingProps> = ({ currentUserId }) => {
   };
 
   const newJoinMeet = async () => {
-    toast("Donna is joining your meeting in 60 seconds.", { duration: 10000 });
+    toast("Donna Notetaker is joining your meeting in 60 seconds.", { duration: 10000 });
 
     try {
       const bearerToken =
