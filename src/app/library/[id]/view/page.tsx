@@ -113,21 +113,9 @@ function Page() {
               )}
             </CardHeader>
             {loading ? (
-              <p className="mx-auto flex w-full justify-center py-2">Loading...</p>
-            ) : synopsis?.summary ?? synopsis?.speakers ? (
-              <div>
-                <p className="p-2">Date: {synopsis.date}</p>
-                <div className="flex flex-col gap-2 p-2">
-                  <p>Summary: {synopsis.summary}</p>
-                  <p className="font-semibold">Speakers:</p>
-                  <div className="flex flex-col gap-1">
-                    <div className=""></div>
-                    {synopsis.speakers?.map((speaker, index) => (
-                      <p key={index}>{speaker.name}</p>
-                    ))}
-                  </div>
-                </div>
-              </div>
+              <p>Loading...</p>
+            ) : synopsis?.summary ? (
+              <p>{synopsis.summary}</p>
             ) : (
               <p>Nothing to display here</p>
             )}
