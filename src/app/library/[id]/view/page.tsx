@@ -112,9 +112,8 @@ function Page() {
                 <Player src="" />
               )}
             </CardHeader>
-            <h1 className="mb-2 px-2 text-xl">Summary</h1>
-            {loading ? (
-              <p>Loading...</p>
+            {!loading ? (
+              <p className="mx-auto flex w-full justify-center py-2">Loading...</p>
             ) : synopsis?.summary ?? synopsis?.speakers ? (
               <div>
                 <p className="p-2">Date: {synopsis.date}</p>
