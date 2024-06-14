@@ -7,7 +7,6 @@ import { useParams } from "next/navigation";
 import Todo from "~/components/meetings/Todo";
 import Keypoints from "~/components/meetings/Keypoints";
 import Tldr from "~/components/meetings/Tldr";
-import { type Meeting } from "~/@types/meeting";
 import Player from "next-video/player";
 // import { Video } from "~/components/meetings/video";
 
@@ -15,6 +14,10 @@ interface Synopsis {
   summary: string;
   keypoints: string[][];
   video: string;
+  date: string;
+  speakers: {
+    name: string;
+  }[];
   transcript: {
     name: string;
     text: string;
@@ -23,7 +26,7 @@ interface Synopsis {
 }
 
 function Page() {
-  const [index, setIndex] = useState<number>(1);
+  const [index, setIndex] = useState<number>(0);
   const params = useParams<{ id: string }>();
   const [synopsis, setSynopsis] = useState<Synopsis>();
   const [loading, setLoading] = useState<boolean>(false); // Add loading state
@@ -55,7 +58,7 @@ function Page() {
 
       console.log("transcriptData", transcriptData);
       console.log("instanceData", instanceData);
-      const data = {
+      const data: Synopsis = {
         transcript: transcriptData.data,
         summary:
           instanceData.data?.[0]?.summary?.summary_text?.[0] ?? undefined,
@@ -65,6 +68,8 @@ function Page() {
           instanceData.data?.[0]?.recordings?.[0]?.recorded_video_url_aws ??
           undefined,
         actionItems: instanceData.data?.[0]?.summary?.action_items ?? undefined,
+        date: epochToDate(instanceData.data?.[0]?.meetingStartTime as number),
+        speakers: instanceData.data?.[0]?.speakers ?? undefined,
       };
 
       setSynopsis(data);
@@ -75,6 +80,19 @@ function Page() {
       setLoading(false);
     }
   };
+
+  function epochToDate(epochTime: number): string {
+    if (!epochTime) return "";
+    const date = new Date(epochTime);
+    return date.toLocaleString("en-US", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+    });
+  }
 
   console.log("synopsis", synopsis, params.id);
 
@@ -94,29 +112,39 @@ function Page() {
                 <Player src="" />
               )}
             </CardHeader>
-            <CardContent>
-              <h1 className="mb-6 text-xl">Summary</h1>
-              {loading ? (
-                <p>Loading...</p>
-              ) : synopsis?.summary ? (
-                <p>{synopsis.summary}</p>
-              ) : (
-                <p>Nothing to display here</p>
-              )}
-            </CardContent>
+            <h1 className="mb-2 px-2 text-xl">Summary</h1>
+            {loading ? (
+              <p>Loading...</p>
+            ) : synopsis?.summary ?? synopsis?.speakers ? (
+              <div>
+                <p className="p-2">Date: {synopsis.date}</p>
+                <div className="flex flex-col gap-2 p-2">
+                  <p>Summary: {synopsis.summary}</p>
+                  <p className="font-semibold">Speakers:</p>
+                  <div className="flex flex-col gap-1">
+                    <div className=""></div>
+                    {synopsis.speakers?.map((speaker, index) => (
+                      <p key={index}>{speaker.name}</p>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <p>Nothing to display here</p>
+            )}
           </Card>
           <Card className="w-full">
             <CardHeader>
               <CardTitle>
                 <div className="flex flex-row justify-center gap-5">
-                  <Button
+                  {/* <Button
                     variant="neutral"
                     onClick={() => {
                       setIndex(1);
                     }}
                   >
                     Keypoints
-                  </Button>
+                  </Button> */}
                   <Button
                     variant="neutral"
                     onClick={() => {
