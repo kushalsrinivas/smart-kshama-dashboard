@@ -112,13 +112,16 @@ function Page() {
                 <Player src="" />
               )}
             </CardHeader>
-            {loading ? (
-              <p>Loading...</p>
-            ) : synopsis?.summary ? (
-              <p>{synopsis.summary}</p>
-            ) : (
-              <p>Nothing to display here</p>
-            )}
+            <CardContent>
+              <h1 className="mb-6 text-xl">Summary</h1>
+              {loading ? (
+                <p>Loading...</p>
+              ) : synopsis?.summary ? (
+                <p>{synopsis.summary}</p>
+              ) : (
+                <p>Nothing to display here</p>
+              )}
+            </CardContent>
           </Card>
           <Card className="w-full">
             <CardHeader>
