@@ -112,7 +112,7 @@ function Page() {
                 <Player src="" />
               )}
             </CardHeader>
-            {!loading ? (
+            {loading ? (
               <p className="mx-auto flex w-full justify-center py-2">Loading...</p>
             ) : synopsis?.summary ?? synopsis?.speakers ? (
               <div>
