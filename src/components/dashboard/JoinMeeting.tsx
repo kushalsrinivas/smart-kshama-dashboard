@@ -50,7 +50,7 @@ const JoinMeeting: React.FC<JoinMeetingProps> = ({ currentUserId }) => {
   };
 
   const newJoinMeet = async () => {
-    toast("Donna is joining your meeting in a 60 seconds.");
+    toast("Donna is joining your meeting in 60 seconds.", { duration: 10000 });
 
     try {
       const bearerToken =
@@ -63,7 +63,7 @@ const JoinMeeting: React.FC<JoinMeetingProps> = ({ currentUserId }) => {
         },
         body: JSON.stringify({
           meetingUrl: meetLink,
-          botName: "Smart Donna",
+          botName: "Donna Notetaker",
           client_client_id: currentUserId,
           workspace: "Smart_donna",
         }),
@@ -94,7 +94,7 @@ const JoinMeeting: React.FC<JoinMeetingProps> = ({ currentUserId }) => {
       </CardContent>
       <CardFooter>
         <CardDescription>
-            Please note: It takes about a minute for her to join.
+            Please note: It takes about a minute for Donna Notetaker to join.
         </CardDescription>
       </CardFooter>
     </Card>

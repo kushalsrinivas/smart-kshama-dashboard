@@ -52,7 +52,7 @@ const OverviewCard: React.FC<OverviewCardProps> = ({
               ? data?.attendees?.map((speaker) => {
                   return speaker.name;
                 })
-              : "Smart Donna"}
+              : "Donna Notetaker"}
           </CardDescription>
         </CardHeader>
         <CardFooter className="flex flex-row justify-between gap-2 p-0 px-3 pb-3">
