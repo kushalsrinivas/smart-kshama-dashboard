@@ -117,7 +117,16 @@ function Page() {
               {loading ? (
                 <p>Loading...</p>
               ) : synopsis?.summary ? (
-                <p>{synopsis.summary}</p>
+                <>
+                  <p>{synopsis.summary}</p>
+                  <p className="my-4">{synopsis.date}</p>
+                  <h1 className="mb-2 text-xl">Speakers</h1>
+                  <div className="flex flex-wrap gap-2">
+                    {synopsis?.speakers?.map((speaker, index) => (
+                      <p key={index}>{speaker.name}</p>
+                    ))}
+                  </div>
+                </>
               ) : (
                 <p>Nothing to display here</p>
               )}
