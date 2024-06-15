@@ -48,6 +48,9 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   },
+  theme: {
+    logo: '/logo.svg'
+  },
   adapter: DrizzleAdapter(db, createTable) as Adapter,
   providers: [
     // DiscordProvider({
