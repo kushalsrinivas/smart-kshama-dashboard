@@ -48,8 +48,11 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   },
+  
   theme: {
-    logo: '/logo.svg'
+    buttonText: '#000000',
+    brandColor: '#FFDC58',
+    logo: '/logo.svg',
   },
   adapter: DrizzleAdapter(db, createTable) as Adapter,
   providers: [
