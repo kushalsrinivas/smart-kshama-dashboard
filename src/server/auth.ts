@@ -38,6 +38,7 @@ declare module "next-auth" {
  *
  * @see https://next-auth.js.org/configuration/options
  */
+
 export const authOptions: NextAuthOptions = {
   callbacks: {
     session: ({ session, user }) => ({
@@ -45,15 +46,17 @@ export const authOptions: NextAuthOptions = {
       user: {
         ...session.user,
         id: user.id,
+        createdAt: new Date(),
       },
     }),
   },
-  
+
   theme: {
-    buttonText: '#000000',
-    brandColor: '#FFDC58',
-    logo: '/logo.svg',
+    buttonText: "#000000",
+    brandColor: "#FFDC58",
+    logo: "/logo.svg",
   },
+
   adapter: DrizzleAdapter(db, createTable) as Adapter,
   providers: [
     // DiscordProvider({
@@ -70,10 +73,10 @@ export const authOptions: NextAuthOptions = {
         port: process.env.EMAIL_SERVER_PORT,
         auth: {
           user: process.env.EMAIL_SERVER_USER,
-          pass: process.env.EMAIL_SERVER_PASSWORD
-        }
+          pass: process.env.EMAIL_SERVER_PASSWORD,
+        },
       },
-      from: process.env.EMAIL_FROM
+      from: process.env.EMAIL_FROM,
     }),
     /**
      * ...add more providers here.

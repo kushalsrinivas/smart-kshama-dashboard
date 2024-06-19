@@ -3,6 +3,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import ConnectCalender from "~/components/dashboard/ConnectCalender";
 import JoinMeeting from "~/components/dashboard/JoinMeeting";
+import Trial from "~/components/dashboard/Trial";
 import { getServerAuthSession } from "~/server/auth";
 
 export default async function Home() {
@@ -28,9 +29,9 @@ export default async function Home() {
           <Pencil size={15} /> Manage Profile
         </Link>
       </div>
+      <Trial />
       <ConnectCalender />
       <JoinMeeting currentUserId={currentUserId} />
     </div>
   );
 }
-
