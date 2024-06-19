@@ -1,5 +1,6 @@
 import { relations, sql } from "drizzle-orm";
 import {
+  boolean,
   index,
   integer,
   pgTableCreator,
@@ -50,6 +51,8 @@ export const users = createTable("user", {
   createdAt: timestamp("createdAt", { withTimezone: true }).default(
     sql`CURRENT_TIMESTAMP`,
   ),
+  isTrial: boolean("isTrial").default(false),
+  isPremium: boolean("isPremium").default(false),
 });
 
 export const usersRelations = relations(users, ({ many }) => ({
