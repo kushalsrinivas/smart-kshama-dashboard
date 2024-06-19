@@ -45,6 +45,8 @@ export const authOptions: NextAuthOptions = {
       user: {
         ...session.user,
         id: user.id,
+        isTrail: true,
+        isPremium: false,
       },
     }),
   },

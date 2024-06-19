@@ -1,20 +1,16 @@
+import { redirect } from "next/navigation";
 import React from "react";
-import Cart from "~/components/billing/Cart";
-import Subscription from "~/components/billing/Subscription";
+import Billing from "~/components/billing";
+import { getServerAuthSession } from "~/server/auth";
 
-const page = () => {
-  return (
-    <div>
-      <h1 className="mb-4 mt-6 px-6 text-2xl font-bold">Manage Billing</h1>
-      <div className="flex-col flex gap-3 md:flex-row">
-        <div className="flex gap-6">
-        <Subscription />
-        <Cart />
-      </div>
-        <Cart />
-      </div>
-    </div>
-  );
+const page = async () => {
+  const session = await getServerAuthSession();
+
+  if (!session) {
+    redirect("/api/auth/signin");
+  }
+
+  return <Billing />;
 };
 
 export default page;

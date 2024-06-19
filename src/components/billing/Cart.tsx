@@ -28,9 +28,9 @@ const Cart = () => {
               <TableHead className="whitespace-nowrap text-black">
                 Unit Price
               </TableHead>
-              <TableHead className="whitespace-nowrap text-black">
+              {/* <TableHead className="whitespace-nowrap text-black">
                 Amount(USD)
-              </TableHead>
+              </TableHead> */}
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -40,7 +40,7 @@ const Cart = () => {
               </TableCell>
               <TableCell>1</TableCell>
               <TableCell>28</TableCell>
-              <TableCell>28</TableCell>
+              {/* <TableCell>28</TableCell> */}
             </TableRow>
           </TableBody>
         </Table>
