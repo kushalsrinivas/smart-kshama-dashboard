@@ -7,7 +7,10 @@ const page = () => {
     <div>
       <h1 className="mb-4 mt-6 px-6 text-2xl font-bold">Manage Billing</h1>
       <div className="flex-col flex gap-3 md:flex-row">
+        <div className="flex gap-6">
         <Subscription />
+        <Cart />
+      </div>
         <Cart />
       </div>
     </div>
