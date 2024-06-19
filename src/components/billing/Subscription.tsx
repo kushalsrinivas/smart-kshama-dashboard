@@ -10,7 +10,7 @@ import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import { InfoIcon } from "lucide-react";
 import { useState, type FC, useEffect } from "react";
-import CustomSelect, { Option } from "../common/CustomSelect";
+import CustomSelect, { type Option } from "../common/CustomSelect";
 
 interface SubscriptionProps {
   onSelectPlan: (plan: {
@@ -69,7 +69,7 @@ const Subscription: FC<SubscriptionProps> = ({ onSelectPlan }) => {
           <Label htmlFor="plan">Plan</Label>
           <CustomSelect
             options={planOptions}
-            placeholder="pro"
+            placeholder="Pro"
             onChange={(value) => setSelectedPlan(value)}
           />
         </div>
