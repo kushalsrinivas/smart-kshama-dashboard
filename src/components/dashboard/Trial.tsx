@@ -4,6 +4,7 @@ import { Clock } from "lucide-react";
 import { Progress } from "../ui/progress";
 import { Button } from "../ui/button";
 import { api } from "~/trpc/server";
+import Link from "next/link";
 
 const Trial = async () => {
   const totalDays = 14;
@@ -11,7 +12,7 @@ const Trial = async () => {
   const user = await api.user.getUser();
 
   const createdAt = user?.createdAt;
-  
+
   // const createdAt = "2024-06-19T06:49:13.430Z";
 
   const createdAtDate = createdAt ? new Date(createdAt) : null;
@@ -45,8 +46,9 @@ const Trial = async () => {
             </div>
           </div>
         </div>
-
-        <Button>Manage Billing</Button>
+        <Link href="/manage-billing">
+          <Button>Manage Billing</Button>
+        </Link>
       </CardContent>
     </Card>
   );
