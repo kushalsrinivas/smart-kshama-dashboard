@@ -22,7 +22,7 @@ interface SubscriptionProps {
 }
 
 const Subscription: FC<SubscriptionProps> = ({ onSelectPlan }) => {
-  const [selectedPlan, setSelectedPlan] = useState("professional");
+  const [selectedPlan, setSelectedPlan] = useState("pro");
   const [billingCycle, setBillingCycle] = useState("monthly");
   const [currency, setCurrency] = useState("usd");
   const [price, setPrice] = useState(14.99);
@@ -69,7 +69,7 @@ const Subscription: FC<SubscriptionProps> = ({ onSelectPlan }) => {
           <Label htmlFor="plan">Plan</Label>
           <CustomSelect
             options={planOptions}
-            placeholder="Professional"
+            placeholder="pro"
             onChange={(value) => setSelectedPlan(value)}
           />
         </div>
