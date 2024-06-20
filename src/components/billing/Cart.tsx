@@ -1,4 +1,4 @@
-import React, { type FC } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { Card } from "~/components/ui/card";
 import {
   Table,
@@ -14,12 +14,45 @@ import { type Plan } from ".";
 import Link from "next/link";
 
 const Cart: FC<Plan> = ({ selectedPlan, billingCycle, currency, price }) => {
-  const links = [
-    { link: "https://nowpayments.io/payment/?iid=5738819257", price: 14.99 },
-    { link: "https://nowpayments.io/payment/?iid=5610552222", price: 49.99 },
-    { link: "https://nowpayments.io/payment/?iid=5790124730", price: 120 },
-    { link: "https://nowpayments.io/payment/?iid=4975768519", price: 408 },
-  ];
+  const [invoiceId, setInvoiceId] = useState("");
+  const [invoiceUrl, setInvoiceUrl] = useState("");
+  const [isLoading, setIsLoading] = useState(false); // Added loading state
+
+  function generateRandomNumber(): number {
+    return Math.floor(10000 + Math.random() * 90000);
+  }
+
+  useEffect(() => {
+    const fetchInvoice = async () => {
+      const orderId = generateRandomNumber();
+      setIsLoading(true); // Set loading state to true
+      const response = await fetch("https://api.nowpayments.io/v1/invoice", {
+        method: "POST",
+        headers: {
+          "x-api-key": "A4G6FB1-9WYMRQW-N80WYS0-KNDQT3X",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          price_amount: price,
+          price_currency: currency,
+          order_id: orderId,
+          order_description: `${selectedPlan}-${currency}-${billingCycle}`,
+          ipn_callback_url: `${window.location.href}`,
+          success_url: `${window.location.href}/payment-success?order_id=${orderId}`,
+          cancel_url: `${window.location.href}`,
+        }),
+      });
+      const data = await response.json();
+      setInvoiceId(data.id as string);
+      setInvoiceUrl(data.invoice_url as string);
+      setIsLoading(false);
+      console.log(
+        `Invoice ID: ${invoiceId}, Order ID: ${orderId}, Invoice URL: ${invoiceUrl}`,
+      );
+    };
+
+    void fetchInvoice();
+  }, [selectedPlan, billingCycle, currency, price]);
 
   return (
     <div className="h-full w-full p-6 md:w-1/3">
@@ -57,7 +90,7 @@ const Cart: FC<Plan> = ({ selectedPlan, billingCycle, currency, price }) => {
           <span className="text-sm">
             To apply above changes effective today, please checkout.
           </span>
-          {links.map((linkObj) =>
+          {/* {links.map((linkObj) =>
             linkObj.price === price ? (
               <>
                 <Link key={linkObj.link} href={linkObj.link}>
@@ -65,6 +98,19 @@ const Cart: FC<Plan> = ({ selectedPlan, billingCycle, currency, price }) => {
                 </Link>
               </>
             ) : null,
+        )} */}
+          {isLoading ? (
+            <p>Loading...</p>
+          ) : (
+            <>
+              {invoiceUrl ? (
+                <>
+                  <Link href={invoiceUrl}>
+                    <Button>Checkout</Button>
+                  </Link>
+                </>
+              ) : null}
+            </>
           )}
           <div className="mx-auto mt-1 flex items-center text-sm">
             <Lock size={20} /> Secure transaction
