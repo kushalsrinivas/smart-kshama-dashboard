@@ -1,4 +1,4 @@
-import React, { type FC, useEffect, useState } from "react";
+import React, { type FC, useState } from "react";
 import { Card } from "~/components/ui/card";
 import {
   Table,
