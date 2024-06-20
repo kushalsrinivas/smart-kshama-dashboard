@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import {
   Card,
@@ -7,8 +8,13 @@ import {
   CardTitle,
 } from "../ui/card";
 import { Button } from "../ui/button";
+import { toast } from "sonner";
 
 const ConnectCalender = () => {
+  const handleClick = () => {
+    toast("Comming soon");
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -23,7 +29,7 @@ const ConnectCalender = () => {
             <h1 className="text-xl font-semibold">Google</h1>
             <h2>Connect your Google Calendar</h2>
           </div>
-          <Button>Connect</Button>
+          <Button onClick={handleClick}>Connect</Button>
         </div>
       </CardContent>
     </Card>

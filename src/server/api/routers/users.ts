@@ -25,4 +25,11 @@ export const userRouter = createTRPCRouter({
         })
         .where(eq(users.id, ctx.session.user.id));
     }),
+
+  getUser: protectedProcedure.query(({ ctx }) => {
+    const userId = ctx.session.user.id;
+    return ctx.db.query.users.findFirst({
+      where: eq(users.id, userId),
+    });
+  }),
 });

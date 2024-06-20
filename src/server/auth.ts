@@ -48,12 +48,13 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   },
-  
+
   theme: {
-    buttonText: '#000000',
-    brandColor: '#FFDC58',
-    logo: '/logo.svg',
+    buttonText: "#000000",
+    brandColor: "#FFDC58",
+    logo: "/logo.svg",
   },
+
   adapter: DrizzleAdapter(db, createTable) as Adapter,
   providers: [
     // DiscordProvider({
@@ -70,10 +71,10 @@ export const authOptions: NextAuthOptions = {
         port: process.env.EMAIL_SERVER_PORT,
         auth: {
           user: process.env.EMAIL_SERVER_USER,
-          pass: process.env.EMAIL_SERVER_PASSWORD
-        }
+          pass: process.env.EMAIL_SERVER_PASSWORD,
+        },
       },
-      from: process.env.EMAIL_FROM
+      from: process.env.EMAIL_FROM,
     }),
     /**
      * ...add more providers here.

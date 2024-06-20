@@ -23,7 +23,7 @@ export default async function RootLayout({
       <body>
         <TRPCReactProvider>
           <div className="min-h-screen bg-bg">
-            <div className="mx-auto w-full max-w-7xl">
+            <div className="mx-auto w-full max-w-[1440px]">
               <Header />
               {children}
               <Toaster />
