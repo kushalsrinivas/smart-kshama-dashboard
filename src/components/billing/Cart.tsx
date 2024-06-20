@@ -11,21 +11,22 @@ import {
 import { Button } from "../ui/button";
 import { Lock } from "lucide-react";
 import { type Plan } from ".";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const Cart: FC<Plan> = ({ selectedPlan, billingCycle, currency, price }) => {
   const [invoiceId, setInvoiceId] = useState("");
   const [invoiceUrl, setInvoiceUrl] = useState("");
   const [isLoading, setIsLoading] = useState(false); // Added loading state
+  const router = useRouter();
 
   function generateRandomNumber(): number {
     return Math.floor(10000 + Math.random() * 90000);
   }
 
-  useEffect(() => {
-    const fetchInvoice = async () => {
-      const orderId = generateRandomNumber();
-      setIsLoading(true); // Set loading state to true
+  const fetchInvoice = async (inputPrice: number) => {
+    const orderId = generateRandomNumber();
+    setIsLoading(true); // Set loading state to true
+    try {
       const response = await fetch("https://api.nowpayments.io/v1/invoice", {
         method: "POST",
         headers: {
@@ -33,8 +34,8 @@ const Cart: FC<Plan> = ({ selectedPlan, billingCycle, currency, price }) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          // price_amount: 0.25,
-          price_amount: price,
+          price_amount: 0.35,
+          // price_amount: inputPrice,
           price_currency: currency,
           pay_currency: "ETHBASE",
           order_id: orderId,
@@ -51,10 +52,12 @@ const Cart: FC<Plan> = ({ selectedPlan, billingCycle, currency, price }) => {
       console.log(
         `Invoice ID: ${invoiceId}, Order ID: ${orderId}, Invoice URL: ${invoiceUrl}`,
       );
-    };
-
-    void fetchInvoice();
-  }, [selectedPlan, billingCycle, currency, price]);
+      router.push(data.invoice_url as string);
+    } catch (error) {
+      console.error("Error fetching invoice", error);
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="h-full w-full p-6 md:w-1/3">
@@ -92,7 +95,7 @@ const Cart: FC<Plan> = ({ selectedPlan, billingCycle, currency, price }) => {
           <span className="text-sm">
             To apply above changes effective today, please checkout.
           </span>
-          {isLoading ? (
+          {/* {isLoading ? (
             <p>Loading...</p>
           ) : (
             <>
@@ -104,7 +107,15 @@ const Cart: FC<Plan> = ({ selectedPlan, billingCycle, currency, price }) => {
                 </>
               ) : null}
             </>
-          )}
+          )} */}
+          <Button
+            onClick={() => fetchInvoice(price)}
+            disabled={isLoading}
+            className="w-full"
+          >
+            {isLoading ? "Loading..." : "Checkout"}
+          </Button>
+
           <div className="mx-auto mt-1 flex items-center text-sm">
             <Lock size={20} /> Secure transaction
           </div>
