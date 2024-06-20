@@ -15,7 +15,7 @@ const Billing = () => {
     selectedPlan: "pro",
     billingCycle: "monthly",
     currency: "usd",
-    price: 14.99,
+    price: 14,
   });
 
   const handleSelectPlan = (plan: Plan) => {

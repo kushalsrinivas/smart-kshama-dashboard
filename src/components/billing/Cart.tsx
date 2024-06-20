@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { type FC, useEffect, useState } from "react";
 import { Card } from "~/components/ui/card";
 import {
   Table,
@@ -33,13 +33,15 @@ const Cart: FC<Plan> = ({ selectedPlan, billingCycle, currency, price }) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+          // price_amount: 0.25,
           price_amount: price,
           price_currency: currency,
+          pay_currency: "ETHBASE",
           order_id: orderId,
           order_description: `${selectedPlan}-${currency}-${billingCycle}`,
           ipn_callback_url: `${window.location.href}`,
           success_url: `${window.location.href}/payment-success?order_id=${orderId}`,
-          cancel_url: `${window.location.href}`,
+          cancel_url: `${window.location.href}/manage-billing`,
         }),
       });
       const data = await response.json();
@@ -90,15 +92,6 @@ const Cart: FC<Plan> = ({ selectedPlan, billingCycle, currency, price }) => {
           <span className="text-sm">
             To apply above changes effective today, please checkout.
           </span>
-          {/* {links.map((linkObj) =>
-            linkObj.price === price ? (
-              <>
-                <Link key={linkObj.link} href={linkObj.link}>
-                  <Button>Checkout</Button>
-                </Link>
-              </>
-            ) : null,
-        )} */}
           {isLoading ? (
             <p>Loading...</p>
           ) : (

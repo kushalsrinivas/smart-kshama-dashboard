@@ -1,17 +1,25 @@
+"use client";
 import Image from "next/image";
 import Link from "next/link";
-import { redirect } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import React from "react";
-import Billing from "~/components/billing";
 import { Button } from "~/components/ui/button";
-import { getServerAuthSession } from "~/server/auth";
 
-const page = async () => {
-  const session = await getServerAuthSession();
+// export const metadata = {
+//   title: "Smart Donna AI",
+//   description:
+//     "Automatically record, transcribe, and get actionable insights from your meetings.",
+//   icons: [{ rel: "icon", url: "/favicon.ico" }],
+// };
 
-  if (!session) {
-    redirect("/api/auth/signin");
-  }
+const Page = () => {
+  const query = useSearchParams();
+
+  const orderId = query.get("order_id");
+  const npId = query.get("NP_id");
+
+  console.log("orderId", orderId);
+  console.log("npId", npId);
 
   return (
     <>
@@ -28,4 +36,6 @@ const page = async () => {
   );
 };
 
-export default page;
+export default Page;
+
+// http://localhost:3001/manage-billing/payment-success?order_id=34738&NP_id=4567658585

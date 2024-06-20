@@ -19,7 +19,7 @@ const Trial = async () => {
   const currentDate = new Date();
   const remainingDays = createdAtDate
     ? Math.ceil(
-        (createdAtDate.getTime() - currentDate.getTime()) /
+        (currentDate.getTime() - createdAtDate.getTime()) /
           (1000 * 60 * 60 * 24),
       )
     : 0;

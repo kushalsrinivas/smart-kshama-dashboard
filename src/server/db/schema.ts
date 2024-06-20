@@ -51,8 +51,6 @@ export const users = createTable("user", {
   createdAt: timestamp("createdAt", { withTimezone: true }).default(
     sql`CURRENT_TIMESTAMP`,
   ),
-  isTrial: boolean("isTrial").default(true),
-  isPremium: boolean("isPremium").default(false),
 });
 
 export const usersRelations = relations(users, ({ many }) => ({
@@ -127,3 +125,25 @@ export const verificationTokens = createTable(
     compoundKey: primaryKey({ columns: [vt.identifier, vt.token] }),
   }),
 );
+
+export const transactions = createTable(
+  "transactions",
+  {
+    id: serial("id").primaryKey(),
+    userId: varchar("userId", { length: 255 })
+      .notNull()
+      .references(() => users.id),
+    amount: integer("amount").notNull(),
+    currency: varchar("currency", { length: 3 }).notNull(),
+    billingCycle: varchar("billingCycle", { length: 255 }).notNull(),
+    createdAt: timestamp("createdAt", {
+      mode: "date",
+      withTimezone: true,
+    }).notNull(),
+  },
+  (ph) => ({
+    userIdIdx: index("transactions_userId_idx").on(ph.userId),
+  }),
+);
+
+// export const 
