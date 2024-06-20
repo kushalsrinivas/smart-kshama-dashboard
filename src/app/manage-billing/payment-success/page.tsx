@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+// import { useSearchParams } from "next/navigation";
 import React from "react";
 import { Button } from "~/components/ui/button";
 
@@ -13,13 +13,13 @@ import { Button } from "~/components/ui/button";
 // };
 
 const Page = () => {
-  const query = useSearchParams();
+  // const query = useSearchParams();
 
-  const orderId = query.get("order_id");
-  const npId = query.get("NP_id");
+  // const orderId = query.get("order_id");
+  // const npId = query.get("NP_id");
 
-  console.log("orderId", orderId);
-  console.log("npId", npId);
+  // console.log("orderId", orderId);
+  // console.log("npId", npId);
 
   return (
     <>
