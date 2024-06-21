@@ -4,6 +4,7 @@ import Subscription from "./Subscription";
 import Cart from "./Cart";
 
 export interface Plan {
+  id: number;
   selectedPlan: string;
   billingCycle: string;
   currency: string;
@@ -12,6 +13,7 @@ export interface Plan {
 
 const Billing = () => {
   const [selectedPlan, setSelectedPlan] = useState<Plan>({
+    id: 1,
     selectedPlan: "pro",
     billingCycle: "monthly",
     currency: "usd",

@@ -138,7 +138,7 @@ export const transactions = createTable(
     amount: integer("amount").notNull(),
     currency: varchar("currency", { length: 3 }).notNull(),
     billingCycle: varchar("billingCycle", { length: 255 }).notNull(),
-    plan: varchar("plan", { length: 255 }).notNull(),
+    planId: integer("plan").notNull(),
     createdAt: timestamp("createdAt", {
       mode: "date",
       withTimezone: true,

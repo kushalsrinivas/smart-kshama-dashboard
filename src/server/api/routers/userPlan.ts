@@ -4,9 +4,8 @@ import { z } from "zod";
 import {
   createTRPCRouter,
   protectedProcedure,
-  publicProcedure,
 } from "~/server/api/trpc";
-import { posts, userPlan, users } from "~/server/db/schema";
+import { userPlan, users } from "~/server/db/schema";
 
 export const userPlanRouter = createTRPCRouter({
   create: protectedProcedure

@@ -13,7 +13,13 @@ import { Lock } from "lucide-react";
 import { type Plan } from ".";
 import { useRouter } from "next/navigation";
 
-const Cart: FC<Plan> = ({ selectedPlan, billingCycle, currency, price }) => {
+const Cart: FC<Plan> = ({
+  id: planId,
+  selectedPlan,
+  billingCycle,
+  currency,
+  price,
+}) => {
   const [invoiceId, setInvoiceId] = useState("");
   const [invoiceUrl, setInvoiceUrl] = useState("");
   const [isLoading, setIsLoading] = useState(false); // Added loading state
@@ -35,12 +41,13 @@ const Cart: FC<Plan> = ({ selectedPlan, billingCycle, currency, price }) => {
         },
         body: JSON.stringify({
           price_amount: inputPrice,
+          // price_amount: 0.35,
           price_currency: currency,
           // pay_currency: "ETHBASE",
           order_id: orderId,
           order_description: `${selectedPlan}-${currency}-${billingCycle}`,
           ipn_callback_url: `${window.location.href}`,
-          success_url: `${window.location.href}/payment-success?order_id=${orderId}&amount=${inputPrice}&billingCycle=${billingCycle}&currency=${currency}&selectedPlan=${selectedPlan}`,
+          success_url: `${window.location.href}/payment-success?order_id=${orderId}&amount=${inputPrice}&billingCycle=${billingCycle}&currency=${currency}&planId=${planId}`,
           cancel_url: `${window.location.href}/manage-billing`,
         }),
       });

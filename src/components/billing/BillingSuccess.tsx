@@ -8,78 +8,55 @@ import { api } from "~/trpc/react";
 
 const BillingSuccess = () => {
   const query = useSearchParams();
-
-  // const url = new URL("http://localhost:3000/manage-billing/payment-success?order_id=45922&amount=14&billingCycle=monthly&currency=usd&selectedPlan=pro&NP_id=5278096907");
   const orderId = query.get("order_id");
   const amount = query.get("amount");
   const billingCycle = query.get("billingCycle");
   const currency = query.get("currency");
-  const selectedPlan = query.get("selectedPlan");
+  const planId = query.get("planId");
   const npId = query.get("NP_id");
-  const router = useRouter();
-
-  const addUserPlan = api.userPlan.create.useMutation();
-
   const validity =
     billingCycle === "monthly" ? 30 : billingCycle === "yearly" ? 365 : 0;
+  const router = useRouter();
 
-  const handleUserPlan = async () => {
-    if (selectedPlan) {
-      addUserPlan.mutate({
-        planId: selectedPlan,
-        startDate: new Date(),
-        endDate: new Date(new Date().setDate(new Date().getDate() + validity)),
+  const transaction = api.transactions.createTransactions.useMutation({
+    onSuccess: (data) => {
+      console.log("data", data);
+      userPlan.mutate({
+        planId: planId!,
         transactionId: orderId!,
+        startDate: new Date(),
+        endDate: new Date(
+          new Date().getTime() + validity * 24 * 60 * 60 * 1000,
+        ),
       });
-    }
-  };
+    },
+  });
 
-  const transactions = api.transactions.createTransactions.useMutation({
-    onSuccess: handleUserPlan,
-    // onError: (error) => {
-    //   router.push("/");
-    // },
+  const userPlan = api.userPlan.create.useMutation({
+    onSuccess: (data) => {
+      console.log("userPlan", data);
+    },
+    onError: (error) => {
+      console.log("error", error);
+      router.push("/");
+    },
   });
 
   useEffect(() => {
-    if (orderId && amount && billingCycle && currency && selectedPlan && npId) {
-      transactions.mutate({
+    if (orderId && amount && billingCycle && currency && planId && npId) {
+      transaction.mutate({
         orderId: orderId,
         amount: Number(amount),
         billingCycle: billingCycle,
         currency: currency,
-        plan: selectedPlan,
+        planId: Number(planId),
         npId: npId,
-        expiresAt: new Date(),
+        expiresAt: new Date(
+          new Date().getTime() + validity * 24 * 60 * 60 * 1000,
+        ),
       });
     }
-  }, [orderId, amount, billingCycle, currency, selectedPlan, npId]);
-
-  const plansApi = api.userPlan.getPlanByUser.useQuery();
-  const plans = plansApi.data;
-
-  function getActiveDays() {
-    if (plans) {
-      const currentDate = new Date();
-      const activePlans = plans.filter((plan) => plan.endDate! >= currentDate);
-      const activeDays: Date[] = [];
-
-      activePlans.forEach((plan) => {
-        const startDate = new Date(plan.startDate);
-        const endDate = new Date(plan.endDate!);
-
-        for (
-          let date = startDate;
-          date <= endDate;
-          date.setDate(date.getDate() + 1)
-        ) {
-          activeDays.push(new Date(date));
-        }
-      });
-
-      return activeDays;
-    }
-  }
+  }, [orderId]);
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-start gap-4 md:p-12">
@@ -95,3 +72,5 @@ const BillingSuccess = () => {
 };
 
 export default BillingSuccess;
+
+// const url = new URL("http://localhost:3000/manage-billing/payment-success?order_id=458722&amount=14&billingCycle=monthly&currency=usd&selectedPlan=pro&NP_id=52700096907");

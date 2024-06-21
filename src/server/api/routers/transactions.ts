@@ -17,7 +17,7 @@ export const transactionsRouter = createTRPCRouter({
         currency: z.string(),
         billingCycle: z.string(),
         expiresAt: z.date(),
-        plan: z.string(),
+        planId: z.number(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
