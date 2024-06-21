@@ -1,10 +1,12 @@
 import { Pencil } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { toast } from "sonner";
 import ConnectCalender from "~/components/dashboard/ConnectCalender";
 import JoinMeeting from "~/components/dashboard/JoinMeeting";
 import Trial from "~/components/dashboard/Trial";
 import { getServerAuthSession } from "~/server/auth";
+import { api } from "~/trpc/server";
 
 export default async function Home() {
   const session = await getServerAuthSession();
@@ -15,6 +17,8 @@ export default async function Home() {
 
   const name = session?.user.name;
   const currentUserId = session?.user.id;
+
+  console.log("name", name);
 
   return (
     <div className="flex flex-col gap-8 p-4">

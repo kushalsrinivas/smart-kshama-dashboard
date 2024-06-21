@@ -14,6 +14,7 @@ const page = async () => {
   const name = session?.user.name;
   const email = session?.user.email;
   const image = session?.user.image;
+
   return (
     <div className="flex flex-col gap-8 p-4">
       <EditUser name={name!} email={email!} image={image!} />

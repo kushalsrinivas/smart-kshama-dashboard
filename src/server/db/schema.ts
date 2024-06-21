@@ -133,10 +133,17 @@ export const transactions = createTable(
     userId: varchar("userId", { length: 255 })
       .notNull()
       .references(() => users.id),
+    npId: varchar("npId", { length: 255 }).notNull().unique(),
+    orderId: varchar("orderId", { length: 255 }).notNull().unique(),
     amount: integer("amount").notNull(),
     currency: varchar("currency", { length: 3 }).notNull(),
     billingCycle: varchar("billingCycle", { length: 255 }).notNull(),
+    planId: integer("plan").notNull(),
     createdAt: timestamp("createdAt", {
+      mode: "date",
+      withTimezone: true,
+    }).notNull(),
+    expiresAt: timestamp("expiresAt", {
       mode: "date",
       withTimezone: true,
     }).notNull(),
@@ -146,4 +153,29 @@ export const transactions = createTable(
   }),
 );
 
-// export const 
+export const userPlan = createTable(
+  "userPlan",
+  {
+    id: serial("id").primaryKey(),
+    userId: varchar("userId", { length: 255 })
+      .notNull()
+      .references(() => users.id),
+    transactionId: varchar("transactionId", { length: 255 }),
+      // .references(() => transactions.orderId),
+    planId: varchar("planId", { length: 255 }).notNull(),
+    startDate: timestamp("startDate", { withTimezone: true }).notNull(),
+    endDate: timestamp("endDate", { withTimezone: true }),
+    createdAt: timestamp("createdAt", { withTimezone: true }).notNull(),
+  },
+  (up) => ({
+    userIdIdx: index("userPlan_userId_idx").on(up.userId),
+    planIdIdx: index("userPlan_planId_idx").on(up.planId),
+  }),
+);
+
+export const plans = createTable("plans", {
+  id: serial("id").primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(),
+  price: integer("price").notNull(),
+  validity: varchar("validity", { length: 255 }).notNull(),
+});
