@@ -160,9 +160,8 @@ export const userPlan = createTable(
     userId: varchar("userId", { length: 255 })
       .notNull()
       .references(() => users.id),
-    transactionId: varchar("transactionId", { length: 255 })
-      .notNull()
-      .references(() => transactions.orderId),
+    transactionId: varchar("transactionId", { length: 255 }),
+      // .references(() => transactions.orderId),
     planId: varchar("planId", { length: 255 }).notNull(),
     startDate: timestamp("startDate", { withTimezone: true }).notNull(),
     endDate: timestamp("endDate", { withTimezone: true }),

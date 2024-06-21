@@ -1,10 +1,7 @@
 import { eq } from "drizzle-orm";
 import { z } from "zod";
 
-import {
-  createTRPCRouter,
-  protectedProcedure,
-} from "~/server/api/trpc";
+import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { userPlan, users } from "~/server/db/schema";
 
 export const userPlanRouter = createTRPCRouter({
@@ -14,7 +11,7 @@ export const userPlanRouter = createTRPCRouter({
         planId: z.string(),
         startDate: z.date(),
         endDate: z.date(),
-        transactionId: z.string(),
+        transactionId: z.string() || z.null(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -28,7 +25,7 @@ export const userPlanRouter = createTRPCRouter({
   getPlanByUser: protectedProcedure.query(({ ctx }) => {
     const userId = ctx.session.user.id;
     return ctx.db.query.userPlan.findMany({
-      where: eq(users.id, userId),
+      where: eq(userPlan.userId, userId),
     });
   }),
 });

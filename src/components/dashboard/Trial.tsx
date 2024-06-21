@@ -29,6 +29,21 @@ const Trial = async () => {
     return Math.round(percentage);
   };
 
+  const userPlans = await api.userPlan.getPlanByUser();
+
+  const isTrialClaimed = userPlans.some((plan) => plan.planId === '5');
+
+  if (!isTrialClaimed) {
+    api.userPlan.create({
+      planId: "5",
+      transactionId: "",
+      startDate: new Date(),
+      endDate: new Date(createdAtDate!.getTime() + 15 * 24 * 60 * 60 * 1000),
+    });
+  } else {
+    console.log("isTrialClaimed", isTrialClaimed);
+  }
+
   return (
     <Card>
       <CardContent className="flex  items-center justify-between p-4">

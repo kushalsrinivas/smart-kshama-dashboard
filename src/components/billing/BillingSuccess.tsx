@@ -35,6 +35,7 @@ const BillingSuccess = () => {
   const userPlan = api.userPlan.create.useMutation({
     onSuccess: (data) => {
       console.log("userPlan", data);
+      router.push("/");
     },
     onError: (error) => {
       console.log("error", error);
