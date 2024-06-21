@@ -24,8 +24,6 @@ const Trial = async () => {
       )
     : 0;
 
-  console.log("createdAt", user);
-
   const getPercentage = (remainingDays: number, totalDays: number): number => {
     const percentage = (remainingDays / totalDays) * 100;
     return Math.round(percentage);

@@ -11,6 +11,7 @@ import { Button } from "~/components/ui/button";
 import { InfoIcon } from "lucide-react";
 import { useState, type FC, useEffect } from "react";
 import CustomSelect, { type Option } from "../common/CustomSelect";
+import { api } from "~/trpc/react";
 
 interface SubscriptionProps {
   onSelectPlan: (plan: {
@@ -25,7 +26,7 @@ const Subscription: FC<SubscriptionProps> = ({ onSelectPlan }) => {
   const [selectedPlan, setSelectedPlan] = useState("pro");
   const [billingCycle, setBillingCycle] = useState("monthly");
   const [currency, setCurrency] = useState("usd");
-  const [price, setPrice] = useState(14);
+  const [price, setPrice] = useState(15);
 
   const planOptions: Option[] = [
     { value: "pro", label: "Pro" },
@@ -40,12 +41,13 @@ const Subscription: FC<SubscriptionProps> = ({ onSelectPlan }) => {
   const currencyOptions: Option[] = [{ value: "usd", label: "USD ($)" }];
 
   const getPrice = (plan: string, cycle: string): number => {
-    if (plan === "pro" && cycle === "monthly") return 14;
+    if (plan === "pro" && cycle === "monthly") return 15;
     if (plan === "business" && cycle === "monthly") return 49.99;
     if (plan === "pro" && cycle === "yearly") return 120;
     if (plan === "business" && cycle === "yearly") return 408;
-    return 14;
+    return 15;
   };
+
 
   useEffect(() => {
     const price = getPrice(selectedPlan, billingCycle);

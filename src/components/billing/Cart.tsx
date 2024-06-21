@@ -34,14 +34,13 @@ const Cart: FC<Plan> = ({ selectedPlan, billingCycle, currency, price }) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          // price_amount: 0.35,
           price_amount: inputPrice,
           price_currency: currency,
-          pay_currency: "ETHBASE",
+          // pay_currency: "ETHBASE",
           order_id: orderId,
           order_description: `${selectedPlan}-${currency}-${billingCycle}`,
           ipn_callback_url: `${window.location.href}`,
-          success_url: `${window.location.href}/payment-success?order_id=${orderId}`,
+          success_url: `${window.location.href}/payment-success?order_id=${orderId}&amount=${inputPrice}&billingCycle=${billingCycle}&currency=${currency}&selectedPlan=${selectedPlan}`,
           cancel_url: `${window.location.href}/manage-billing`,
         }),
       });
