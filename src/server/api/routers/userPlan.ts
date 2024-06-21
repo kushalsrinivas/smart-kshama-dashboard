@@ -28,4 +28,11 @@ export const userPlanRouter = createTRPCRouter({
       where: eq(userPlan.userId, userId),
     });
   }),
+
+  getLatestPlanByUser: protectedProcedure.query(({ ctx }) => {
+    const userId = ctx.session.user.id;
+    return ctx.db.query.userPlan.findFirst({
+      where: eq(userPlan.userId, userId),
+    });
+  }),
 });

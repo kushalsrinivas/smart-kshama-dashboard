@@ -21,8 +21,6 @@ export const transactionsRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
       await ctx.db.insert(transactions).values({
         ...input,
         createdAt: new Date(),

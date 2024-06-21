@@ -15,6 +15,7 @@ export const userRouter = createTRPCRouter({
         })
         .where(eq(users.id, ctx.session.user.id));
     }),
+    
   updateUserImage: protectedProcedure
     .input(z.object({ image: z.string() }))
     .mutation(async ({ ctx, input }) => {

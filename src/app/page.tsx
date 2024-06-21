@@ -5,6 +5,7 @@ import ConnectCalender from "~/components/dashboard/ConnectCalender";
 import JoinMeeting from "~/components/dashboard/JoinMeeting";
 import Trial from "~/components/dashboard/Trial";
 import { getServerAuthSession } from "~/server/auth";
+import { api } from "~/trpc/server";
 
 export default async function Home() {
   const session = await getServerAuthSession();
@@ -15,6 +16,9 @@ export default async function Home() {
 
   const name = session?.user.name;
   const currentUserId = session?.user.id;
+
+  const latestPlan = await api.userPlan.getPlanByUser();
+  const isTrialActive = latestPlan.some((plan) => plan.planId === "5" && plan.endDate! > new Date());
 
   return (
     <div className="flex flex-col gap-8 p-4">
@@ -29,7 +33,7 @@ export default async function Home() {
           <Pencil size={15} /> Manage Profile
         </Link>
       </div>
-      <Trial />
+      {isTrialActive && <Trial />}
       <ConnectCalender />
       <JoinMeeting currentUserId={currentUserId} />
     </div>
