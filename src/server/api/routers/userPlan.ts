@@ -33,7 +33,7 @@ export const userPlanRouter = createTRPCRouter({
         planId: z.string(),
         startDate: z.date(),
         endDate: z.date(),
-        transactionId: z.string() || z.null(),
+        transactionId: z.string(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -43,6 +43,7 @@ export const userPlanRouter = createTRPCRouter({
           eq(userPlan.planId, "5"),
         ),
       });
+
       console.log("User", user);
       if (user) {
         console.log("User already has a trial");
@@ -51,14 +52,13 @@ export const userPlanRouter = createTRPCRouter({
 
       console.log("User does not have a trial");
 
-      await ctx.db
-        .insert(userPlan)
-        .values({
-          ...input,
-          createdAt: new Date(),
-          userId: ctx.session.user.id,
-        })
-        .onConflictDoNothing();
+      await ctx.db.insert(userPlan).values({
+        ...input,
+        createdAt: new Date(),
+        userId: ctx.session.user.id,
+      });
+
+      console.log("done");
     }),
 
   getPlanByUser: protectedProcedure.query(({ ctx }) => {

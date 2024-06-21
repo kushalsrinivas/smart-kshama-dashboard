@@ -18,9 +18,21 @@ const BillingSuccess = () => {
     billingCycle === "monthly" ? 30 : billingCycle === "yearly" ? 365 : 0;
   const router = useRouter();
 
-  const transaction = api.transactions.createTransactions.useMutation({
+  const transaction = api.transactions.createTransactions.useMutation();
+
+  const userPlan = api.userPlan.create.useMutation({
     onSuccess: (data) => {
-      console.log("data", data);
+      console.log("userPlan", data);
+      // router.push("/");
+    },
+    onError: (error) => {
+      console.log("error", error);
+      // router.push("/");
+    },
+  });
+
+  useEffect(() => {
+    if (orderId && amount && billingCycle && currency && planId && npId) {
       userPlan.mutate({
         planId: planId!,
         transactionId: orderId!,
@@ -29,22 +41,6 @@ const BillingSuccess = () => {
           new Date().getTime() + validity * 24 * 60 * 60 * 1000,
         ),
       });
-    },
-  });
-
-  const userPlan = api.userPlan.create.useMutation({
-    onSuccess: (data) => {
-      console.log("userPlan", data);
-      router.push("/");
-    },
-    onError: (error) => {
-      console.log("error", error);
-      router.push("/");
-    },
-  });
-
-  useEffect(() => {
-    if (orderId && amount && billingCycle && currency && planId && npId) {
       transaction.mutate({
         orderId: orderId,
         amount: Number(amount),
