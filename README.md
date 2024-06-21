@@ -1,6 +1,6 @@
 # Smart Donna
 
-Worlds best assistant.
+Worlds best assistant
 
 ## Learn More
 
