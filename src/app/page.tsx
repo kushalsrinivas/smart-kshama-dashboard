@@ -1,6 +1,7 @@
 import { Pencil } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { toast } from "sonner";
 import ConnectCalender from "~/components/dashboard/ConnectCalender";
 import JoinMeeting from "~/components/dashboard/JoinMeeting";
 import Trial from "~/components/dashboard/Trial";
@@ -17,8 +18,7 @@ export default async function Home() {
   const name = session?.user.name;
   const currentUserId = session?.user.id;
 
-  const latestPlan = await api.userPlan.getPlanByUser();
-  const isTrialActive = latestPlan.some((plan) => plan.planId === "5" && plan.endDate! > new Date());
+  console.log("name", name);
 
   return (
     <div className="flex flex-col gap-8 p-4">
@@ -33,7 +33,7 @@ export default async function Home() {
           <Pencil size={15} /> Manage Profile
         </Link>
       </div>
-      {isTrialActive && <Trial />}
+      <Trial />
       <ConnectCalender />
       <JoinMeeting currentUserId={currentUserId} />
     </div>

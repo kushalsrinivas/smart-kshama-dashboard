@@ -31,7 +31,11 @@ const Trial = async () => {
 
   const userPlans = await api.userPlan.getPlanByUser();
 
-  const isTrialClaimed = userPlans.some((plan) => plan.planId === '5');
+  const isTrialClaimed = userPlans.some((plan) => plan.planId === "5");
+
+  const isTrialActive = userPlans.some(
+    (plan) => plan.planId === "5" && plan.endDate! > new Date(),
+  );
 
   if (!isTrialClaimed) {
     api.userPlan.create({
@@ -45,25 +49,29 @@ const Trial = async () => {
   }
 
   return (
-    <Card>
-      <CardContent className="flex  items-center justify-between p-4">
-        <div className="flex items-center gap-4">
-          <Clock size={30} />
-          <div className="flex flex-col">
-            <span>You are on a free trial of Professional Plan</span>
-            <div className="flex items-center gap-4 whitespace-nowrap">
-              <span>
-                {totalDays - remainingDays} / {totalDays} days left
-              </span>
-              <Progress value={getPercentage(remainingDays, totalDays)} />
+    <>
+      {isTrialActive ? (
+        <Card>
+          <CardContent className="flex  items-center justify-between p-4">
+            <div className="flex items-center gap-4">
+              <Clock size={30} />
+              <div className="flex flex-col">
+                <span>You are on a free trial of Professional Plan</span>
+                <div className="flex items-center gap-4 whitespace-nowrap">
+                  <span>
+                    {totalDays - remainingDays} / {totalDays} days left
+                  </span>
+                  <Progress value={getPercentage(remainingDays, totalDays)} />
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        <Link href="/manage-billing">
-          <Button>Manage Billing</Button>
-        </Link>
-      </CardContent>
-    </Card>
+            <Link href="/manage-billing">
+              <Button>Manage Billing</Button>
+            </Link>
+          </CardContent>
+        </Card>
+      ) : null}
+    </>
   );
 };
 

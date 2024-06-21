@@ -40,8 +40,8 @@ const Cart: FC<Plan> = ({
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          price_amount: inputPrice,
-          // price_amount: 0.35,
+          // price_amount: inputPrice,
+          price_amount: 0.35,
           price_currency: currency,
           // pay_currency: "ETHBASE",
           order_id: orderId,
