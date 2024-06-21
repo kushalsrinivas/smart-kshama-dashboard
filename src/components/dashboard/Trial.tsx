@@ -68,11 +68,10 @@ const Trial = async () => {
     return endDate > maxDate ? endDate : maxDate;
   }, new Date());
 
-  const remainingDays = createdAtDate
-    ? Math.ceil(
-        (maxEndDate.getTime() - minStartDate.getTime()) / (1000 * 60 * 60 * 24),
-      )
-    : 0;
+  const remainingDays =
+    Math.ceil(
+      (maxEndDate.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24),
+    );
 
   const totalDays = userValidPlanPeriod
     .map((day) => day)
