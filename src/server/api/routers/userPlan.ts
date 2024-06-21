@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { and, eq, is } from "drizzle-orm";
 import { z } from "zod";
 
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
@@ -15,11 +15,28 @@ export const userPlanRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      await ctx.db.insert(userPlan).values({
-        ...input,
-        createdAt: new Date(),
-        userId: ctx.session.user.id,
+      const user = await ctx.db.query.userPlan.findFirst({
+        where: and(
+          eq(userPlan.userId, ctx.session.user.id),
+          eq(userPlan.planId, "5"),
+        ),
       });
+      console.log("User", user);
+      if (user) {
+        console.log("User already has a trial");
+        return;
+      }
+      
+      console.log("User does not have a trial");
+
+      await ctx.db
+        .insert(userPlan)
+        .values({
+          ...input,
+          createdAt: new Date(),
+          userId: ctx.session.user.id,
+        })
+        .onConflictDoNothing();
     }),
 
   getPlanByUser: protectedProcedure.query(({ ctx }) => {
