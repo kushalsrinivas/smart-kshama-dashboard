@@ -30,13 +30,13 @@ const Trial = async () => {
     return currentDate >= startDate && currentDate <= endDate;
   });
 
-  const plans: { [key: number]: number } = {
+  const plans = {
     1: 30,
     2: 365,
     3: 30,
     4: 365,
     5: 14,
-  };
+  } as Record<number, number>;
 
   const userValidPlanPeriod = activeUserPlans.map((plan) => {
     const planId = plan.planId;
