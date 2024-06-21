@@ -34,8 +34,8 @@ const BillingSuccess = () => {
   useEffect(() => {
     if (orderId && amount && billingCycle && currency && planId && npId) {
       userPlan.mutate({
-        planId: planId!,
-        transactionId: orderId!,
+        planId: planId,
+        transactionId: orderId,
         startDate: new Date(),
         endDate: new Date(
           new Date().getTime() + validity * 24 * 60 * 60 * 1000,
