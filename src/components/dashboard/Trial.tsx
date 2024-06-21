@@ -26,7 +26,7 @@ const Trial = async () => {
     planId: "5",
     transactionId: orderId.toString(),
     startDate: new Date(),
-    endDate: new Date(createdAtDate!.getTime() + 15 * 24 * 60 * 60 * 1000),
+    endDate: new Date(createdAtDate!.getTime() + 14 * 24 * 60 * 60 * 1000),
   });
 
   const getPercentage = (remainingDays: number, totalDays: number): number => {
