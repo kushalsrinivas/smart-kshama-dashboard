@@ -51,7 +51,6 @@ const Trial = async () => {
 
   return (
     <>
-      {isTrialActive ? (
         <Card>
           <CardContent className="flex  items-center justify-between p-4">
             <div className="flex items-center gap-4">
@@ -71,7 +70,7 @@ const Trial = async () => {
             </Link>
           </CardContent>
         </Card>
-      ) : null}
+     
     </>
   );
 };
