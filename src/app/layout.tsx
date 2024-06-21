@@ -19,21 +19,6 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const user = await api.user.getUser();
-
-  const createdAt = user?.createdAt;
-
-  const createdAtDate = createdAt ? new Date(createdAt) : null;
-
-  await api.userPlan.create({
-    planId: "5",
-    transactionId: "",
-    startDate: new Date(),
-    endDate: new Date(createdAtDate!.getTime() + 15 * 24 * 60 * 60 * 1000),
-  });
-
-  console.log("Trial claimed");
-
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
       <body>

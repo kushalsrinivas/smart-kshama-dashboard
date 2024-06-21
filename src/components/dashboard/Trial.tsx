@@ -16,6 +16,15 @@ const Trial = async () => {
   const createdAtDate = createdAt ? new Date(createdAt) : null;
   const currentDate = new Date();
 
+  await api.userPlan.createTrial({
+    planId: "5",
+    transactionId: "",
+    startDate: new Date(),
+    endDate: new Date(createdAtDate!.getTime() + 15 * 24 * 60 * 60 * 1000),
+  });
+
+  console.log("Trial claimed");
+
   const getPercentage = (remainingDays: number, totalDays: number): number => {
     const percentage = (remainingDays / totalDays) * 100;
     return Math.round(percentage);
