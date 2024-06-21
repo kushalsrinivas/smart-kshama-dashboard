@@ -38,12 +38,13 @@ const Trial = async () => {
   );
 
   if (!isTrialClaimed) {
-    api.userPlan.create({
-      planId: "5",
-      transactionId: "",
-      startDate: new Date(),
-      endDate: new Date(createdAtDate!.getTime() + 15 * 24 * 60 * 60 * 1000),
-    });
+    async () =>
+      await api.userPlan.create({
+        planId: "5",
+        transactionId: "",
+        startDate: new Date(),
+        endDate: new Date(createdAtDate!.getTime() + 15 * 24 * 60 * 60 * 1000),
+      });
   } else {
     console.log("isTrialClaimed", isTrialClaimed);
   }
