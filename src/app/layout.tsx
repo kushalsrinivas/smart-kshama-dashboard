@@ -25,18 +25,12 @@ export default async function RootLayout({
 
   const createdAtDate = createdAt ? new Date(createdAt) : null;
 
-  const userPlans = await api.userPlan.getPlanByUser();
-
-  const isTrialClaimed = userPlans.some((plan) => plan.planId === "5");
-
-  // if (isTrialClaimed) {
-    await api.userPlan.create({
-      planId: "5",
-      transactionId: "",
-      startDate: new Date(),
-      endDate: new Date(createdAtDate!.getTime() + 15 * 24 * 60 * 60 * 1000),
-    });
-  // }
+  await api.userPlan.create({
+    planId: "5",
+    transactionId: "",
+    startDate: new Date(),
+    endDate: new Date(createdAtDate!.getTime() + 15 * 24 * 60 * 60 * 1000),
+  });
 
   console.log("Trial claimed");
 
