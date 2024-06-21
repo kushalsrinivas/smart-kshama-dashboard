@@ -1,4 +1,4 @@
-import { Suspense } from "react";
+// import { Suspense } from "react";
 import BillingSuccess from "~/components/billing/BillingSuccess";
 
 export const metadata = {
