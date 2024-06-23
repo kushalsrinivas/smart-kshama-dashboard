@@ -41,9 +41,9 @@ const page = async () => {
   }
   const options = ["Google Meet", "Discord", "Zoom", "Teams"];
 
-  const startDate = "2024-05-04";
-  const endDate = new Date().toISOString().split("T")[0] as string; // Example output: '2023-09-29'
-
+  const startDate = '2024-05-04';
+  const endDate = new Date().toISOString().split('T')[0]!; // Example output: '2023-09-29'
+  
   return (
     <div>
       <div className="flex w-full flex-col justify-center gap-10 px-4 py-6">
