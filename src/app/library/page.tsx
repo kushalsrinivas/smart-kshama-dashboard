@@ -42,7 +42,7 @@ const page = async () => {
   const options = ["Google Meet", "Discord", "Zoom", "Teams"];
 
   const startDate = '2024-05-04';
-  const endDate = '2024-06-23';
+  const endDate = new Date().toISOString().split('T')[0] as string; // Example output: '2023-09-29'
   
   return (
     <div>
