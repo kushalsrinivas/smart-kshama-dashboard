@@ -42,7 +42,7 @@ const page = async () => {
   const options = ["Google Meet", "Discord", "Zoom", "Teams"];
 
   const startDate = '2024-05-04';
-  const endDate = '2024-06-20';
+  const endDate = '2024-06-23';
   
   return (
     <div>
