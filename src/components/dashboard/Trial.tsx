@@ -57,25 +57,22 @@ const Trial = async () => {
     return day;
   });
 
+  const totalDays = userValidPlanPeriod
+    .map((day) => day)
+    .reduce((a, b) => a! + b!, 0);
+
   const minStartDate = activeUserPlans.reduce((minDate, plan) => {
     const startDate = new Date(plan.startDate);
     return startDate < minDate ? startDate : minDate;
   }, new Date());
 
-  const maxEndDate = activeUserPlans.reduce((maxDate, plan) => {
-    if (!plan.endDate) return maxDate;
-    const endDate = new Date(plan.endDate);
-    return endDate > maxDate ? endDate : maxDate;
-  }, new Date());
+  const maxEndDate = new Date(
+    minStartDate.getTime() + totalDays! * 24 * 60 * 60 * 1000,
+  );
 
-  const remainingDays =
-    Math.ceil(
-      (maxEndDate.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24),
-    );
-
-  const totalDays = userValidPlanPeriod
-    .map((day) => day)
-    .reduce((a, b) => a! + b!, 0);
+  const remainingDays = Math.ceil(
+    (maxEndDate.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24),
+  );
 
   console.log(
     "userValidPlanPeriod",

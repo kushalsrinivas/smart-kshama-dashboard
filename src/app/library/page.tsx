@@ -41,20 +41,24 @@ const page = async () => {
   }
   const options = ["Google Meet", "Discord", "Zoom", "Teams"];
 
-  const startDate = '2024-05-04';
-  const endDate = new Date().toISOString().split('T')[0] as string; // Example output: '2023-09-29'
-  
+  const startDate = "2024-05-04";
+  const endDate = new Date().toISOString().split("T")[0] as string; // Example output: '2023-09-29'
+
   return (
     <div>
       <div className="flex w-full flex-col justify-center gap-10 px-4 py-6">
         <div className="flex w-full flex-row gap-5 overflow-x-auto p-2">
           {/* <FilterDropdown options={options} label="All Platforms" />
           <FilterDropdown options={options} label="Meeting Source" /> */}
-          <DatePickerWithRange  />
+          <DatePickerWithRange onChange={(date) => console.log("date", date)} />
           {/* <FilterDropdown options={options} label="Recorded By" />
           <FilterDropdown options={options} label="Clients" /> */}
         </div>
-        <OverviewLayout startDate={startDate} endDate={endDate} userId={userId!} />
+        <OverviewLayout
+          startDate={startDate}
+          endDate={endDate}
+          userId={userId!}
+        />
       </div>
     </div>
   );
