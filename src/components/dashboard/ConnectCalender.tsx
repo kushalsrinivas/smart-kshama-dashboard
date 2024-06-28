@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -10,30 +10,79 @@ import {
 import { Button } from "../ui/button";
 import { toast } from "sonner";
 
-const ConnectCalender = () => {
+interface ConnectCalendarProps {
+  currentUserId: string;
+}
+
+const ConnectCalendar: React.FC<ConnectCalendarProps> = ({ currentUserId }) => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    if (!currentUserId) return;
+
+    console.log(currentUserId + ' first check');
+
+    // Check if the user is already authenticated
+    const checkUserStatus = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/check-user?userId=${currentUserId}`);
+        if (response.ok) {
+          setIsAuthenticated(true);
+        }
+      } catch (error) {
+        console.error("Error checking user status:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    checkUserStatus();
+  }, [currentUserId]);
+
   const handleClick = () => {
-    toast("Comming soon");
+    if (!currentUserId) return;
+
+    const originUrl = encodeURIComponent(window.location.origin);
+
+    // Call the auth endpoint
+    window.location.href = `http://localhost:3000/auth?userId=${currentUserId}&originUrl=${originUrl}`;
   };
+
+  if (isLoading) {
+    return <div>Checking calendar status...</div>;
+  }
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Connect to Calendar</CardTitle>
-        <CardDescription>
-          Auto-invite notetaker to calendar events
-        </CardDescription>
+        <CardTitle>{isAuthenticated ? 'You have connected your calendar' : 'Connect to Calendar'}</CardTitle>
+        {!isAuthenticated && (
+          <CardDescription>
+            Auto-invite notetaker to calendar events
+          </CardDescription>
+        )}
       </CardHeader>
       <CardContent className="flex flex-col gap-5">
         <div className="flex w-full flex-row items-center justify-between">
-          <div className="flex flex-col">
-            <h1 className="text-xl font-semibold">Google</h1>
-            <h2>Connect your Google Calendar</h2>
-          </div>
-          <Button onClick={handleClick}>Connect</Button>
+          {isAuthenticated ? (
+            <div className="flex border border-green-500 p-4 rounded-md w-full">
+              <h1 className="text-l font-normal">Smart Donna can now automatically attend your meetings</h1>
+              <span className="text-green-500 text-l ml-2">✅</span>
+            </div>
+          ) : (
+            <>
+              <div className="flex flex-col">
+                <h1 className="text-xl font-semibold">Google</h1>
+                <h2>Connect your Google Calendar</h2>
+              </div>
+              <Button onClick={handleClick}>Connect</Button>
+            </>
+          )}
         </div>
       </CardContent>
     </Card>
   );
 };
 
-export default ConnectCalender;
+export default ConnectCalendar;

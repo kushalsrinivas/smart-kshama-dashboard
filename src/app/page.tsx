@@ -34,7 +34,7 @@ export default async function Home() {
         </Link>
       </div>
       <Trial />
-      <ConnectCalender />
+      <ConnectCalender currentUserId={currentUserId}/>
       <JoinMeeting currentUserId={currentUserId} />
     </div>
   );
