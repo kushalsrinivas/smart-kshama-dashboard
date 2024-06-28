@@ -50,11 +50,15 @@ const page = async () => {
         <div className="flex w-full flex-row gap-5 overflow-x-auto p-2">
           {/* <FilterDropdown options={options} label="All Platforms" />
           <FilterDropdown options={options} label="Meeting Source" /> */}
-          <DatePickerWithRange  />
+          <DatePickerWithRange onChange={(date) => console.log("date", date)} />
           {/* <FilterDropdown options={options} label="Recorded By" />
           <FilterDropdown options={options} label="Clients" /> */}
         </div>
-        <OverviewLayout startDate={startDate} endDate={endDate} userId={userId!} />
+        <OverviewLayout
+          startDate={startDate}
+          endDate={endDate}
+          userId={userId!}
+        />
       </div>
     </div>
   );
