@@ -9,6 +9,7 @@ import {
 } from "../ui/card";
 import { Button } from "../ui/button";
 import { toast } from "sonner";
+import Link from "next/link";
 
 interface ConnectCalendarProps {
   currentUserId: string;
@@ -69,7 +70,7 @@ const ConnectCalendar: React.FC<ConnectCalendarProps> = ({ currentUserId }) => {
           {isAuthenticated ? (
             <div className="flex border border-green-500 p-4 rounded-md w-full">
               <h1 className="text-l font-normal">Smart Donna can now automatically attend your meetings</h1>
-              <span className="text-green-500 text-l ml-2">✅</span>
+              <span className="text-green-500 text-l">✅</span>
             </div>
           ) : (
             <>
@@ -82,6 +83,9 @@ const ConnectCalendar: React.FC<ConnectCalendarProps> = ({ currentUserId }) => {
           )}
         </div>
       </CardContent>
+      <div className="flex p-4 rounded-md w-full gap-1 ml-2">
+          <p className="text-l font-normal">When you connect your calendar you automatically agree to our</p><Link href={'https://smartdonna.com/privacy.html'} className="underline">privacy policy</Link>
+      </div>
     </Card>
   );
 };

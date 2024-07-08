@@ -65,6 +65,50 @@ const Cart: FC<Plan> = ({
     }
   };
 
+  const fetchInvoiceCopper = async (inputPrice: number) => {
+    const orderId = generateRandomNumber();
+    setIsLoading(true); // Set loading state to true
+    try {
+      const response = await fetch("https://api.copperx.dev/api/v1/checkout/sessions", {
+        method: "POST",
+        headers: {
+          "Authorization": "Bearer pav1_FnxqbR11aQAobZ13oWGU53OMmQsaAJcmfOWS3n3R1jIxXDOR9u8myw4fDJ0V546C",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          successUrl: `${window.location.href}/payment-success?order_id=${orderId}&amount=${inputPrice}&billingCycle=${billingCycle}&currency=${currency}&planId=${planId}`,
+          cancelUrl: `${window.location.href}/manage-billing`,
+          lineItems: {
+            data: [
+              {
+                priceData: {
+                  currency: currency,
+                  unitAmount: inputPrice * 1000000, // Assuming inputPrice is in units (like USDC) with 6 decimals
+                  productData: {
+                    name: selectedPlan,
+                    description: `For ${selectedPlan} plan with ${billingCycle} billing cycle`,
+                  }
+                }
+              }
+            ]
+          }
+        }),
+      });
+      const data = await response.json();
+      setInvoiceId(data.id as string);
+      setInvoiceUrl(data.url as string); // url contains the hosted checkout page
+      setIsLoading(false);
+      console.log(
+        `Invoice ID: ${invoiceId}, Order ID: ${orderId}, Invoice URL: ${invoiceUrl}`
+      );
+      router.push(data.url as string);
+    } catch (error) {
+      console.error("Error fetching invoice", error);
+      setIsLoading(false);
+    }
+  };
+  
+
   return (
     <div className="h-full w-full p-6 md:w-1/3">
       <Card className="p-2 sm:p-4">
