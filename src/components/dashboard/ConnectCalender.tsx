@@ -25,8 +25,9 @@ const ConnectCalendar: React.FC<ConnectCalendarProps> = ({ currentUserId }) => {
 
     // Check if the user is already authenticated
     const checkUserStatus = async () => {
+
       try {
-        const response = await fetch(`http://localhost:3000/check-user?userId=${currentUserId}`);
+        const response = await fetch(`https://auto.smartdonna.com/check-user?userId=${currentUserId}`);
         if (response.ok) {
           setIsAuthenticated(true);
         }
@@ -46,7 +47,7 @@ const ConnectCalendar: React.FC<ConnectCalendarProps> = ({ currentUserId }) => {
     const originUrl = encodeURIComponent(window.location.origin);
 
     // Call the auth endpoint
-    window.location.href = `http://localhost:3000/auth?userId=${currentUserId}&originUrl=${originUrl}`;
+    window.location.href = `https://auto.smartdonna.com/auth?userId=${currentUserId}&originUrl=${originUrl}`;
   };
 
   if (isLoading) {
