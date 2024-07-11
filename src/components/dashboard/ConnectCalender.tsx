@@ -26,7 +26,6 @@ const ConnectCalendar: React.FC<ConnectCalendarProps> = ({ currentUserId }) => {
 
     // Check if the user is already authenticated
     const checkUserStatus = async () => {
-
       try {
         const response = await fetch(`https://auto.smartdonna.com/check-user?userId=${currentUserId}`);
         if (response.ok) {
@@ -39,7 +38,7 @@ const ConnectCalendar: React.FC<ConnectCalendarProps> = ({ currentUserId }) => {
       }
     };
 
-    checkUserStatus();
+    checkUserStatus().catch(error => console.error("Error in checkUserStatus:", error));
   }, [currentUserId]);
 
   const handleClick = () => {

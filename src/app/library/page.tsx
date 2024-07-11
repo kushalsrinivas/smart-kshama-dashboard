@@ -1,5 +1,4 @@
 import React, { type FC } from "react";
-import OverviewCard from "~/components/privateLibrary/OverviewCard";
 import { Button } from "~/components/ui/button";
 import { DatePickerWithRange } from "~/components/ui/datePicker";
 import {
@@ -8,7 +7,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
-import { type Meeting } from "../../@types/meeting";
 import { redirect } from "next/navigation";
 import { getServerAuthSession } from "~/server/auth";
 import OverviewLayout from "~/components/privateLibrary/OverviewLayout";

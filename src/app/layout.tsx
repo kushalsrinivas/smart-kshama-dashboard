@@ -5,7 +5,6 @@ import { GeistSans } from "geist/font/sans";
 import { TRPCReactProvider } from "~/trpc/react";
 import Header from "~/components/common/Header";
 import { Toaster } from "~/components/ui/sonner";
-import { api } from "~/trpc/server";
 
 export const metadata = {
   title: "Smart Donna AI",
