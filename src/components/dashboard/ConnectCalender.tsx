@@ -69,7 +69,7 @@ const ConnectCalendar: React.FC<ConnectCalendarProps> = ({ currentUserId }) => {
           {isAuthenticated ? (
             <div className="flex border border-green-500 p-4 rounded-md w-full">
               <h1 className="text-l font-normal">Smart Donna can now automatically attend your meetings</h1>
-              <span className="text-green-500 text-l">✅</span>
+              <span className="text-green-500 text-l ml-2">✅</span>
             </div>
           ) : (
             <>
