@@ -82,8 +82,13 @@ const ConnectCalendar: React.FC<ConnectCalendarProps> = ({ currentUserId }) => {
           )}
         </div>
       </CardContent>
-      <div className="flex p-4 rounded-md w-full gap-1 ml-2">
-          <p className="text-l font-normal">When you connect your calendar you automatically agree to our</p><Link href={'https://smartdonna.com/privacy.html'} className="underline">privacy policy</Link>
+      <div className="p-4 w-full">
+        <p className="text-sm">
+          When you connect your calendar you automatically agree to our
+          <Link href={'https://smartdonna.com/privacy.html'} className="underline ml-1">
+            privacy policy
+          </Link>
+        </p>
       </div>
     </Card>
   );
