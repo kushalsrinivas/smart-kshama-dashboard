@@ -3,7 +3,6 @@ import { redirect } from "next/navigation";
 import { getServerAuthSession } from "~/server/auth";
 import OverviewLayout from "~/components/privateLibrary/OverviewLayout";
 import dynamic from 'next/dynamic';
-import { type DateRange } from "react-day-picker";
 
 // Dynamically import the DatePickerWithRange component
 const DynamicDatePickerWithRange = dynamic(
@@ -35,8 +34,8 @@ const Page: React.FC = async () => {
         </div>
         <OverviewLayout
           userId={userId ?? ""}
-          startDate={defaultStartDate}
-          endDate={defaultEndDate}
+          startDate={defaultStartDate ?? ""}
+          endDate={defaultEndDate ?? ""}
         />
       </div>
     </div>

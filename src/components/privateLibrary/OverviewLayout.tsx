@@ -1,9 +1,10 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import OverviewCard from "./OverviewCard";
 import ShimmerEffect from "./ShimmerEffect";
+import { type Meeting } from "~/@types/meeting";
 
-interface Meeting {
+interface LayoutProps {
   userId: string;
   startDate: string;
   endDate: string;
@@ -16,12 +17,12 @@ interface DateRangeChangedEvent extends CustomEvent {
   };
 }
 
-const OverviewLayout: React.FC<Meeting> = ({ userId, startDate, endDate }) => {
-  const [data, setData] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+const OverviewLayout: React.FC<LayoutProps> = ({ userId, startDate, endDate }) => {
+  const [data, setData] = useState<Meeting[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
   const [dateRange, setDateRange] = useState({ startDate, endDate });
 
-  const getData = async (start: string, end: string) => {
+  const getData = useCallback(async (start: string, end: string) => {
     try {
       setLoading(true);
       const bearerToken =
@@ -47,22 +48,20 @@ const OverviewLayout: React.FC<Meeting> = ({ userId, startDate, endDate }) => {
             hostEmailId: "",
             client_client_id: userId,
           }),
-        },
+        }
       );
 
       const responseData = await response.json();
       console.log("data", responseData.data);
-      setData(responseData.data);
+      setData(responseData.data as Meeting[]);
     } catch (error) {
       console.error("Fetch error: ", error);
     } finally {
       setLoading(false);
     }
-  };
+  }, [userId]);
 
   useEffect(() => {
-    getData(dateRange.startDate, dateRange.endDate);
-
     const handleDateRangeChange = (event: DateRangeChangedEvent) => {
       const { startDate, endDate } = event.detail;
       setDateRange({ startDate, endDate });
@@ -73,11 +72,11 @@ const OverviewLayout: React.FC<Meeting> = ({ userId, startDate, endDate }) => {
     return () => {
       window.removeEventListener('dateRangeChanged', handleDateRangeChange as EventListener);
     };
-  }, [userId]);
+  }, []);
 
   useEffect(() => {
-    getData(dateRange.startDate, dateRange.endDate);
-  }, [dateRange]);
+    void getData(dateRange.startDate, dateRange.endDate);
+  }, [getData, dateRange.startDate, dateRange.endDate]);
 
   return (
     <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ">
