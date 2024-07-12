@@ -9,7 +9,7 @@ import Link from "next/link";
 const Trial = async () => {
   const user = await api.user.getUser();
 
-  const createdAt = user?.createdAt;
+  const createdAt = user?.createdAt ?? new Date(); // Use current date as fallback
   const currentDate = new Date();
 
   function generateRandomNumber(): number {
