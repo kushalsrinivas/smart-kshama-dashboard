@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { getServerAuthSession } from "~/server/auth";
 import OverviewLayout from "~/components/privateLibrary/OverviewLayout";
 import dynamic from 'next/dynamic';
+import { type DateRange } from "react-day-picker";
 
 // Dynamically import the DatePickerWithRange component
 const DynamicDatePickerWithRange = dynamic(
@@ -10,7 +11,7 @@ const DynamicDatePickerWithRange = dynamic(
   { ssr: false }
 );
 
-const Page = async () => {
+const Page: React.FC = async () => {
   const session = await getServerAuthSession();
 
   const userId = session?.user?.id;
@@ -19,19 +20,23 @@ const Page = async () => {
     redirect("/api/auth/signin");
   }
   
-  const startDate = '2024-05-04';
-  const endDate = new Date().toISOString().split('T')[0]!;
-  
+  // Default date range (15 days ago to today)
+  const defaultStartDate = new Date(new Date().getTime() - 15 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+  const defaultEndDate = new Date().toISOString().split('T')[0];
+
   return (
     <div>
       <div className="flex w-full flex-col justify-center gap-10 px-4 py-6">
         <div className="flex w-full flex-row gap-5 overflow-x-auto p-2">
-          <DynamicDatePickerWithRange />
+          <DynamicDatePickerWithRange 
+            defaultStartDate={defaultStartDate}
+            defaultEndDate={defaultEndDate}
+          />
         </div>
         <OverviewLayout
-          startDate={startDate}
-          endDate={endDate}
-          userId={userId!}
+          userId={userId ?? ""}
+          startDate={defaultStartDate}
+          endDate={defaultEndDate}
         />
       </div>
     </div>

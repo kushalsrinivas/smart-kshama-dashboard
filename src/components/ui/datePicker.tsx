@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { addDays, format } from "date-fns";
+import { format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { type DateRange } from "react-day-picker";
 import { cn } from "~/lib/utils";
@@ -9,13 +9,34 @@ import { Popover, PopoverContent, PopoverTrigger } from "./popover";
 import { Button } from "./button";
 import { Calendar } from "./calendar";
 
-export function DatePickerWithRange({
+interface DatePickerWithRangeProps extends React.HTMLAttributes<HTMLDivElement> {
+  defaultStartDate?: string;
+  defaultEndDate?: string;
+}
+
+export const DatePickerWithRange: React.FC<DatePickerWithRangeProps> = ({
   className,
-}: React.HTMLAttributes<HTMLDivElement>) {
+  defaultStartDate,
+  defaultEndDate,
+}) => {
   const [date, setDate] = React.useState<DateRange | undefined>({
-    from: new Date(new Date().getTime() - 15 * 24 * 60 * 60 * 1000),
-    to: new Date(),
+    from: defaultStartDate ? new Date(defaultStartDate) : undefined,
+    to: defaultEndDate ? new Date(defaultEndDate) : undefined,
   });
+
+  const handleDateChange = (newDate: DateRange | undefined) => {
+    setDate(newDate);
+    if (newDate?.from && newDate?.to) {
+      // Update OverviewLayout with new date range
+      const event = new CustomEvent('dateRangeChanged', {
+        detail: {
+          startDate: newDate.from.toISOString().split('T')[0],
+          endDate: newDate.to.toISOString().split('T')[0],
+        },
+      });
+      window.dispatchEvent(event);
+    }
+  };
 
   return (
     <div className={cn("grid gap-2", className)}>
@@ -50,11 +71,11 @@ export function DatePickerWithRange({
             mode="range"
             defaultMonth={date?.from}
             selected={date}
-            onSelect={setDate}
+            onSelect={handleDateChange}
             numberOfMonths={2}
           />
         </PopoverContent>
       </Popover>
     </div>
   );
-}
+};
