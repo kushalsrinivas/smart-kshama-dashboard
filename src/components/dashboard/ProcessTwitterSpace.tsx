@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState, useEffect, useCallback } from "react";
 import {
   Card,
@@ -11,6 +12,7 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { toast } from "sonner";
 import { Loader2, RefreshCcw } from "lucide-react";
+import Tree from 'react-d3-tree';
 
 interface SpaceData {
   original_transcript: string | null;
@@ -50,8 +52,7 @@ const ProcessTwitterSpace: React.FC<ProcessTwitterSpaceProps> = ({ currentUserId
           ...space,
           activeTab: 'abstract' as keyof SpaceData
         }));
-        // Preserve activeTab state for existing spaces
-        return newSpaces.map(newSpace => {
+        return newSpaces.map((newSpace: Space) => {
           const existingSpace = prevSpaces.find(s => s.id === newSpace.id);
           return existingSpace ? { ...newSpace, activeTab: existingSpace.activeTab } : newSpace;
         });
@@ -67,7 +68,6 @@ const ProcessTwitterSpace: React.FC<ProcessTwitterSpaceProps> = ({ currentUserId
 
   useEffect(() => {
     fetchSpaces();
-    // Set up polling to check for updates every 10 seconds
     const intervalId = setInterval(fetchSpaces, 10000);
     return () => clearInterval(intervalId);
   }, [fetchSpaces]);
@@ -92,8 +92,7 @@ const ProcessTwitterSpace: React.FC<ProcessTwitterSpaceProps> = ({ currentUserId
         }
 
         const data = await response.json();
-        
-        // Add the new space to the UI immediately
+
         const newSpace: Space = {
           id: data.id,
           space_url: spaceUrl,
@@ -107,8 +106,7 @@ const ProcessTwitterSpace: React.FC<ProcessTwitterSpaceProps> = ({ currentUserId
         setSpaces(prev => [newSpace, ...prev]);
         setSpaceUrl("");
         toast.success(`Twitter Space added and queued for processing: ${spaceUrl}`);
-        
-        // Fetch spaces immediately to get the latest status
+
         await fetchSpaces();
       } catch (error) {
         console.error("Error adding Twitter Space: ", error);
@@ -142,6 +140,30 @@ const ProcessTwitterSpace: React.FC<ProcessTwitterSpaceProps> = ({ currentUserId
       case 'completed': return 'Processing complete';
       case 'error': return 'Error occurred';
       default: return 'Unknown status';
+    }
+  };
+
+  const renderMindMap = (mindMapJson: string | null) => {
+    if (!mindMapJson) return null;
+    try {
+      const mindMapData = JSON.parse(mindMapJson);
+      return (
+        <div style={{ width: '100%', height: '100%' }}>
+          <Tree 
+            data={mindMapData} 
+            orientation="horizontal"
+            pathFunc="straight"
+            translate={{ x: 50, y: 100 }}
+            separation={{ siblings: 1, nonSiblings: 1.5 }}
+            nodeSize={{ x: 200, y: 30 }}
+            zoom={0.8}
+            centeringTransitionDuration={800}
+          />
+        </div>
+      );
+    } catch (error) {
+      console.error('Error parsing mind map JSON:', error);
+      return <p className="text-red-500 text-sm">Invalid mind map data</p>;
     }
   };
 
@@ -180,7 +202,7 @@ const ProcessTwitterSpace: React.FC<ProcessTwitterSpaceProps> = ({ currentUserId
       <div className="flex justify-between items-center">
         <h2 className="text-xl font-semibold">Your Twitter Spaces</h2>
         <Button
-          variant="outline"
+          variant="neutral"
           size="sm"
           onClick={fetchSpaces}
           disabled={isUpdating}
@@ -194,9 +216,9 @@ const ProcessTwitterSpace: React.FC<ProcessTwitterSpaceProps> = ({ currentUserId
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
         {spaces.map(space => (
-          <Card key={space.id}>
+          <Card key={space.id} className="w-full">
             <CardHeader>
               <CardTitle className="text-sm truncate">{space.space_url}</CardTitle>
               <CardDescription>{getStatusMessage(space.status)}</CardDescription>
@@ -214,7 +236,7 @@ const ProcessTwitterSpace: React.FC<ProcessTwitterSpaceProps> = ({ currentUserId
                     {(Object.keys(tabNames) as Array<keyof SpaceData>).map((key) => (
                       <Button
                         key={key}
-                        variant={space.activeTab === key ? "default" : "secondary"}
+                        variant={space.activeTab === key ? "default" : "noShadow"}
                         onClick={() => changeTab(space.id, key)}
                         className="px-2 py-1 text-xs font-medium"
                       >
@@ -222,9 +244,19 @@ const ProcessTwitterSpace: React.FC<ProcessTwitterSpaceProps> = ({ currentUserId
                       </Button>
                     ))}
                   </div>
-                  <div className="mt-4 max-h-64 overflow-y-auto">
+                  <div className="h-64 overflow-hidden">
                     <h3 className="text-sm font-semibold mb-2">{tabNames[space.activeTab]}</h3>
-                    <pre className="text-xs whitespace-pre-wrap">{space[space.activeTab]}</pre>
+                    {space.activeTab === 'mind_map' ? (
+                      <div className="h-[calc(100%-2rem)] overflow-auto">
+                        {renderMindMap(space.mind_map)}
+                      </div>
+                    ) : (
+                      <div className="h-[calc(100%-2rem)] overflow-auto">
+                        <pre className="text-xs whitespace-pre-wrap">
+                          {space[space.activeTab]}
+                        </pre>
+                      </div>
+                    )}
                   </div>
                 </div>
               )}
