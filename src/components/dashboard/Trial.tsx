@@ -52,7 +52,7 @@ const Trial = async () => {
 
   const userValidPlanPeriod = activeUserPlans.map((plan) => {
     const planId = plan.planId;
-    return plans[Number(planId)] || 0;
+    return plans[Number(planId)] ?? 0;
   });
 
   const totalDays = userValidPlanPeriod.reduce((a, b) => a + b, 0);
