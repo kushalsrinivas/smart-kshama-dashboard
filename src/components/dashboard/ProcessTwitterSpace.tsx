@@ -46,7 +46,7 @@ const ProcessTwitterSpace: React.FC<ProcessTwitterSpaceProps> = ({ currentUserId
       if (!response.ok) {
         throw new Error('Failed to fetch spaces');
       }
-      const data = await response.json();
+      const data = await response.json() as Space[];
       setSpaces(prevSpaces => {
         const newSpaces = data.map((space: Space) => ({
           ...space,
@@ -67,8 +67,8 @@ const ProcessTwitterSpace: React.FC<ProcessTwitterSpaceProps> = ({ currentUserId
   }, [currentUserId]);
 
   useEffect(() => {
-    fetchSpaces();
-    const intervalId = setInterval(fetchSpaces, 10000);
+    void fetchSpaces();
+    const intervalId = setInterval(() => void fetchSpaces(), 10000);
     return () => clearInterval(intervalId);
   }, [fetchSpaces]);
 
@@ -91,7 +91,7 @@ const ProcessTwitterSpace: React.FC<ProcessTwitterSpaceProps> = ({ currentUserId
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        const data = await response.json();
+        const data = await response.json() as { id: string };
 
         const newSpace: Space = {
           id: data.id,
@@ -204,7 +204,7 @@ const ProcessTwitterSpace: React.FC<ProcessTwitterSpaceProps> = ({ currentUserId
         <Button
           variant="neutral"
           size="sm"
-          onClick={fetchSpaces}
+          onClick={() => void fetchSpaces()}
           disabled={isUpdating}
         >
           {isUpdating ? (
