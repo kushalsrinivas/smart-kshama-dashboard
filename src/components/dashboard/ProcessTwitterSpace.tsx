@@ -42,7 +42,7 @@ const ProcessTwitterSpace: React.FC<ProcessTwitterSpaceProps> = ({ currentUserId
   const fetchSpaces = useCallback(async () => {
     setIsUpdating(true);
     try {
-      const response = await fetch(`http://localhost:3500/spaces/${currentUserId}`);
+      const response = await fetch(`https://spaces.smartdonna.com/spaces/${currentUserId}`);
       if (!response.ok) {
         throw new Error('Failed to fetch spaces');
       }
@@ -76,7 +76,7 @@ const ProcessTwitterSpace: React.FC<ProcessTwitterSpaceProps> = ({ currentUserId
     if (spaceUrl.includes("twitter.com") || spaceUrl.includes("t.co")) {
       setIsAddingSpace(true);
       try {
-        const response = await fetch("http://localhost:3500/download", {
+        const response = await fetch("https://spaces.smartdonna.com/download", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
