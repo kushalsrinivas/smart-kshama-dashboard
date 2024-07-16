@@ -78,7 +78,7 @@ const ProcessTwitterSpace: React.FC<ProcessTwitterSpaceProps> = ({ currentUserId
     if (processedUrl.includes("twitter.com") || processedUrl.includes("t.co")) {
       setIsAddingSpace(true);
       try {
-        const response = await fetch("http://spaces.smartdonna.com/download", {
+        const response = await fetch("https://spaces.smartdonna.com/download", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
