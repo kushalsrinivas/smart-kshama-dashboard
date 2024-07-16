@@ -73,12 +73,12 @@ const ProcessTwitterSpace: React.FC<ProcessTwitterSpaceProps> = ({ currentUserId
   }, [fetchSpaces]);
 
   const addSpace = async () => {
-    let processedUrl = spaceUrl.replace('x.com', 'twitter.com');
+    const processedUrl = spaceUrl.replace('x.com', 'twitter.com');
     
     if (processedUrl.includes("twitter.com") || processedUrl.includes("t.co")) {
       setIsAddingSpace(true);
       try {
-        const response = await fetch("https://spaces.smartdonna.com/download", {
+        const response = await fetch("http://spaces.smartdonna.com/download", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
