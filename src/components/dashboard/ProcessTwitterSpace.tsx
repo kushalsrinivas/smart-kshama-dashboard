@@ -73,7 +73,9 @@ const ProcessTwitterSpace: React.FC<ProcessTwitterSpaceProps> = ({ currentUserId
   }, [fetchSpaces]);
 
   const addSpace = async () => {
-    if (spaceUrl.includes("twitter.com") || spaceUrl.includes("t.co")) {
+    let processedUrl = spaceUrl.replace('x.com', 'twitter.com');
+    
+    if (processedUrl.includes("twitter.com") || processedUrl.includes("t.co")) {
       setIsAddingSpace(true);
       try {
         const response = await fetch("https://spaces.smartdonna.com/download", {
@@ -82,7 +84,7 @@ const ProcessTwitterSpace: React.FC<ProcessTwitterSpaceProps> = ({ currentUserId
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            url: spaceUrl,
+            url: processedUrl,
             userId: currentUserId,
           }),
         });
@@ -95,7 +97,7 @@ const ProcessTwitterSpace: React.FC<ProcessTwitterSpaceProps> = ({ currentUserId
 
         const newSpace: Space = {
           id: data.id,
-          space_url: spaceUrl,
+          space_url: processedUrl,
           status: 'queued',
           original_transcript: null,
           abstract: null,
@@ -105,12 +107,12 @@ const ProcessTwitterSpace: React.FC<ProcessTwitterSpaceProps> = ({ currentUserId
         };
         setSpaces(prev => [newSpace, ...prev]);
         setSpaceUrl("");
-        toast.success(`Twitter Space added and queued for processing: ${spaceUrl}`);
+        toast.success(`Twitter Space added and queued for processing: ${processedUrl}`);
 
         await fetchSpaces();
       } catch (error) {
         console.error("Error adding Twitter Space: ", error);
-        toast.error(`Failed to add Twitter Space: ${spaceUrl}`);
+        toast.error(`Failed to add Twitter Space: ${processedUrl}`);
       } finally {
         setIsAddingSpace(false);
       }
