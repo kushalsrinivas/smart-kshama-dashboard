@@ -27,13 +27,13 @@ const Subscription: FC<SubscriptionProps> = ({ onSelectPlan }) => {
   const [selectedPlan, setSelectedPlan] = useState("pro");
   const [billingCycle, setBillingCycle] = useState("monthly");
   const [currency, setCurrency] = useState("usd");
-  const [price, setPrice] = useState(15);
+  const [price, setPrice] = useState(1);
 
   const plans: Plan[] = [
     {
       id: 1,
       selectedPlan: "Pro",
-      price: 15,
+      price: 1,
       billingCycle: "monthly",
       currency: "usd",
     },
@@ -73,11 +73,11 @@ const Subscription: FC<SubscriptionProps> = ({ onSelectPlan }) => {
   const currencyOptions: Option[] = [{ value: "usd", label: "USD ($)" }];
 
   const getPrice = (plan: string, cycle: string): number => {
-    if (plan === "pro" && cycle === "monthly") return 15;
+    if (plan === "pro" && cycle === "monthly") return 1;
     if (plan === "business" && cycle === "monthly") return 49.99;
     if (plan === "pro" && cycle === "yearly") return 120;
     if (plan === "business" && cycle === "yearly") return 408;
-    return 15;
+    return 1;
   };
 
   useEffect(() => {
