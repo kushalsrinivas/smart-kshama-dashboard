@@ -27,6 +27,7 @@ interface JoinMeetingProps {
 
 const JoinMeeting: React.FC<JoinMeetingProps> = ({ currentUserId }) => {
   const [meetLink, setMeetLink] = useState("");
+  const [name, setName] = useState("");
 
   const joinMeet = async () => {
     if (
@@ -51,7 +52,7 @@ const JoinMeeting: React.FC<JoinMeetingProps> = ({ currentUserId }) => {
             },
             body: JSON.stringify({
               meetingUrl: meetLink,
-              botName: "Donna Notetaker",
+              botName: name ?? "Donna Notetaker",
               client_client_id: currentUserId,
               workspace: "Smart_donna",
             }),
@@ -81,6 +82,11 @@ const JoinMeeting: React.FC<JoinMeetingProps> = ({ currentUserId }) => {
           value={meetLink}
           onChange={(e) => setMeetLink(e.target.value)}
           placeholder="Please enter a Zoom/Google Meet/Teams Meeting Link"
+        />
+        <Input
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="Bot Name"
         />
         <Button onClick={joinMeet}>Join Meeting</Button>
       </CardContent>
