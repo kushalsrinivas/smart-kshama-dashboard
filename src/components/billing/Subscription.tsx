@@ -40,7 +40,7 @@ const Subscription: FC<SubscriptionProps> = ({ onSelectPlan }) => {
     {
       id: 2,
       selectedPlan: "Pro",
-      price: 99.99,
+      price: 9.99,
       billingCycle: "yearly",
       currency: "usd",
     },
@@ -75,7 +75,7 @@ const Subscription: FC<SubscriptionProps> = ({ onSelectPlan }) => {
   const getPrice = (plan: string, cycle: string): number => {
     if (plan === "pro" && cycle === "monthly") return 1;
     if (plan === "business" && cycle === "monthly") return 49.99;
-    if (plan === "pro" && cycle === "yearly") return 99.99;
+    if (plan === "pro" && cycle === "yearly") return 9.99;
     if (plan === "business" && cycle === "yearly") return 408;
     return 1;
   };
