@@ -150,16 +150,16 @@ const ProcessTwitterSpace: React.FC<ProcessTwitterSpaceProps> = ({ currentUserId
     try {
       const mindMapData = JSON.parse(mindMapJson);
       return (
-        <div style={{ width: '100%', height: '100%' }}>
+        <div style={{ width: '100%', height: '300px', overflow: 'hidden' }}>
           <Tree 
             data={mindMapData} 
             orientation="horizontal"
-            pathFunc="straight"
-            translate={{ x: 50, y: 100 }}
-            separation={{ siblings: 1, nonSiblings: 1.5 }}
-            nodeSize={{ x: 200, y: 30 }}
-            zoom={0.8}
+            translate={{ x: 80, y: 150 }}
+            separation={{ siblings: 1.2, nonSiblings: 1.8 }}
+            nodeSize={{ x: 220, y: 50 }}
+            zoom={0.7}
             centeringTransitionDuration={800}
+            scaleExtent={{ min: 0.5, max: 1 }}
           />
         </div>
       );
@@ -249,7 +249,7 @@ const ProcessTwitterSpace: React.FC<ProcessTwitterSpaceProps> = ({ currentUserId
                   <div className="h-64 overflow-hidden">
                     <h3 className="text-sm font-semibold mb-2">{tabNames[space.activeTab]}</h3>
                     {space.activeTab === 'mind_map' ? (
-                      <div className="h-[calc(100%-2rem)] overflow-auto">
+                      <div className="h-full">
                         {renderMindMap(space.mind_map)}
                       </div>
                     ) : (
