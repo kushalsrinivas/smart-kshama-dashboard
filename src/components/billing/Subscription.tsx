@@ -37,7 +37,7 @@ const Subscription: FC<SubscriptionProps> = ({ onSelectPlan }) => {
   const [selectedPlan, setSelectedPlan] = useState(PRO_PLAN);
   const [billingCycle, setBillingCycle] = useState(MONTHLY_CYCLE);
   const [currency, setCurrency] = useState("usd");
-  const [price, setPrice] = useState(1);
+  const [price, setPrice] = useState(PRO_MONTHLY);
 
   const plans: Plan[] = [
     {
@@ -89,7 +89,7 @@ const Subscription: FC<SubscriptionProps> = ({ onSelectPlan }) => {
     if (plan === PRO_PLAN && cycle === YEARLY_CYCLE) return PRO_YEARLY;
     if (plan === BUSINESS_PLAN && cycle === YEARLY_CYCLE)
       return BUSINESS_YEARLY;
-    return 1;
+    return PRO_MONTHLY;
   };
 
   useEffect(() => {
