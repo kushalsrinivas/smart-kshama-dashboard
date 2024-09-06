@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import Subscription from "./Subscription";
 import Cart from "./Cart";
+import { MONTHLY_CYCLE, PRO_MONTHLY, PRO_PLAN } from "~/constant/price";
 
 export interface Plan {
   id: number;
@@ -14,10 +15,10 @@ export interface Plan {
 const Billing = () => {
   const [selectedPlan, setSelectedPlan] = useState<Plan>({
     id: 1,
-    selectedPlan: "pro",
-    billingCycle: "monthly",
+    selectedPlan: PRO_PLAN,
+    billingCycle: MONTHLY_CYCLE,
     currency: "usd",
-    price: 1,
+    price: PRO_MONTHLY,
   });
 
   const handleSelectPlan = (plan: Plan) => {

@@ -12,6 +12,16 @@ import { InfoIcon } from "lucide-react";
 import { useState, type FC, useEffect } from "react";
 import CustomSelect, { type Option } from "../common/CustomSelect";
 import { Plan } from ".";
+import {
+  BUSINESS_MONTHLY,
+  BUSINESS_PLAN,
+  BUSINESS_YEARLY,
+  MONTHLY_CYCLE,
+  PRO_MONTHLY,
+  PRO_PLAN,
+  PRO_YEARLY,
+  YEARLY_CYCLE,
+} from "~/constant/price";
 
 interface SubscriptionProps {
   onSelectPlan: (plan: {
@@ -24,59 +34,61 @@ interface SubscriptionProps {
 }
 
 const Subscription: FC<SubscriptionProps> = ({ onSelectPlan }) => {
-  const [selectedPlan, setSelectedPlan] = useState("pro");
-  const [billingCycle, setBillingCycle] = useState("monthly");
+  const [selectedPlan, setSelectedPlan] = useState(PRO_PLAN);
+  const [billingCycle, setBillingCycle] = useState(MONTHLY_CYCLE);
   const [currency, setCurrency] = useState("usd");
   const [price, setPrice] = useState(1);
 
   const plans: Plan[] = [
     {
       id: 1,
-      selectedPlan: "Pro",
-      price: 1,
-      billingCycle: "monthly",
+      selectedPlan: PRO_PLAN,
+      price: PRO_MONTHLY,
+      billingCycle: MONTHLY_CYCLE,
       currency: "usd",
     },
     {
       id: 2,
-      selectedPlan: "Pro",
-      price: 9.99,
-      billingCycle: "yearly",
+      selectedPlan: PRO_PLAN,
+      price: PRO_YEARLY,
+      billingCycle: YEARLY_CYCLE,
       currency: "usd",
     },
     {
       id: 3,
-      selectedPlan: "Business",
-      price: 49.99,
-      billingCycle: "monthly",
+      selectedPlan: BUSINESS_PLAN,
+      price: BUSINESS_MONTHLY,
+      billingCycle: MONTHLY_CYCLE,
       currency: "usd",
     },
     {
       id: 4,
-      selectedPlan: "Business",
-      price: 408,
-      billingCycle: "yearly",
+      selectedPlan: BUSINESS_PLAN,
+      price: BUSINESS_YEARLY,
+      billingCycle: YEARLY_CYCLE,
       currency: "usd",
     },
   ];
 
   const planOptions: Option[] = [
-    { value: "pro", label: "Pro" },
-    { value: "business", label: "Business" },
+    { value: PRO_PLAN, label: PRO_PLAN },
+    { value: BUSINESS_PLAN, label: BUSINESS_PLAN },
   ];
 
   const billingCycleOptions: Option[] = [
-    { value: "monthly", label: "Monthly" },
-    { value: "yearly", label: "Yearly" },
+    { value: MONTHLY_CYCLE, label: MONTHLY_CYCLE },
+    { value: YEARLY_CYCLE, label: YEARLY_CYCLE },
   ];
 
   const currencyOptions: Option[] = [{ value: "usd", label: "USD ($)" }];
 
   const getPrice = (plan: string, cycle: string): number => {
-    if (plan === "pro" && cycle === "monthly") return 1;
-    if (plan === "business" && cycle === "monthly") return 49.99;
-    if (plan === "pro" && cycle === "yearly") return 9.99;
-    if (plan === "business" && cycle === "yearly") return 408;
+    if (plan === PRO_PLAN && cycle === MONTHLY_CYCLE) return PRO_MONTHLY;
+    if (plan === BUSINESS_PLAN && cycle === MONTHLY_CYCLE)
+      return BUSINESS_MONTHLY;
+    if (plan === PRO_PLAN && cycle === YEARLY_CYCLE) return PRO_YEARLY;
+    if (plan === BUSINESS_PLAN && cycle === YEARLY_CYCLE)
+      return BUSINESS_YEARLY;
     return 1;
   };
 
@@ -104,7 +116,7 @@ const Subscription: FC<SubscriptionProps> = ({ onSelectPlan }) => {
           <Label htmlFor="plan">Plan</Label>
           <CustomSelect
             options={planOptions}
-            placeholder="Pro"
+            placeholder={PRO_PLAN}
             onChange={(value) => setSelectedPlan(value)}
           />
         </div>
@@ -112,7 +124,7 @@ const Subscription: FC<SubscriptionProps> = ({ onSelectPlan }) => {
           <Label htmlFor="billing-cycle">Billing Cycle</Label>
           <CustomSelect
             options={billingCycleOptions}
-            placeholder="Monthly"
+            placeholder={MONTHLY_CYCLE}
             onChange={(value) => setBillingCycle(value)}
           />
         </div>

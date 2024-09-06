@@ -1,0 +1,8 @@
+export const PRO_MONTHLY = 13.99;
+export const PRO_YEARLY = 120;
+export const BUSINESS_MONTHLY = 49.99;
+export const BUSINESS_YEARLY = 408;
+export const PRO_PLAN = "pro";
+export const BUSINESS_PLAN = "business";
+export const MONTHLY_CYCLE = "monthly";
+export const YEARLY_CYCLE = "yearly";

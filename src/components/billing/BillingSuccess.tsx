@@ -43,7 +43,7 @@ const BillingSuccess = () => {
       });
       transaction.mutate({
         orderId: orderId,
-        amount: Number(amount) === 9.99 ? 10 : Number(amount),
+        amount: Math.round(Number(amount)),
         billingCycle: billingCycle,
         currency: currency,
         planId: Number(planId),
