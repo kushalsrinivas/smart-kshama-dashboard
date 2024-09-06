@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "~/components/ui/button";
 import { api } from "~/trpc/react";
+import { MONTHLY_CYCLE, MONTHLY_VALIDITY, YEARLY_CYCLE, YEARLY_VALIDITY } from "~/constant/price";
 
 const BillingSuccess = () => {
   const query = useSearchParams();
@@ -15,7 +16,11 @@ const BillingSuccess = () => {
   const planId = query.get("planId");
   const npId = query.get("NP_id");
   const validity =
-    billingCycle === "monthly" ? 30 : billingCycle === "yearly" ? 365 : 0;
+    billingCycle === MONTHLY_CYCLE
+      ? MONTHLY_VALIDITY
+      : billingCycle === YEARLY_CYCLE
+        ? YEARLY_VALIDITY
+        : 0;
   const router = useRouter();
 
   const transaction = api.transactions.createTransactions.useMutation();

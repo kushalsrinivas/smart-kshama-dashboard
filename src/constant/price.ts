@@ -6,3 +6,6 @@ export const PRO_PLAN = "pro";
 export const BUSINESS_PLAN = "business";
 export const MONTHLY_CYCLE = "monthly";
 export const YEARLY_CYCLE = "yearly";
+export const MONTHLY_VALIDITY = 30;
+export const YEARLY_VALIDITY = 365;
+export const TRIAL_VALIDITY = 14;

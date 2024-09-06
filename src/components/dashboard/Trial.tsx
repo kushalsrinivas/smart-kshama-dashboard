@@ -5,6 +5,7 @@ import { Progress } from "../ui/progress";
 import { Button } from "../ui/button";
 import { api } from "~/trpc/server";
 import Link from "next/link";
+import { MONTHLY_VALIDITY, TRIAL_VALIDITY, YEARLY_VALIDITY } from "~/constant/price";
 
 const Trial = async () => {
   const user = await api.user.getUser();
@@ -43,11 +44,11 @@ const Trial = async () => {
   });
 
   const plans = {
-    1: 30,
-    2: 365,
-    3: 30,
-    4: 365,
-    5: 14,
+    1: MONTHLY_VALIDITY,
+    2: YEARLY_VALIDITY,
+    3: MONTHLY_VALIDITY,
+    4: YEARLY_VALIDITY,
+    5: TRIAL_VALIDITY,
   } as Record<number, number>;
 
   const userValidPlanPeriod = activeUserPlans.map((plan) => {
