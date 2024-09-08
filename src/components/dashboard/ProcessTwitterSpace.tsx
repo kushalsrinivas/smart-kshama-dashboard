@@ -159,7 +159,7 @@ const ProcessTwitterSpace: React.FC<ProcessTwitterSpaceProps> = ({ currentUserId
             nodeSize={{ x: 220, y: 50 }}
             zoom={0.7}
             centeringTransitionDuration={800}
-            scaleExtent={{ min: 0.5, max: 1 }}
+            scaleExtent={{ min: 0.3, max: 1 }}
           />
         </div>
       );
