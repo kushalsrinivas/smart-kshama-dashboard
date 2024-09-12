@@ -10,9 +10,7 @@ export default async function SpacesPage() {
   }
 
   const name = session?.user.name;
-  const currentUserId = session?.user.id;
-  // const currentUserId = "d879558f-6852-4f06-970d-68db9c6dfd1f";
-
+  const currentUserId = process.env.CURRENT_USER_ID ?? session?.user.id;
 
   return (
     <div className="flex flex-col gap-8 p-4">

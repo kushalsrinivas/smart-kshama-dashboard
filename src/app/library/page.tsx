@@ -13,7 +13,9 @@ const DynamicDatePickerWithRange = dynamic(
 const Page: React.FC = async () => {
   const session = await getServerAuthSession();
 
-  const userId = session?.user?.id;
+  // const userId = session?.user?.id;
+  const userId = process.env.CURRENT_USER_ID ?? session?.user.id;
+
 
   if (!session) {
     redirect("/api/auth/signin");
