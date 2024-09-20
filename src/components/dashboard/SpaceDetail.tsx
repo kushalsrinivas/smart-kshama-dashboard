@@ -13,6 +13,7 @@ import { Loader2, ArrowLeft } from "lucide-react";
 import Tree from "react-d3-tree";
 import { useRouter } from "next/navigation";
 import { api } from "~/trpc/react";
+import { extractTwitterId } from "~/lib/extractTwitterId";
 
 interface SpaceData {
   original_transcript: string | null;
@@ -48,6 +49,24 @@ const SpaceDetail: React.FC<SpaceDetailProps> = ({ space }) => {
     mind_map: "Mind Map",
     summary: "Summary",
   };
+
+  function constructAudioUrl(twitterId: string): string {
+    const baseUrl =
+      "https://uflankzxkhbqwblpsvxg.supabase.co/storage/v1/object/public/spaces-reduced-bucket/";
+    return `${baseUrl}${twitterId}.mp3`;
+  }
+
+  function processTwitterUrl(url: string): string | null {
+    const id = extractTwitterId(url);
+    if (id) {
+      return constructAudioUrl(id);
+    }
+    return null;
+  }
+
+  const audioUrl = processTwitterUrl(space?.space_url || "");
+
+  console.log("audioUrl", audioUrl);
 
   const renderMindMap = (mindMapJson: string | null) => {
     if (!mindMapJson) return null;
@@ -93,7 +112,7 @@ const SpaceDetail: React.FC<SpaceDetailProps> = ({ space }) => {
             {(Object.keys(tabNames) as Array<keyof SpaceData>).map((key) => (
               <Button
                 key={key}
-                variant={activeTab === key ? "default" : "noShadow"}
+                variant={activeTab !== key ? "default" : "noShadow"}
                 onClick={() => setActiveTab(key)}
               >
                 {tabNames[key]}
