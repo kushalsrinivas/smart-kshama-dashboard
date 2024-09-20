@@ -154,7 +154,14 @@ const SpaceDetail: React.FC<SpaceDetailProps> = ({ space }) => {
               renderMindMap(space.mind_map)
             ) : (
               <pre className="max-h-[500px] overflow-auto whitespace-pre-wrap rounded bg-gray-100 p-4">
-                {space[activeTab]}
+                {space[activeTab]?.split(". ").map((sentence, index) => (
+                  <span key={index}>
+                    {sentence.trim()}
+                    {index < space[activeTab]!.split(". ").length - 1 ? (
+                      <br />
+                    ) : null}
+                  </span>
+                ))}
               </pre>
             )}
           </div>
