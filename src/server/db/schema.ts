@@ -184,7 +184,6 @@ export const plans = createTable("plans", {
 export const twitterSpaces = pgTable("twitter_spaces", {
   id: serial("id").primaryKey(),
   user_id: text("user_id"),
-  title: text("title"),
   space_url: text("space_url"),
   status: text("status"),
   original_transcript: text("original_transcript"),

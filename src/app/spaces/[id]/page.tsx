@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { getServerAuthSession } from "~/server/auth";
 import SpaceDetail from "~/components/dashboard/SpaceDetail";
+import { api } from "~/trpc/server";
 
 export default async function SpacesPage({
   params,
@@ -17,9 +18,11 @@ export default async function SpacesPage({
 
   const { id } = params;
 
+  const space = await api.twitterSpaces.getSpacesById({ id: parseInt(id) });
+
   return (
     <div className="flex flex-col gap-8 p-4">
-      <SpaceDetail spaceId={id} />
+      <SpaceDetail space={space[0]} />
     </div>
   );
 }

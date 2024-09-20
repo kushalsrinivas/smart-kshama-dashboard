@@ -28,16 +28,26 @@ interface Space extends SpaceData {
 }
 
 interface SpaceDetailProps {
-  spaceId: string;
+  space:
+    | {
+        id: number;
+        user_id: string | null;
+        title: string | null;
+        space_url: string | null;
+        status: string | null;
+        original_transcript: string | null;
+        abstract: string | null;
+        mind_map: string | null;
+        summary: string | null;
+        created_at: Date | null;
+        updated_at: Date | null;
+      }
+    | undefined;
 }
 
-const SpaceDetail: React.FC<SpaceDetailProps> = ({ spaceId }) => {
+const SpaceDetail: React.FC<SpaceDetailProps> = ({ space }) => {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<keyof SpaceData>("abstract");
-
-  const { data: space, isLoading } = api.spaces.getById.useQuery({
-    id: Number(spaceId),
-  });
 
   const tabNames: Record<keyof SpaceData, string> = {
     abstract: "Abstract",
@@ -69,15 +79,6 @@ const SpaceDetail: React.FC<SpaceDetailProps> = ({ spaceId }) => {
       return <p className="text-red-500">Invalid mind map data</p>;
     }
   };
-
-  if (isLoading) {
-    return (
-      <div className="flex h-screen items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin" />
-        <span className="ml-2">Loading Space details...</span>
-      </div>
-    );
-  }
 
   if (!space) {
     return <div className="mt-8 text-center">Space not found</div>;
