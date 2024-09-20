@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Card,
   CardContent,
@@ -42,6 +42,7 @@ interface SpaceDetailProps {
 const SpaceDetail: React.FC<SpaceDetailProps> = ({ space }) => {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<keyof SpaceData>("abstract");
+  const [audioUrl, setAudioUrl] = useState<string | null>(null);
 
   const tabNames: Record<keyof SpaceData, string> = {
     abstract: "Abstract",
@@ -50,23 +51,42 @@ const SpaceDetail: React.FC<SpaceDetailProps> = ({ space }) => {
     summary: "Summary",
   };
 
-  function constructAudioUrl(twitterId: string): string {
+  function constructAudioUrls(twitterId: string): string[] {
     const baseUrl =
       "https://uflankzxkhbqwblpsvxg.supabase.co/storage/v1/object/public/spaces-reduced-bucket/";
-    return `${baseUrl}${twitterId}.mp3`;
+    return [`${baseUrl}${twitterId}.mp3`, `${baseUrl}${twitterId}.opus`];
   }
 
-  function processTwitterUrl(url: string): string | null {
-    const id = extractTwitterId(url);
-    if (id) {
-      return constructAudioUrl(id);
+  async function findValidAudioUrl(urls: string[]): Promise<string | null> {
+    for (const url of urls) {
+      try {
+        const response = await fetch(url, { method: "HEAD" });
+        if (response.ok) {
+          return url;
+        }
+      } catch (error) {
+        console.error(`Error checking URL ${url}:`, error);
+      }
     }
     return null;
   }
 
-  const audioUrl = processTwitterUrl(space?.space_url || "");
+  async function processTwitterUrl(url: string): Promise<string | null> {
+    const id = extractTwitterId(url);
+    if (id) {
+      const possibleUrls = constructAudioUrls(id);
+      return await findValidAudioUrl(possibleUrls);
+    }
+    return null;
+  }
 
-  console.log("audioUrl", audioUrl);
+  useEffect(() => {
+    if (space?.space_url) {
+      processTwitterUrl(space.space_url).then((url) => {
+        setAudioUrl(url);
+      });
+    }
+  }, [space?.space_url]);
 
   const renderMindMap = (mindMapJson: string | null) => {
     if (!mindMapJson) return null;
@@ -108,6 +128,15 @@ const SpaceDetail: React.FC<SpaceDetailProps> = ({ space }) => {
           <CardDescription>Status: {space.status}</CardDescription>
         </CardHeader>
         <CardContent>
+          {audioUrl && (
+            <audio controls className="mb-4 w-full">
+              <source
+                src={audioUrl}
+                type={audioUrl.endsWith(".mp3") ? "audio/mpeg" : "audio/ogg"}
+              />
+              Your browser does not support the audio element.
+            </audio>
+          )}
           <div className="mb-4 flex space-x-2">
             {(Object.keys(tabNames) as Array<keyof SpaceData>).map((key) => (
               <Button
