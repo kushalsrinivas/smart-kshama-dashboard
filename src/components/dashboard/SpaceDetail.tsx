@@ -100,7 +100,7 @@ const SpaceDetail: React.FC<SpaceDetailProps> = ({ space }) => {
             translate={{ x: 150, y: 250 }}
             separation={{ siblings: 1.2, nonSiblings: 1.8 }}
             nodeSize={{ x: 220, y: 50 }}
-            zoom={0.8}
+            zoom={0.5}
             centeringTransitionDuration={800}
             scaleExtent={{ min: 0.1, max: 1 }}
           />
@@ -124,7 +124,7 @@ const SpaceDetail: React.FC<SpaceDetailProps> = ({ space }) => {
       </Button>
       <Card className="mb-6 w-full">
         <CardHeader>
-          <CardTitle>{space.space_url}</CardTitle>
+          <CardTitle className="truncate text-sm">{space.space_url}</CardTitle>
           <CardDescription>Status: {space.status}</CardDescription>
         </CardHeader>
         <CardContent>
@@ -143,6 +143,7 @@ const SpaceDetail: React.FC<SpaceDetailProps> = ({ space }) => {
                 key={key}
                 variant={activeTab !== key ? "default" : "noShadow"}
                 onClick={() => setActiveTab(key)}
+                className="px-2 py-1 text-xs font-medium"
               >
                 {tabNames[key]}
               </Button>

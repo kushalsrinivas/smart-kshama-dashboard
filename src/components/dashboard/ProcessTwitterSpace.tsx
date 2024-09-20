@@ -239,63 +239,67 @@ const ProcessTwitterSpace: React.FC<ProcessTwitterSpaceProps> = ({
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-2">
         {spaces.map((space, index) => (
-          <Link key={index} href={`/spaces/${space.id}`}>
-            <Card key={space.id} className="w-full">
-              <CardHeader>
+          <Card key={space.id} className="w-full">
+            <CardHeader>
+              <Link href={`/spaces/${space.id}`}>
                 <CardTitle className="truncate text-sm">
                   {space.space_url}
                 </CardTitle>
-                <CardDescription>
+              </Link>
+              <CardDescription>
+                {getStatusMessage(space.status)}
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              {space.status !== "completed" && space.status !== "error" && (
+                <div className="flex items-center gap-2">
+                  <Loader2 className="h-4 w-4 animate-spin" />
                   {getStatusMessage(space.status)}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                {space.status !== "completed" && space.status !== "error" && (
-                  <div className="flex items-center gap-2">
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    {getStatusMessage(space.status)}
+                </div>
+              )}
+              {space.status === "completed" && (
+                <div>
+                  <div className="mb-4 flex space-x-2">
+                    {(Object.keys(tabNames) as Array<keyof SpaceData>).map(
+                      (key) => (
+                        <Button
+                          key={key}
+                          variant={
+                            space.activeTab === key ? "default" : "noShadow"
+                          }
+                          onClick={() => changeTab(space.id, key)}
+                          className="px-2 py-1 text-xs font-medium"
+                        >
+                          {tabNames[key]}
+                        </Button>
+                      ),
+                    )}
                   </div>
-                )}
-                {space.status === "completed" && (
-                  <div>
-                    {/* <div className="flex space-x-2 mb-4">
-                    {(Object.keys(tabNames) as Array<keyof SpaceData>).map((key) => (
-                      <Button
-                        key={key}
-                        variant={space.activeTab === key ? "default" : "noShadow"}
-                        onClick={() => changeTab(space.id, key)}
-                        className="px-2 py-1 text-xs font-medium"
-                      >
-                        {tabNames[key]}
-                      </Button>
-                    ))}
-                  </div> */}
-                    <div className="h-64 overflow-hidden">
-                      <h3 className="mb-2 text-sm font-semibold">
-                        {tabNames[space.activeTab]}
-                      </h3>
-                      {space.activeTab === "mind_map" ? (
-                        <div className="h-full">
-                          {renderMindMap(space.mind_map)}
-                        </div>
-                      ) : (
-                        <div className="h-[calc(100%-2rem)] overflow-auto">
-                          <pre className="whitespace-pre-wrap text-xs">
-                            {space[space.activeTab]}
-                          </pre>
-                        </div>
-                      )}
-                    </div>
+                  <div className="h-64 overflow-hidden">
+                    <h3 className="mb-2 text-sm font-semibold">
+                      {tabNames[space.activeTab]}
+                    </h3>
+                    {space.activeTab === "mind_map" ? (
+                      <div className="h-full">
+                        {renderMindMap(space.mind_map)}
+                      </div>
+                    ) : (
+                      <div className="h-[calc(100%-2rem)] overflow-auto">
+                        <pre className="whitespace-pre-wrap text-xs">
+                          {space[space.activeTab]}
+                        </pre>
+                      </div>
+                    )}
                   </div>
-                )}
-                {space.status === "error" && (
-                  <p className="text-sm text-red-500">
-                    An error occurred while processing this Space.
-                  </p>
-                )}
-              </CardContent>
-            </Card>
-          </Link>
+                </div>
+              )}
+              {space.status === "error" && (
+                <p className="text-sm text-red-500">
+                  An error occurred while processing this Space.
+                </p>
+              )}
+            </CardContent>
+          </Card>
         ))}
       </div>
     </div>
