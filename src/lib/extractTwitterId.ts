@@ -3,7 +3,7 @@ export function extractTwitterId(url: string): string | null {
 
   const match = url.match(regex);
 
-  if (match && match[1]) {
+  if (match?.[1]) {
     return match[1];
   }
 

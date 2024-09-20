@@ -238,8 +238,8 @@ const ProcessTwitterSpace: React.FC<ProcessTwitterSpaceProps> = ({
       </div>
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-2">
-        {spaces.map((space) => (
-          <Link href={`/spaces/${space.id}`}>
+        {spaces.map((space, index) => (
+          <Link key={index} href={`/spaces/${space.id}`}>
             <Card key={space.id} className="w-full">
               <CardHeader>
                 <CardTitle className="truncate text-sm">

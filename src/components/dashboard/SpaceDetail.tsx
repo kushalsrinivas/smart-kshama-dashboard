@@ -82,7 +82,7 @@ const SpaceDetail: React.FC<SpaceDetailProps> = ({ space }) => {
 
   useEffect(() => {
     if (space?.space_url) {
-      processTwitterUrl(space.space_url).then((url) => {
+      void processTwitterUrl(space.space_url).then((url) => {
         setAudioUrl(url);
       });
     }
