@@ -21,28 +21,21 @@ interface SpaceData {
   summary: string | null;
 }
 
-interface Space extends SpaceData {
-  id: string;
-  space_url: string;
-  status: "queued" | "downloading" | "processing" | "completed" | "error";
+interface Space {
+  id: number;
+  user_id: string | null;
+  space_url: string | null;
+  status: string | null;
+  original_transcript: string | null;
+  abstract: string | null;
+  mind_map: string | null;
+  summary: string | null;
+  created_at: Date | null;
+  updated_at: Date | null;
 }
 
 interface SpaceDetailProps {
-  space:
-    | {
-        id: number;
-        user_id: string | null;
-        title: string | null;
-        space_url: string | null;
-        status: string | null;
-        original_transcript: string | null;
-        abstract: string | null;
-        mind_map: string | null;
-        summary: string | null;
-        created_at: Date | null;
-        updated_at: Date | null;
-      }
-    | undefined;
+  space: Space | undefined;
 }
 
 const SpaceDetail: React.FC<SpaceDetailProps> = ({ space }) => {
