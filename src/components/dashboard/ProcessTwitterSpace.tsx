@@ -12,7 +12,8 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { toast } from "sonner";
 import { Loader2, RefreshCcw } from "lucide-react";
-import Tree from 'react-d3-tree';
+import Tree from "react-d3-tree";
+import Link from "next/link";
 
 interface SpaceData {
   original_transcript: string | null;
@@ -24,7 +25,7 @@ interface SpaceData {
 interface Space extends SpaceData {
   id: string;
   space_url: string;
-  status: 'queued' | 'downloading' | 'processing' | 'completed' | 'error';
+  status: "queued" | "downloading" | "processing" | "completed" | "error";
   activeTab: keyof SpaceData;
 }
 
@@ -32,7 +33,9 @@ interface ProcessTwitterSpaceProps {
   currentUserId: string;
 }
 
-const ProcessTwitterSpace: React.FC<ProcessTwitterSpaceProps> = ({ currentUserId }) => {
+const ProcessTwitterSpace: React.FC<ProcessTwitterSpaceProps> = ({
+  currentUserId,
+}) => {
   const [spaceUrl, setSpaceUrl] = useState("");
   const [spaces, setSpaces] = useState<Space[]>([]);
   const [isAddingSpace, setIsAddingSpace] = useState(false);
@@ -42,24 +45,28 @@ const ProcessTwitterSpace: React.FC<ProcessTwitterSpaceProps> = ({ currentUserId
   const fetchSpaces = useCallback(async () => {
     setIsUpdating(true);
     try {
-      const response = await fetch(`https://spaces.smartdonna.com/spaces/${currentUserId}`);
+      const response = await fetch(
+        `https://spaces.smartdonna.com/spaces/${currentUserId}`,
+      );
       if (!response.ok) {
-        throw new Error('Failed to fetch spaces');
+        throw new Error("Failed to fetch spaces");
       }
-      const data = await response.json() as Space[];
-      setSpaces(prevSpaces => {
+      const data = (await response.json()) as Space[];
+      setSpaces((prevSpaces) => {
         const newSpaces = data.map((space: Space) => ({
           ...space,
-          activeTab: 'abstract' as keyof SpaceData
+          activeTab: "abstract" as keyof SpaceData,
         }));
         return newSpaces.map((newSpace: Space) => {
-          const existingSpace = prevSpaces.find(s => s.id === newSpace.id);
-          return existingSpace ? { ...newSpace, activeTab: existingSpace.activeTab } : newSpace;
+          const existingSpace = prevSpaces.find((s) => s.id === newSpace.id);
+          return existingSpace
+            ? { ...newSpace, activeTab: existingSpace.activeTab }
+            : newSpace;
         });
       });
     } catch (error) {
-      console.error('Error fetching spaces:', error);
-      toast.error('Failed to fetch spaces');
+      console.error("Error fetching spaces:", error);
+      toast.error("Failed to fetch spaces");
     } finally {
       setIsInitialLoading(false);
       setIsUpdating(false);
@@ -73,8 +80,8 @@ const ProcessTwitterSpace: React.FC<ProcessTwitterSpaceProps> = ({ currentUserId
   }, [fetchSpaces]);
 
   const addSpace = async () => {
-    const processedUrl = spaceUrl.replace('x.com', 'twitter.com');
-    
+    const processedUrl = spaceUrl.replace("x.com", "twitter.com");
+
     if (processedUrl.includes("twitter.com") || processedUrl.includes("t.co")) {
       setIsAddingSpace(true);
       try {
@@ -93,21 +100,23 @@ const ProcessTwitterSpace: React.FC<ProcessTwitterSpaceProps> = ({ currentUserId
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        const data = await response.json() as { id: string };
+        const data = (await response.json()) as { id: string };
 
         const newSpace: Space = {
           id: data.id,
           space_url: processedUrl,
-          status: 'queued',
+          status: "queued",
           original_transcript: null,
           abstract: null,
           mind_map: null,
           summary: null,
-          activeTab: 'abstract'
+          activeTab: "abstract",
         };
-        setSpaces(prev => [newSpace, ...prev]);
+        setSpaces((prev) => [newSpace, ...prev]);
         setSpaceUrl("");
-        toast.success(`Twitter Space added and queued for processing: ${processedUrl}`);
+        toast.success(
+          `Twitter Space added and queued for processing: ${processedUrl}`,
+        );
 
         await fetchSpaces();
       } catch (error) {
@@ -122,9 +131,11 @@ const ProcessTwitterSpace: React.FC<ProcessTwitterSpaceProps> = ({ currentUserId
   };
 
   const changeTab = (spaceId: string, tab: keyof SpaceData) => {
-    setSpaces(prev => prev.map(space =>
-      space.id === spaceId ? { ...space, activeTab: tab } : space
-    ));
+    setSpaces((prev) =>
+      prev.map((space) =>
+        space.id === spaceId ? { ...space, activeTab: tab } : space,
+      ),
+    );
   };
 
   const tabNames: Record<keyof SpaceData, string> = {
@@ -134,14 +145,20 @@ const ProcessTwitterSpace: React.FC<ProcessTwitterSpaceProps> = ({ currentUserId
     summary: "Summary",
   };
 
-  const getStatusMessage = (status: Space['status']) => {
+  const getStatusMessage = (status: Space["status"]) => {
     switch (status) {
-      case 'queued': return 'Queued for processing';
-      case 'downloading': return 'Downloading audio';
-      case 'processing': return 'Processing audio';
-      case 'completed': return 'Processing complete';
-      case 'error': return 'Error occurred';
-      default: return 'Unknown status';
+      case "queued":
+        return "Queued for processing";
+      case "downloading":
+        return "Downloading audio";
+      case "processing":
+        return "Processing audio";
+      case "completed":
+        return "Processing complete";
+      case "error":
+        return "Error occurred";
+      default:
+        return "Unknown status";
     }
   };
 
@@ -150,9 +167,9 @@ const ProcessTwitterSpace: React.FC<ProcessTwitterSpaceProps> = ({ currentUserId
     try {
       const mindMapData = JSON.parse(mindMapJson);
       return (
-        <div style={{ width: '100%', height: '300px', overflow: 'hidden' }}>
-          <Tree 
-            data={mindMapData} 
+        <div style={{ width: "100%", height: "300px", overflow: "hidden" }}>
+          <Tree
+            data={mindMapData}
             orientation="horizontal"
             translate={{ x: 80, y: 150 }}
             separation={{ siblings: 1.2, nonSiblings: 1.8 }}
@@ -164,14 +181,14 @@ const ProcessTwitterSpace: React.FC<ProcessTwitterSpaceProps> = ({ currentUserId
         </div>
       );
     } catch (error) {
-      console.error('Error parsing mind map JSON:', error);
-      return <p className="text-red-500 text-sm">Invalid mind map data</p>;
+      console.error("Error parsing mind map JSON:", error);
+      return <p className="text-sm text-red-500">Invalid mind map data</p>;
     }
   };
 
   if (isInitialLoading) {
     return (
-      <div className="flex justify-center items-center h-64">
+      <div className="flex h-64 items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin" />
         <span className="ml-2">Loading Twitter Spaces...</span>
       </div>
@@ -195,13 +212,15 @@ const ProcessTwitterSpace: React.FC<ProcessTwitterSpaceProps> = ({ currentUserId
             disabled={isAddingSpace}
           />
           <Button onClick={addSpace} disabled={isAddingSpace}>
-            {isAddingSpace ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
-            {isAddingSpace ? 'Adding...' : 'Add Space'}
+            {isAddingSpace ? (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            ) : null}
+            {isAddingSpace ? "Adding..." : "Add Space"}
           </Button>
         </CardContent>
       </Card>
 
-      <div className="flex justify-between items-center">
+      <div className="flex items-center justify-between">
         <h2 className="text-xl font-semibold">Your Twitter Spaces</h2>
         <Button
           variant="neutral"
@@ -210,31 +229,36 @@ const ProcessTwitterSpace: React.FC<ProcessTwitterSpaceProps> = ({ currentUserId
           disabled={isUpdating}
         >
           {isUpdating ? (
-            <Loader2 className="h-4 w-4 animate-spin mr-2" />
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
           ) : (
-            <RefreshCcw className="h-4 w-4 mr-2" />
+            <RefreshCcw className="mr-2 h-4 w-4" />
           )}
           Refresh
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
-        {spaces.map(space => (
-          <Card key={space.id} className="w-full">
-            <CardHeader>
-              <CardTitle className="text-sm truncate">{space.space_url}</CardTitle>
-              <CardDescription>{getStatusMessage(space.status)}</CardDescription>
-            </CardHeader>
-            <CardContent>
-              {space.status !== 'completed' && space.status !== 'error' && (
-                <div className="flex items-center gap-2">
-                  <Loader2 className="h-4 w-4 animate-spin" />
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-2">
+        {spaces.map((space) => (
+          <Link href={`/spaces/${space.id}`}>
+            <Card key={space.id} className="w-full">
+              <CardHeader>
+                <CardTitle className="truncate text-sm">
+                  {space.space_url}
+                </CardTitle>
+                <CardDescription>
                   {getStatusMessage(space.status)}
-                </div>
-              )}
-              {space.status === 'completed' && (
-                <div>
-                  <div className="flex space-x-2 mb-4">
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                {space.status !== "completed" && space.status !== "error" && (
+                  <div className="flex items-center gap-2">
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    {getStatusMessage(space.status)}
+                  </div>
+                )}
+                {space.status === "completed" && (
+                  <div>
+                    {/* <div className="flex space-x-2 mb-4">
                     {(Object.keys(tabNames) as Array<keyof SpaceData>).map((key) => (
                       <Button
                         key={key}
@@ -245,28 +269,33 @@ const ProcessTwitterSpace: React.FC<ProcessTwitterSpaceProps> = ({ currentUserId
                         {tabNames[key]}
                       </Button>
                     ))}
+                  </div> */}
+                    <div className="h-64 overflow-hidden">
+                      <h3 className="mb-2 text-sm font-semibold">
+                        {tabNames[space.activeTab]}
+                      </h3>
+                      {space.activeTab === "mind_map" ? (
+                        <div className="h-full">
+                          {renderMindMap(space.mind_map)}
+                        </div>
+                      ) : (
+                        <div className="h-[calc(100%-2rem)] overflow-auto">
+                          <pre className="whitespace-pre-wrap text-xs">
+                            {space[space.activeTab]}
+                          </pre>
+                        </div>
+                      )}
+                    </div>
                   </div>
-                  <div className="h-64 overflow-hidden">
-                    <h3 className="text-sm font-semibold mb-2">{tabNames[space.activeTab]}</h3>
-                    {space.activeTab === 'mind_map' ? (
-                      <div className="h-full">
-                        {renderMindMap(space.mind_map)}
-                      </div>
-                    ) : (
-                      <div className="h-[calc(100%-2rem)] overflow-auto">
-                        <pre className="text-xs whitespace-pre-wrap">
-                          {space[space.activeTab]}
-                        </pre>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )}
-              {space.status === 'error' && (
-                <p className="text-red-500 text-sm">An error occurred while processing this Space.</p>
-              )}
-            </CardContent>
-          </Card>
+                )}
+                {space.status === "error" && (
+                  <p className="text-sm text-red-500">
+                    An error occurred while processing this Space.
+                  </p>
+                )}
+              </CardContent>
+            </Card>
+          </Link>
         ))}
       </div>
     </div>

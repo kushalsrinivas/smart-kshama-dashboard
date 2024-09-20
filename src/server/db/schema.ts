@@ -3,6 +3,7 @@ import {
   boolean,
   index,
   integer,
+  pgTable,
   pgTableCreator,
   primaryKey,
   serial,
@@ -178,4 +179,18 @@ export const plans = createTable("plans", {
   name: varchar("name", { length: 255 }).notNull(),
   price: integer("price").notNull(),
   validity: varchar("validity", { length: 255 }).notNull(),
+});
+
+export const twitterSpaces = pgTable("twitter_spaces", {
+  id: serial("id").primaryKey(),
+  user_id: text("user_id"),
+  title: text("title"),
+  space_url: text("space_url"),
+  status: text("status"),
+  original_transcript: text("original_transcript"),
+  abstract: text("abstract"),
+  mind_map: text("mind_map"),
+  summary: text("summary"),
+  created_at: timestamp("created_at").defaultNow(),
+  updated_at: timestamp("updated_at").defaultNow(),
 });
