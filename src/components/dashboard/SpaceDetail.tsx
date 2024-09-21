@@ -117,56 +117,58 @@ const SpaceDetail: React.FC<SpaceDetailProps> = ({ space }) => {
   }
 
   return (
-    <div className="container mx-auto p-4">
-      <Button variant="neutral" onClick={() => router.back()} className="mb-4">
+    <div className="container mx-auto min-h-screen bg-main p-0 sm:p-4">
+      <Button variant="neutral" onClick={() => router.back()} className="m-4">
         <ArrowLeft className="mr-2 h-4 w-4" />
         Back to Spaces
       </Button>
-      <Card className="mb-6 w-full">
-        <CardHeader>
-          <CardTitle className="truncate text-sm">{space.space_url}</CardTitle>
-          <CardDescription>Status: {space.status}</CardDescription>
-        </CardHeader>
-        <CardContent>
-          {audioUrl && (
-            <audio controls className="mb-4 w-full">
-              <source
-                src={audioUrl}
-                type={audioUrl.endsWith(".mp3") ? "audio/mpeg" : "audio/ogg"}
-              />
-              Your browser does not support the audio element.
-            </audio>
+
+      <CardHeader>
+        <CardTitle className="truncate text-sm">{space.space_url}</CardTitle>
+        <CardDescription>Status: {space.status}</CardDescription>
+      </CardHeader>
+      <CardContent className="sm:p-6 p-1">
+        {audioUrl && (
+          <audio controls className="mb-4 w-full">
+            <source
+              src={audioUrl}
+              type={audioUrl.endsWith(".mp3") ? "audio/mpeg" : "audio/ogg"}
+            />
+            Your browser does not support the audio element.
+          </audio>
+        )}
+        <div className="mb-4 flex gap-2">
+          {(Object.keys(tabNames) as Array<keyof SpaceData>).map((key) => (
+            <Button
+              key={key}
+              variant={activeTab !== key ? "default" : "noShadow"}
+              onClick={() => setActiveTab(key)}
+              className="px-2 py-1 text-xs font-medium"
+              size={"sm"}
+            >
+              {tabNames[key]}
+            </Button>
+          ))}
+        </div>
+        <div className="mt-4">
+          {activeTab === "mind_map" ? (
+            renderMindMap(space.mind_map)
+          ) : (
+            <pre className="max-h-[500px] overflow-auto whitespace-pre-wrap rounded bg-gray-100 p-0 text-base sm:p-4 md:text-xl">
+              {space[activeTab]?.split(". ").map((sentence, index) => (
+                <span key={index}>
+                  {sentence.trim()}
+                  {index < space[activeTab]!.split(". ").length - 1 ? (
+                    <>
+                      . <br /> <br />
+                    </>
+                  ) : null}
+                </span>
+              ))}
+            </pre>
           )}
-          <div className="mb-4 flex space-x-2">
-            {(Object.keys(tabNames) as Array<keyof SpaceData>).map((key) => (
-              <Button
-                key={key}
-                variant={activeTab !== key ? "default" : "noShadow"}
-                onClick={() => setActiveTab(key)}
-                className="px-2 py-1 text-xs font-medium"
-              >
-                {tabNames[key]}
-              </Button>
-            ))}
-          </div>
-          <div className="mt-4">
-            {activeTab === "mind_map" ? (
-              renderMindMap(space.mind_map)
-            ) : (
-              <pre className="max-h-[500px] overflow-auto whitespace-pre-wrap rounded bg-gray-100 p-4">
-                {space[activeTab]?.split(". ").map((sentence, index) => (
-                  <span key={index}>
-                    {sentence.trim()}
-                    {index < space[activeTab]!.split(". ").length - 1 ? (
-                      <br />
-                    ) : null}
-                  </span>
-                ))}
-              </pre>
-            )}
-          </div>
-        </CardContent>
-      </Card>
+        </div>
+      </CardContent>
     </div>
   );
 };

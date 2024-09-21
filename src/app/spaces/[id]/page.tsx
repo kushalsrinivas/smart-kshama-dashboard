@@ -21,7 +21,7 @@ export default async function SpacesPage({
   const space = await api.twitterSpaces.getSpacesById({ id: parseInt(id) });
 
   return (
-    <div className="flex flex-col gap-8 p-4">
+    <div className="flex flex-col gap-8">
       <SpaceDetail space={space[0]} />
     </div>
   );
