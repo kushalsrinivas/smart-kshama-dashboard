@@ -10,12 +10,11 @@ import {
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { toast } from "sonner";
-import { Loader2, RefreshCcw, Edit } from "lucide-react";
-import Link from "next/link";
+import { Loader2, RefreshCcw } from "lucide-react";
 import {
   createCoupon,
   fetchCoupons,
-  updateCoupon as updateCouponAction,
+  updateCoupon,
 } from "../../actions/coupons";
 
 interface Coupon {
@@ -33,7 +32,7 @@ interface CouponProps {
   currentUserId: string | undefined;
 }
 
-const CouponsDashboard: React.FC<CouponProps> = async ({ currentUserId }) => {
+export default function CouponsDashboard() {
   // State variables for coupon inputs
   const [couponCode, setCouponCode] = useState("");
   const [discountPercentage, setDiscountPercentage] = useState<number>();
@@ -44,23 +43,26 @@ const CouponsDashboard: React.FC<CouponProps> = async ({ currentUserId }) => {
   // State for coupons list and loading states
   const [coupons, setCoupons] = useState<Coupon[] | any>([]);
   const [isAddingCoupon, setIsAddingCoupon] = useState(false);
-  const [isInitialLoading, setIsInitialLoading] = useState(true);
+  // const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [isUpdating, setIsUpdating] = useState(false);
 
   // Fetch coupons from the server
-  const fetchAllCoupons = useCallback(async () => {
+  const fetchAllCoupons = useCallback(() => {
     setIsUpdating(true);
-    try {
-      const fetchedCoupons = await fetchCoupons();
+
+    let fetchedCoupons;
+    fetchCoupons().then((coupons) => {
+      fetchedCoupons = coupons;
       setCoupons(fetchedCoupons);
-    } catch (error) {
+    }).catch((error) => {
       console.error("Error fetching coupons:", error);
       toast.error("Failed to fetch coupons");
-    } finally {
-      setIsInitialLoading(false);
+    }).finally(() => {
+      // setIsInitialLoading(false);
       setIsUpdating(false);
-    }
-  }, [currentUserId]);
+    });
+
+  }, []);
 
   useEffect(() => {
     void fetchAllCoupons();
@@ -69,7 +71,7 @@ const CouponsDashboard: React.FC<CouponProps> = async ({ currentUserId }) => {
   }, [fetchAllCoupons]);
 
   // Add a new coupon
-  const addCoupon = async () => {
+  const addCoupon = () => {
     // Basic validation
     if (
       !couponCode ||
@@ -83,15 +85,16 @@ const CouponsDashboard: React.FC<CouponProps> = async ({ currentUserId }) => {
     }
 
     setIsAddingCoupon(true);
-    try {
-      const newCouponData = {
-        code: couponCode,
-        discount_percentage: discountPercentage,
-        max_discount_amount: maxDiscountAmount,
-        min_order_amount: minProductAmount,
-        exhaust_limit: exhaustLimit,
-      };
-      const createdCoupon = await createCoupon(newCouponData);
+    const newCouponData = {
+      code: couponCode,
+      discount_percentage: discountPercentage,
+      max_discount_amount: maxDiscountAmount,
+      min_order_amount: minProductAmount,
+      exhaust_limit: exhaustLimit,
+    };
+    let createdCoupon: any;
+    createCoupon(newCouponData).then((newCoupon) => {
+      createdCoupon = newCoupon;
       setCoupons((prev: any) => [createdCoupon, ...prev]);
       // Reset input fields
       setCouponCode("");
@@ -100,41 +103,44 @@ const CouponsDashboard: React.FC<CouponProps> = async ({ currentUserId }) => {
       setMinProductAmount(0);
       setExhaustLimit(0);
       toast.success(`Coupon "${createdCoupon!?.code}" added successfully`);
-    } catch (error) {
+    }).catch((error) => {
       console.error("Error adding coupon:", error);
       toast.error("Failed to add coupon");
-    } finally {
+    }).finally(() => {
       setIsAddingCoupon(false);
-    }
+    });
+
+
+    // Update an existing coupon
+    // const handleUpdateCoupon = async (updatedCoupon: Coupon) => {
+    //   setIsUpdating(true);
+    //   try {
+    //     const updated = await updateCouponAction(updatedCoupon);
+    //     setCoupons((prev: any) =>
+    //       prev.map((coupon: any) =>
+    //         coupon.id === updated!?.id ? updated : coupon
+    //       )
+    //     );
+    //     toast.success(`Coupon "${updated!?.code}" updated successfully`);
+    //   } catch (error) {
+    //     console.error("Error updating coupon:", error);
+    //     toast.error("Failed to update coupon");
+    //   } finally {
+    //     setIsUpdating(false);
+    //   }
+    // };
+
   };
 
-  // Update an existing coupon
-  const handleUpdateCoupon = async (updatedCoupon: Coupon) => {
-    setIsUpdating(true);
-    try {
-      const updated = await updateCouponAction(updatedCoupon);
-      setCoupons((prev: any) =>
-        prev.map((coupon: any) =>
-          coupon.id === updated!?.id ? updated : coupon
-        )
-      );
-      toast.success(`Coupon "${updated!?.code}" updated successfully`);
-    } catch (error) {
-      console.error("Error updating coupon:", error);
-      toast.error("Failed to update coupon");
-    } finally {
-      setIsUpdating(false);
-    }
-  };
 
-  if (isInitialLoading) {
-    return (
-      <div className="flex h-64 items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin" />
-        <span className="ml-2">Loading Coupons...</span>
-      </div>
-    );
-  }
+  // if (isInitialLoading) {
+  //   return (
+  //     <div className="flex h-64 items-center justify-center">
+  //       <Loader2 className="h-8 w-8 animate-spin" />
+  //       <span className="ml-2">Loading Coupons...</span>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="flex flex-col gap-6">
@@ -238,11 +244,11 @@ const CouponsDashboard: React.FC<CouponProps> = async ({ currentUserId }) => {
               </p>
               <div className="mt-4 flex justify-end">
                 {/* <Link href={`/coupons/edit/${coupon.id}`}>
-                  <Button size="sm" className="flex items-center gap-1">
-                    <Edit className="h-4 w-4" />
-                    Edit
-                  </Button>
-                </Link> */}
+                <Button size="sm" className="flex items-center gap-1">
+                  <Edit className="h-4 w-4" />
+                  Edit
+                </Button>
+              </Link> */}
               </div>
             </CardContent>
           </Card>
@@ -250,6 +256,5 @@ const CouponsDashboard: React.FC<CouponProps> = async ({ currentUserId }) => {
       </div>
     </div>
   );
-};
+}
 
-export default CouponsDashboard;
