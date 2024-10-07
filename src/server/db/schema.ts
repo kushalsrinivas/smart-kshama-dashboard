@@ -193,3 +193,14 @@ export const twitterSpaces = pgTable("twitter_spaces", {
   created_at: timestamp("created_at").defaultNow(),
   updated_at: timestamp("updated_at").defaultNow(),
 });
+
+export const coupons = pgTable("coupons", {
+  id: serial("id").primaryKey(),
+  code: text("code").unique().notNull(),
+  discount_percentage: integer("discount_percentage").notNull(),
+  exhaust_limit: integer("exhaust_limit").default(0).notNull(),
+  max_discount_amount: integer("max_discount_amount").notNull(),
+  min_order_amount: integer("min_order_amount").notNull(),
+  created_at: timestamp("created_at").defaultNow(),
+  updated_at: timestamp("updated_at").defaultNow(),
+});
