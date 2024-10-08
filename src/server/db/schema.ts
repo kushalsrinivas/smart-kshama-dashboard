@@ -201,6 +201,7 @@ export const coupons = pgTable("coupons", {
   exhaust_limit: integer("exhaust_limit").default(0).notNull(),
   max_discount_amount: integer("max_discount_amount").notNull(),
   min_order_amount: integer("min_order_amount").notNull(),
+  use_count: integer("use_count").default(0),
   created_at: timestamp("created_at").defaultNow(),
   updated_at: timestamp("updated_at").defaultNow(),
 });

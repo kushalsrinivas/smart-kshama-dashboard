@@ -1,11 +1,6 @@
 import { Badge } from "~/components/ui/badge";
 import { Label } from "~/components/ui/label";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from "~/components/ui/card";
+import { Card, CardHeader, CardTitle, CardDescription } from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import { InfoIcon } from "lucide-react";
@@ -22,6 +17,7 @@ import {
   PRO_YEARLY,
   YEARLY_CYCLE,
 } from "~/constant/price";
+import { fetchCouponByCode } from "~/actions/coupons";
 
 interface SubscriptionProps {
   onSelectPlan: (plan: {
@@ -31,13 +27,33 @@ interface SubscriptionProps {
     currency: string;
     price: number;
   }) => void;
+  discountedPrice:number;
+  setDiscountedPrice:Function;
+  setSelectedCoupon?:Function;
 }
 
-const Subscription: FC<SubscriptionProps> = ({ onSelectPlan }) => {
+const Subscription: FC<SubscriptionProps> = ({ onSelectPlan, discountedPrice, setDiscountedPrice,setSelectedCoupon }) => {
   const [selectedPlan, setSelectedPlan] = useState(PRO_PLAN);
   const [billingCycle, setBillingCycle] = useState(MONTHLY_CYCLE);
   const [currency, setCurrency] = useState("usd");
   const [price, setPrice] = useState(PRO_MONTHLY);
+  const [couponCode, setCouponCode] = useState("");
+  const [appliedCoupon, setAppliedCoupon] = useState<any>(null);
+  // const [discountedPrice, setDiscountedPrice] = useState(price);
+  const getCouponByCode = async (code: string) => {
+    const couponData = await fetchCouponByCode(code);
+    if (typeof couponData === "string") {
+      alert(couponData);
+      return;
+    }
+    setAppliedCoupon(couponData);
+  };
+
+  const removeCoupon = () => {
+    setAppliedCoupon(null);
+    setDiscountedPrice(price);
+    setCouponCode("");
+  };
 
   const plans: Plan[] = [
     {
@@ -93,17 +109,27 @@ const Subscription: FC<SubscriptionProps> = ({ onSelectPlan }) => {
   };
 
   useEffect(() => {
-    const price = getPrice(selectedPlan, billingCycle);
-    setPrice(price);
+    const newPrice = getPrice(selectedPlan, billingCycle);
+    setPrice(newPrice);
+    const discount = appliedCoupon ? calculateDiscount(newPrice) : 0;
+    setDiscountedPrice(newPrice - discount);
+
     const selectedPlanDetails = plans.find(
       (plan) =>
         plan.selectedPlan.toLowerCase() === selectedPlan &&
         plan.billingCycle === billingCycle,
     );
     if (selectedPlanDetails) {
-      onSelectPlan(selectedPlanDetails);
+      onSelectPlan({ ...selectedPlanDetails, price: discountedPrice });
     }
-  }, [selectedPlan, billingCycle, currency]);
+  }, [selectedPlan, billingCycle, appliedCoupon]);
+
+  const calculateDiscount = (basePrice: number) => {
+    if (!appliedCoupon) return 0;
+
+    const discountAmount = (basePrice * appliedCoupon.discount_percentage) / 100;
+    return Math.min(discountAmount, appliedCoupon.max_discount_amount);
+  };
 
   return (
     <div className="mx-auto w-full rounded-lg p-6">
@@ -137,7 +163,6 @@ const Subscription: FC<SubscriptionProps> = ({ onSelectPlan }) => {
           />
         </div>
       </div>
-
       <Card className="mb-8">
         <CardHeader>
           <CardTitle>{`${selectedPlan.charAt(0).toUpperCase() + selectedPlan.slice(1)} ${currency.toUpperCase()} ${billingCycle.charAt(0).toUpperCase() + billingCycle.slice(1)}`}</CardTitle>
@@ -145,15 +170,31 @@ const Subscription: FC<SubscriptionProps> = ({ onSelectPlan }) => {
             <span>
               Total Quantity: 1 <InfoIcon className="inline-block h-4 w-4" />
             </span>
-            <span className="font-bold">${price}/ user</span>
+            <span className="font-bold">${discountedPrice?.toFixed(2)} / user</span>
           </CardDescription>
         </CardHeader>
       </Card>
+
       <div>
         <h3 className="text-lg font-bold">Coupon code</h3>
         <div className="mt-2 flex items-center space-x-4">
-          <Input type="text" placeholder="Your code" />
-          <Button className="">Apply</Button>
+          <Input
+            type="text"
+            placeholder="Your code"
+            value={couponCode}
+            onChange={(e) => {setCouponCode(e.target.value); setSelectedCoupon!(e.target.value)}}
+          />
+          <Button
+            onClick={() => getCouponByCode(couponCode)}
+            disabled={!!appliedCoupon}
+          >
+            Apply
+          </Button>
+          {appliedCoupon && (
+            <Button onClick={removeCoupon} variant="secondary">
+              Remove
+            </Button>
+          )}
         </div>
       </div>
     </div>

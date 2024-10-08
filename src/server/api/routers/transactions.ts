@@ -1,11 +1,11 @@
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { z } from "zod";
 
 import {
   createTRPCRouter,
   protectedProcedure,
 } from "~/server/api/trpc";
-import { transactions, users } from "~/server/db/schema";
+import { coupons, transactions, users } from "~/server/db/schema";
 
 export const transactionsRouter = createTRPCRouter({
   createTransactions: protectedProcedure

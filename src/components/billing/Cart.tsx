@@ -19,6 +19,9 @@ const Cart: FC<Plan> = ({
   billingCycle,
   currency,
   price,
+  setDiscountedPrice,
+  discountedPrice,
+  selectedCoupon
 }) => {
   const [invoiceId, setInvoiceId] = useState("");
   const [invoiceUrl, setInvoiceUrl] = useState("");
@@ -40,14 +43,14 @@ const Cart: FC<Plan> = ({
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          price_amount: inputPrice,
+          price_amount: discountedPrice || inputPrice,
           // price_amount: 0.35,
           price_currency: currency,
           // pay_currency: "ETHBASE",
           order_id: orderId,
           order_description: `${selectedPlan}-${currency}-${billingCycle}`,
           ipn_callback_url: `${window.location.href}`,
-          success_url: `${window.location.href}/payment-success?order_id=${orderId}&amount=${inputPrice}&billingCycle=${billingCycle}&currency=${currency}&planId=${planId}`,
+          success_url: `${window.location.href}/payment-success?order_id=${orderId}&amount=${discountedPrice || inputPrice}&billingCycle=${billingCycle}&currency=${currency}&planId=${planId}&selectedCoupon=${selectedCoupon}`,
           cancel_url: `${window.location.href}/manage-billing`,
         }),
       });
@@ -107,7 +110,7 @@ const Cart: FC<Plan> = ({
       setIsLoading(false);
     }
   };
-  
+
 
   return (
     <div className="h-full w-full p-6 md:w-1/3">
@@ -137,7 +140,8 @@ const Cart: FC<Plan> = ({
             </TableRow>
           </TableBody>
         </Table>
-        <p className="mt-4 font-bold">Total (USD) {price}</p>
+        <p>Coupon Discount = {price - (discountedPrice! || 0)}</p>
+        <p className="mt-4 font-bold">Total (USD) {discountedPrice || price}</p>
         <div className="tex-sm mt-2">
           <p>Added to unbilled charges and applicable taxes on activation</p>
         </div>

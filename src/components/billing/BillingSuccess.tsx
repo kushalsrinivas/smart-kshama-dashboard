@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "~/components/ui/button";
 import { api } from "~/trpc/react";
 import { MONTHLY_CYCLE, MONTHLY_VALIDITY, YEARLY_CYCLE, YEARLY_VALIDITY } from "~/constant/price";
+import { updateCouponUseCount } from "~/actions/coupons";
 
 const BillingSuccess = () => {
   const query = useSearchParams();
@@ -15,6 +16,7 @@ const BillingSuccess = () => {
   const currency = query.get("currency");
   const planId = query.get("planId");
   const npId = query.get("NP_id");
+  const selectedCoupon = query.get("selectedCoupon");
   const validity =
     billingCycle === MONTHLY_CYCLE
       ? MONTHLY_VALIDITY
@@ -24,7 +26,11 @@ const BillingSuccess = () => {
   const router = useRouter();
 
   const transaction = api.transactions.createTransactions.useMutation();
-
+  if (selectedCoupon) {
+    updateCouponUseCount(selectedCoupon).catch((error) => {
+      console.log("[ERROR while updating coupon]", error?.message || error);
+    });
+  }
   const userPlan = api.userPlan.create.useMutation({
     onSuccess: (data) => {
       console.log("userPlan", data);

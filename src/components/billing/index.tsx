@@ -10,6 +10,9 @@ export interface Plan {
   billingCycle: string;
   currency: string;
   price: number;
+  setDiscountedPrice?: Function,
+  discountedPrice?: number,
+  selectedCoupon?: string
 }
 
 const Billing = () => {
@@ -20,6 +23,8 @@ const Billing = () => {
     currency: "usd",
     price: PRO_MONTHLY,
   });
+  const [discountedPrice, setDiscountedPrice] = useState(PRO_MONTHLY);
+  const [selectedCoupon, setSelectedCoupon] = useState("");
 
   const handleSelectPlan = (plan: Plan) => {
     setSelectedPlan(plan);
@@ -31,8 +36,8 @@ const Billing = () => {
     <div>
       <h1 className="mb-4 mt-6 px-6 text-2xl font-bold">Manage Billing</h1>
       <div className="flex flex-col gap-3 md:flex-row">
-        <Subscription onSelectPlan={handleSelectPlan} />
-        <Cart {...selectedPlan} />
+        <Subscription setDiscountedPrice={setDiscountedPrice} discountedPrice={discountedPrice} onSelectPlan={handleSelectPlan} setSelectedCoupon={setSelectedCoupon}/>
+        <Cart {...selectedPlan} setDiscountedPrice={setDiscountedPrice} discountedPrice={discountedPrice} selectedCoupon={selectedCoupon}/>
       </div>
     </div>
   );
