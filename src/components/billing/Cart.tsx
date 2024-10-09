@@ -25,9 +25,8 @@ const Cart: FC<Plan> = ({
 }) => {
   const [invoiceId, setInvoiceId] = useState("");
   const [invoiceUrl, setInvoiceUrl] = useState("");
-  const [isLoading, setIsLoading] = useState(false); // Added loading state
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-
   function generateRandomNumber(): number {
     return Math.floor(10000 + Math.random() * 90000);
   }
@@ -43,14 +42,14 @@ const Cart: FC<Plan> = ({
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          price_amount: discountedPrice || inputPrice,
+          price_amount: discountedPrice,
           // price_amount: 0.35,
           price_currency: currency,
           // pay_currency: "ETHBASE",
           order_id: orderId,
           order_description: `${selectedPlan}-${currency}-${billingCycle}`,
           ipn_callback_url: `${window.location.href}`,
-          success_url: `${window.location.href}/payment-success?order_id=${orderId}&amount=${discountedPrice || inputPrice}&billingCycle=${billingCycle}&currency=${currency}&planId=${planId}&selectedCoupon=${selectedCoupon}`,
+          success_url: `${window.location.href}/payment-success?order_id=${orderId}&amount=${discountedPrice}&billingCycle=${billingCycle}&currency=${currency}&planId=${planId}&selectedCoupon=${selectedCoupon}`,
           cancel_url: `${window.location.href}/manage-billing`,
         }),
       });
@@ -141,7 +140,7 @@ const Cart: FC<Plan> = ({
           </TableBody>
         </Table>
         <p>Coupon Discount = {price - (discountedPrice! || 0)}</p>
-        <p className="mt-4 font-bold">Total (USD) {discountedPrice || price}</p>
+        <p className="mt-4 font-bold">Total (USD) {discountedPrice}</p>
         <div className="tex-sm mt-2">
           <p>Added to unbilled charges and applicable taxes on activation</p>
         </div>

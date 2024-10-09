@@ -1,8 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { getServerAuthSession } from "~/server/auth";
 
-const Header = () => {
+const Header = async () => {
+  const session = await getServerAuthSession();
   return (
     <div className="flex justify-between p-4">
       <Link href="/" className="text-2xl font-bold flex items-center">
@@ -12,7 +14,7 @@ const Header = () => {
         <Link href="/">Home</Link>
         <Link href="/spaces">Spaces</Link>
         <Link href="/library">Library</Link>
-        <Link href="/coupons">Coupons</Link>
+        {session?.user?.id !== process.env.ADMIN_USER_ID ? null : <Link href="/coupons">Coupons</Link>}
       </div>
     </div>
   );
