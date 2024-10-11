@@ -39,14 +39,11 @@ export default function CouponsDashboard() {
   const [maxDiscountAmount, setMaxDiscountAmount] = useState<number>();
   const [minProductAmount, setMinProductAmount] = useState<number>();
   const [exhaustLimit, setExhaustLimit] = useState<number>();
-
-  // State for coupons list and loading states
   const [coupons, setCoupons] = useState<Coupon[] | any>([]);
   const [isAddingCoupon, setIsAddingCoupon] = useState(false);
   // const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [isUpdating, setIsUpdating] = useState(false);
 
-  // Fetch coupons from the server
   const fetchAllCoupons = useCallback(() => {
     setIsUpdating(true);
 
@@ -70,9 +67,7 @@ export default function CouponsDashboard() {
     return () => clearInterval(intervalId);
   }, [fetchAllCoupons]);
 
-  // Add a new coupon
   const addCoupon = () => {
-    // Basic validation
     if (
       !couponCode ||
       discountPercentage! <= 0 ||

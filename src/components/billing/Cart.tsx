@@ -12,6 +12,9 @@ import { Button } from "../ui/button";
 import { Lock } from "lucide-react";
 import { type Plan } from ".";
 import { useRouter } from "next/navigation";
+import { createUserPlanWithoutTransaction } from "~/actions/userPlan";
+import { MONTHLY_CYCLE, MONTHLY_VALIDITY, YEARLY_CYCLE, YEARLY_VALIDITY } from "~/constant/price";
+import { toast } from "sonner";
 
 const Cart: FC<Plan> = ({
   id: planId,
@@ -35,6 +38,33 @@ const Cart: FC<Plan> = ({
     const orderId = generateRandomNumber();
     setIsLoading(true); // Set loading state to true
     try {
+      console.log("discountedPrice: ", discountedPrice)
+      if (discountedPrice === 0) {
+        console.log("discountedPriceHELLOOOO")
+        try {
+          const validity =
+            billingCycle === MONTHLY_CYCLE
+              ? MONTHLY_VALIDITY
+              : billingCycle === YEARLY_CYCLE
+                ? YEARLY_VALIDITY
+                : 0;
+
+          const userPlanData = {
+            planId,
+            startDate: new Date(),
+            endDate: new Date(
+              new Date().getTime() + validity * 24 * 60 * 60 * 1000,
+            ),
+          }
+          const result = await createUserPlanWithoutTransaction(userPlanData);
+          console.log("result: ", result)
+          toast.success("Successfully purchased plan");
+          router.push("/");
+          return;
+        } catch (error: any) {
+          console.log("ERROR WHILE CREATING FREE USER PLAN", error?.message || error);
+        }
+      }
       const response = await fetch("https://api.nowpayments.io/v1/invoice", {
         method: "POST",
         headers: {
@@ -66,6 +96,7 @@ const Cart: FC<Plan> = ({
       setIsLoading(false);
     }
   };
+
 
   const fetchInvoiceCopper = async (inputPrice: number) => {
     const orderId = generateRandomNumber();
