@@ -15,6 +15,7 @@ import { useRouter } from "next/navigation";
 import { createUserPlanWithoutTransaction } from "~/actions/userPlan";
 import { MONTHLY_CYCLE, MONTHLY_VALIDITY, YEARLY_CYCLE, YEARLY_VALIDITY } from "~/constant/price";
 import { toast } from "sonner";
+import { updateCouponUseCount } from "~/actions/coupons";
 
 const Cart: FC<Plan> = ({
   id: planId,
@@ -38,9 +39,7 @@ const Cart: FC<Plan> = ({
     const orderId = generateRandomNumber();
     setIsLoading(true); // Set loading state to true
     try {
-      console.log("discountedPrice: ", discountedPrice)
       if (discountedPrice === 0) {
-        console.log("discountedPriceHELLOOOO")
         try {
           const validity =
             billingCycle === MONTHLY_CYCLE
@@ -56,8 +55,12 @@ const Cart: FC<Plan> = ({
               new Date().getTime() + validity * 24 * 60 * 60 * 1000,
             ),
           }
-          const result = await createUserPlanWithoutTransaction(userPlanData);
-          console.log("result: ", result)
+          await createUserPlanWithoutTransaction(userPlanData);
+          if (selectedCoupon) {
+            updateCouponUseCount(selectedCoupon).catch((error) => {
+              console.log("[ERROR while updating coupon]", error?.message || error);
+            });
+          }
           toast.success("Successfully purchased plan");
           router.push("/");
           return;
@@ -84,6 +87,7 @@ const Cart: FC<Plan> = ({
         }),
       });
       const data = await response.json();
+
       setInvoiceId(data.id as string);
       setInvoiceUrl(data.invoice_url as string);
       setIsLoading(false);
