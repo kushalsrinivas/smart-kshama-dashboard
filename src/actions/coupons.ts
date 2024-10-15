@@ -26,7 +26,7 @@ const fetchCouponByCode = async (couponCode: string) => {
     return "No such coupons found";
   }
 
-  if (coupon[0]?.use_count! >= coupon[0]?.exhaust_limit) {
+  if (coupon[0]?.use_count && coupon[0]?.use_count >= coupon[0]?.exhaust_limit) {
     return "Coupon has ended";
   }
 

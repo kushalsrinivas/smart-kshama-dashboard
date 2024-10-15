@@ -10,9 +10,9 @@ export interface Plan {
   billingCycle: string;
   currency: string;
   price: number;
-  setDiscountedPrice?: Function,
-  discountedPrice?: number,
-  selectedCoupon?: string
+  setDiscountedPrice?: (price: number) => void;
+  discountedPrice?: number;
+  selectedCoupon?: string;
 }
 
 const Billing = () => {

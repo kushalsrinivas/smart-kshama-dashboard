@@ -12,8 +12,8 @@ export default async function SpacesPage() {
     return null;
   }
 
-  const name = session?.user.name;
-  const adminUserId: string | undefined = process.env.ADMIN_USER_ID ?? session?.user.id;
+  // const name = session?.user.name;
+  // const adminUserId: string | undefined = process.env.ADMIN_USER_ID ?? session?.user.id;
 
   return (
     <div className="flex flex-col gap-8 p-4">

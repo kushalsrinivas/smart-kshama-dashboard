@@ -6,7 +6,7 @@ import { Button } from "~/components/ui/button";
 import { InfoIcon } from "lucide-react";
 import { useState, type FC, useEffect } from "react";
 import CustomSelect, { type Option } from "../common/CustomSelect";
-import { Plan } from ".";
+import type { Plan } from ".";
 import {
   BUSINESS_MONTHLY,
   BUSINESS_PLAN,
@@ -28,8 +28,8 @@ interface SubscriptionProps {
     price: number;
   }) => void;
   discountedPrice: number;
-  setDiscountedPrice: Function;
-  setSelectedCoupon?: Function;
+  setDiscountedPrice: (price: number) => void;
+  setSelectedCoupon?: (coupon: string) => void;
 }
 
 const Subscription: FC<SubscriptionProps> = ({ onSelectPlan, discountedPrice, setDiscountedPrice, setSelectedCoupon }) => {
@@ -192,7 +192,7 @@ const Subscription: FC<SubscriptionProps> = ({ onSelectPlan, discountedPrice, se
             Apply
           </Button>
           {appliedCoupon && (
-            <Button onClick={removeCoupon} variant="default">
+            <Button onClick={removeCoupon} variant="link">
               Remove
             </Button>
           )}
