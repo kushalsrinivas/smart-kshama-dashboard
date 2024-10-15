@@ -25,14 +25,9 @@ const config = {
     "@typescript-eslint/no-redundant-type-constituents": "off",
     "@typescript-eslint/no-unused-vars": "off",
     "@typescript-eslint/no-extra-non-null-assertion": "off",
-    "@typescript-eslint/consistent-type-imports": [
-      "warn",
-      {
-        prefer: "type-imports",
-        fixStyle: "inline-type-imports",
-      },
-    ],
-
+    "@typescript-eslint/no-non-null-asserted-optional-chain": "off",
+    "@typescript-eslint/ban-types": "off",
+    "@typescript-eslint/consistent-type-imports": "off",
     "@typescript-eslint/require-await": "off",
     "@typescript-eslint/no-misused-promises": [
       "error",

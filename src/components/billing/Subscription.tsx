@@ -27,12 +27,12 @@ interface SubscriptionProps {
     currency: string;
     price: number;
   }) => void;
-  discountedPrice:number;
-  setDiscountedPrice:Function;
-  setSelectedCoupon?:Function;
+  discountedPrice: number;
+  setDiscountedPrice: Function;
+  setSelectedCoupon?: Function;
 }
 
-const Subscription: FC<SubscriptionProps> = ({ onSelectPlan, discountedPrice, setDiscountedPrice,setSelectedCoupon }) => {
+const Subscription: FC<SubscriptionProps> = ({ onSelectPlan, discountedPrice, setDiscountedPrice, setSelectedCoupon }) => {
   const [selectedPlan, setSelectedPlan] = useState(PRO_PLAN);
   const [billingCycle, setBillingCycle] = useState(MONTHLY_CYCLE);
   const [currency, setCurrency] = useState("usd");
@@ -183,7 +183,7 @@ const Subscription: FC<SubscriptionProps> = ({ onSelectPlan, discountedPrice, se
             type="text"
             placeholder="Your code"
             value={couponCode}
-            onChange={(e) => {setCouponCode(e.target.value); setSelectedCoupon!(e.target.value)}}
+            onChange={(e) => { setCouponCode(e.target.value); setSelectedCoupon!(e.target.value) }}
           />
           <Button
             onClick={() => getCouponByCode(couponCode)}
@@ -192,7 +192,7 @@ const Subscription: FC<SubscriptionProps> = ({ onSelectPlan, discountedPrice, se
             Apply
           </Button>
           {appliedCoupon && (
-            <Button onClick={removeCoupon} variant="secondary">
+            <Button onClick={removeCoupon} variant="default">
               Remove
             </Button>
           )}
