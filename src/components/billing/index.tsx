@@ -25,7 +25,7 @@ const Billing = () => {
   });
   const [discountedPrice, setDiscountedPrice] = useState(PRO_MONTHLY);
   const [selectedCoupon, setSelectedCoupon] = useState("");
-
+  console.log("selectedCouponINDEX", selectedCoupon);
   const handleSelectPlan = (plan: Plan) => {
     setSelectedPlan(plan);
   };

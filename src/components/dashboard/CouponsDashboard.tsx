@@ -23,6 +23,7 @@ interface Coupon {
   discount_percentage: number;
   max_discount_amount: number;
   min_order_amount: number;
+  use_count?: number;
   exhaust_limit: number;
   createdAt: string;
   updatedAt: string;
@@ -236,6 +237,9 @@ export default function CouponsDashboard() {
               </p>
               <p>
                 <strong>Exhaust Limit:</strong> {coupon?.exhaust_limit}
+              </p>
+              <p>
+                <strong>Use Count:</strong> {coupon?.use_count}
               </p>
               <div className="mt-4 flex justify-end">
                 {/* <Link href={`/coupons/edit/${coupon.id}`}>

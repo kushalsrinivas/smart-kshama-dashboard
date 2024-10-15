@@ -45,12 +45,13 @@ const updateCoupon = async (couponData: any, couponCode: string) => {
 }
 
 const updateCouponUseCount = async (couponCode: string) => {
-
+  console.log("HERE UPDATING COUPON")
   const updatedCoupon = await db
     .update(coupons)
     .set({ use_count: sql`${coupons.use_count} + 1` })
     .where(eq(coupons.code, couponCode))
     .returning();
+    console.log("updatedCouponUPDATINGGG", updatedCoupon)
   return updatedCoupon[0];
 }
 

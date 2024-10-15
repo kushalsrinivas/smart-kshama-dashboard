@@ -48,6 +48,7 @@ const Subscription: FC<SubscriptionProps> = ({ onSelectPlan, discountedPrice, se
     }
     setAppliedCoupon(couponData);
   };
+  // console.log("selectedCouponSUBSC", selectedCoupon);
 
   const removeCoupon = () => {
     setAppliedCoupon(null);

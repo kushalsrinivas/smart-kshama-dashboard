@@ -56,10 +56,11 @@ const Cart: FC<Plan> = ({
             ),
           }
           await createUserPlanWithoutTransaction(userPlanData);
+          console.log("selectedCouponCART: ",selectedCoupon)
           if (selectedCoupon) {
-            updateCouponUseCount(selectedCoupon).catch((error) => {
-              console.log("[ERROR while updating coupon]", error?.message || error);
-            });
+            console.log("INSIDE")
+          const updatedCoupon =  await updateCouponUseCount(selectedCoupon);
+          console.log("updatedCouponCART: ",updatedCoupon)
           }
           toast.success("Successfully purchased plan");
           router.push("/");
