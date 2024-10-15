@@ -5,6 +5,7 @@ import { getServerAuthSession } from "~/server/auth";
 
 const Header = async () => {
   const session = await getServerAuthSession();
+
   return (
     <div className="flex justify-between p-4">
       <Link href="/" className="text-2xl font-bold flex items-center">
@@ -14,7 +15,7 @@ const Header = async () => {
         <Link href="/">Home</Link>
         <Link href="/spaces">Spaces</Link>
         <Link href="/library">Library</Link>
-        {!process.env.ADMIN_USER_ID!.includes(session?.user?.id as string) ? null : <Link href="/coupons">Coupons</Link>}
+        {process.env.ADMIN_USER_ID?.includes(session?.user?.id ?? '') ? <Link href="/coupons">Coupons</Link> : null}
       </div>
     </div>
   );
