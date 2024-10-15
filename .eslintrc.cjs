@@ -28,6 +28,8 @@ const config = {
     "@typescript-eslint/no-non-null-asserted-optional-chain": "off",
     "@typescript-eslint/ban-types": "off",
     "@typescript-eslint/consistent-type-imports": "off",
+    "@typescript-eslint/prefer-nullish-coalescing": "off",
+    "@typescript-eslint/ban-ts-comment": "off",
     "@typescript-eslint/require-await": "off",
     "@typescript-eslint/no-misused-promises": [
       "error",

@@ -14,7 +14,7 @@ const Header = async () => {
         <Link href="/">Home</Link>
         <Link href="/spaces">Spaces</Link>
         <Link href="/library">Library</Link>
-        {session?.user?.id !== process.env.ADMIN_USER_ID ? null : <Link href="/coupons">Coupons</Link>}
+        {!process.env.ADMIN_USER_ID!.includes(session?.user?.id as string) ? null : <Link href="/coupons">Coupons</Link>}
       </div>
     </div>
   );

@@ -14,7 +14,6 @@ import { Loader2, RefreshCcw } from "lucide-react";
 import {
   createCoupon,
   fetchCoupons,
-  updateCoupon,
 } from "../../actions/coupons";
 
 interface Coupon {
@@ -29,10 +28,6 @@ interface Coupon {
   updatedAt: string;
 }
 
-interface CouponProps {
-  currentUserId: string | undefined;
-}
-
 export default function CouponsDashboard() {
   // State variables for coupon inputs
   const [couponCode, setCouponCode] = useState("");
@@ -40,26 +35,21 @@ export default function CouponsDashboard() {
   const [maxDiscountAmount, setMaxDiscountAmount] = useState<number>();
   const [minProductAmount, setMinProductAmount] = useState<number>();
   const [exhaustLimit, setExhaustLimit] = useState<number>();
-  const [coupons, setCoupons] = useState<Coupon[] | any>([]);
+  const [coupons, setCoupons] = useState<Coupon[]>([]);
   const [isAddingCoupon, setIsAddingCoupon] = useState(false);
-  // const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [isUpdating, setIsUpdating] = useState(false);
+  const [activeTab, setActiveTab] = useState("active"); // Tab state
 
   const fetchAllCoupons = useCallback(() => {
     setIsUpdating(true);
-
-    let fetchedCoupons;
-    fetchCoupons().then((coupons) => {
-      fetchedCoupons = coupons;
-      setCoupons(fetchedCoupons);
-    }).catch((error) => {
-      console.error("Error fetching coupons:", error);
-      toast.error("Failed to fetch coupons");
-    }).finally(() => {
-      // setIsInitialLoading(false);
-      setIsUpdating(false);
-    });
-
+    fetchCoupons()
+      //@ts-ignore
+      .then((coupons) => setCoupons(coupons))
+      .catch((error) => {
+        console.error("Error fetching coupons:", error);
+        toast.error("Failed to fetch coupons");
+      })
+      .finally(() => setIsUpdating(false));
   }, []);
 
   useEffect(() => {
@@ -88,55 +78,31 @@ export default function CouponsDashboard() {
       min_order_amount: minProductAmount,
       exhaust_limit: exhaustLimit,
     };
-    let createdCoupon: any;
-    createCoupon(newCouponData).then((newCoupon) => {
-      createdCoupon = newCoupon;
-      setCoupons((prev: any) => [createdCoupon, ...prev]);
-      // Reset input fields
-      setCouponCode("");
-      setDiscountPercentage(0);
-      setMaxDiscountAmount(0);
-      setMinProductAmount(0);
-      setExhaustLimit(0);
-      toast.success(`Coupon "${createdCoupon!?.code}" added successfully`);
-    }).catch((error) => {
-      console.error("Error adding coupon:", error);
-      toast.error("Failed to add coupon");
-    }).finally(() => {
-      setIsAddingCoupon(false);
-    });
 
-
-    // Update an existing coupon
-    // const handleUpdateCoupon = async (updatedCoupon: Coupon) => {
-    //   setIsUpdating(true);
-    //   try {
-    //     const updated = await updateCouponAction(updatedCoupon);
-    //     setCoupons((prev: any) =>
-    //       prev.map((coupon: any) =>
-    //         coupon.id === updated!?.id ? updated : coupon
-    //       )
-    //     );
-    //     toast.success(`Coupon "${updated!?.code}" updated successfully`);
-    //   } catch (error) {
-    //     console.error("Error updating coupon:", error);
-    //     toast.error("Failed to update coupon");
-    //   } finally {
-    //     setIsUpdating(false);
-    //   }
-    // };
-
+    createCoupon(newCouponData)
+      .then((newCoupon) => {
+        //@ts-ignore
+        setCoupons((prev) => [newCoupon, ...prev]);
+        setCouponCode("");
+        setDiscountPercentage(0);
+        setMaxDiscountAmount(0);
+        setMinProductAmount(0);
+        setExhaustLimit(0);
+        toast.success(`Coupon "${newCoupon?.code}" added successfully`);
+      })
+      .catch((error) => {
+        console.error("Error adding coupon:", error);
+        toast.error("Failed to add coupon");
+      })
+      .finally(() => setIsAddingCoupon(false));
   };
 
-
-  // if (isInitialLoading) {
-  //   return (
-  //     <div className="flex h-64 items-center justify-center">
-  //       <Loader2 className="h-8 w-8 animate-spin" />
-  //       <span className="ml-2">Loading Coupons...</span>
-  //     </div>
-  //   );
-  // }
+  const activeCoupons = coupons.filter(
+    (coupon) => (coupon.use_count || 0) < coupon.exhaust_limit
+  );
+  const finishedCoupons = coupons.filter(
+    (coupon) => (coupon.use_count || 0) >= coupon.exhaust_limit
+  );
 
   return (
     <div className="flex flex-col gap-6">
@@ -198,62 +164,83 @@ export default function CouponsDashboard() {
         </CardContent>
       </Card>
 
-      {/* Coupons List Header */}
-      <div className="flex items-center justify-between">
-        <h2 className="text-xl font-semibold">Created Coupons</h2>
+      <div className="flex gap-4">
         <Button
-          variant="neutral"
-          size="sm"
-          onClick={() => void fetchAllCoupons()}
-          disabled={isUpdating}
+          variant={activeTab === "active" ? "default" : null}
+          onClick={() => setActiveTab("active")}
         >
-          {isUpdating ? (
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          ) : (
-            <RefreshCcw className="mr-2 h-4 w-4" />
-          )}
-          Refresh
+          Active Coupons
+        </Button>
+        <Button
+          variant={activeTab === "finished" ? "default" : null}
+          onClick={() => setActiveTab("finished")}
+        >
+          Finished Coupons
         </Button>
       </div>
 
-      {/* Coupons List */}
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {coupons.map((coupon: Coupon) => (
-          <Card key={coupon.id} className="w-full">
-            <CardHeader>
-              <CardTitle className="truncate text-sm">
-                {coupon.code}
-              </CardTitle>
-              <CardDescription>
-                Discount: {coupon?.discount_percentage}%
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="flex flex-col gap-2">
-              <p>
-                <strong>Max Discount:</strong> ${coupon?.max_discount_amount}
-              </p>
-              <p>
-                <strong>Min Product Amount:</strong> ${coupon?.min_order_amount}
-              </p>
-              <p>
-                <strong>Exhaust Limit:</strong> {coupon?.exhaust_limit}
-              </p>
-              <p>
-                <strong>Use Count:</strong> {coupon?.use_count}
-              </p>
-              <div className="mt-4 flex justify-end">
-                {/* <Link href={`/coupons/edit/${coupon.id}`}>
-                <Button size="sm" className="flex items-center gap-1">
-                  <Edit className="h-4 w-4" />
-                  Edit
-                </Button>
-              </Link> */}
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+      {/* Coupons List based on the selected tab */}
+      <div className="mt-4">
+        {activeTab === "active" ? (
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {activeCoupons.map((coupon) => (
+              <Card key={coupon.id} className="w-full">
+                <CardHeader>
+                  <CardTitle className="truncate text-sm">
+                    {coupon.code}
+                  </CardTitle>
+                  <CardDescription>
+                    Discount: {coupon?.discount_percentage}%
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="flex flex-col gap-2">
+                  <p>
+                    <strong>Max Discount:</strong> ${coupon?.max_discount_amount}
+                  </p>
+                  <p>
+                    <strong>Min Product Amount:</strong> ${coupon?.min_order_amount}
+                  </p>
+                  <p>
+                    <strong>Exhaust Limit:</strong> {coupon?.exhaust_limit}
+                  </p>
+                  <p>
+                    <strong>Use Count:</strong> {coupon?.use_count}
+                  </p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {finishedCoupons.map((coupon) => (
+              <Card key={coupon.id} className="w-full">
+                <CardHeader>
+                  <CardTitle className="truncate text-sm">
+                    {coupon.code}
+                  </CardTitle>
+                  <CardDescription>
+                    Discount: {coupon?.discount_percentage}%
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="flex flex-col gap-2">
+                  <p>
+                    <strong>Max Discount:</strong> ${coupon?.max_discount_amount}
+                  </p>
+                  <p>
+                    <strong>Min Product Amount:</strong> ${coupon?.min_order_amount}
+                  </p>
+                  <p>
+                    <strong>Exhaust Limit:</strong> {coupon?.exhaust_limit}
+                  </p>
+                  <p>
+                    <strong>Use Count:</strong> {coupon?.use_count}
+                  </p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
 }
-

@@ -7,7 +7,8 @@ export default async function SpacesPage() {
   if (!session) {
     redirect("/api/auth/signin");
   }
-  if (session?.user?.id !== process.env.ADMIN_USER_ID) {
+
+  if (!process.env.ADMIN_USER_ID!.includes(session?.user?.id as string)) {
     return null;
   }
 
