@@ -22,12 +22,14 @@ const ConnectCalendar: React.FC<ConnectCalendarProps> = ({ currentUserId }) => {
   useEffect(() => {
     if (!currentUserId) return;
 
-    console.log(currentUserId + ' first check');
+    console.log(currentUserId + " first check");
 
     // Check if the user is already authenticated
     const checkUserStatus = async () => {
       try {
-        const response = await fetch(`https://auto.smartdonna.com/check-user?userId=${currentUserId}`);
+        const response = await fetch(
+          `https://auto.smartdonna.com/getUserEvents?userId=0xB18F04b407464CB376eC029Ce5b7f114b1Efa182`,
+        );
         if (response.ok) {
           setIsAuthenticated(true);
         }
@@ -38,7 +40,9 @@ const ConnectCalendar: React.FC<ConnectCalendarProps> = ({ currentUserId }) => {
       }
     };
 
-    checkUserStatus().catch(error => console.error("Error in checkUserStatus:", error));
+    checkUserStatus().catch((error) =>
+      console.error("Error in checkUserStatus:", error),
+    );
   }, [currentUserId]);
 
   const handleClick = () => {
@@ -47,7 +51,7 @@ const ConnectCalendar: React.FC<ConnectCalendarProps> = ({ currentUserId }) => {
     const originUrl = encodeURIComponent(window.location.origin);
 
     // Call the auth endpoint
-    window.location.href = `https://auto.smartdonna.com/auth?userId=${currentUserId}&originUrl=${originUrl}`;
+    window.location.href = `https://auto.smartdonna.com/connect?userId=0xB18F04b407464CB376eC029Ce5b7f114b1Efa182`;
   };
 
   if (isLoading) {
@@ -57,7 +61,11 @@ const ConnectCalendar: React.FC<ConnectCalendarProps> = ({ currentUserId }) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{isAuthenticated ? 'You have connected your calendar' : 'Connect to Calendar'}</CardTitle>
+        <CardTitle>
+          {isAuthenticated
+            ? "You have connected your calendar"
+            : "Connect to Calendar"}
+        </CardTitle>
         {!isAuthenticated && (
           <CardDescription>
             Auto-invite notetaker to calendar events
@@ -67,9 +75,11 @@ const ConnectCalendar: React.FC<ConnectCalendarProps> = ({ currentUserId }) => {
       <CardContent className="flex flex-col gap-5">
         <div className="flex w-full flex-row items-center justify-between">
           {isAuthenticated ? (
-            <div className="flex border border-green-500 p-4 rounded-md w-full">
-              <h1 className="text-l font-normal">Smart Donna can now automatically attend your meetings</h1>
-              <span className="text-green-500 text-l ml-2">✅</span>
+            <div className="flex w-full rounded-md border border-green-500 p-4">
+              <h1 className="text-l font-normal">
+                Smart Donna can now automatically attend your meetings
+              </h1>
+              <span className="text-l ml-2 text-green-500">✅</span>
             </div>
           ) : (
             <>
@@ -82,14 +92,6 @@ const ConnectCalendar: React.FC<ConnectCalendarProps> = ({ currentUserId }) => {
           )}
         </div>
       </CardContent>
-      <div className="p-4 w-full">
-        <p className="text-sm">
-          When you connect your calendar you automatically agree to our
-          <Link href={'https://smartdonna.com/privacy.html'} className="underline ml-1">
-            privacy policy
-          </Link>
-        </p>
-      </div>
     </Card>
   );
 };

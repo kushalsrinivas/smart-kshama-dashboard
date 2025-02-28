@@ -36,7 +36,7 @@ export default async function Home() {
       </div>
       {/* <Trial />  */}
       {/* <SpacesNavigation /> */}
-      {/* <ConnectCalender currentUserId={currentUserId}/> */}
+      <ConnectCalender currentUserId={currentUserId} />
       <JoinMeeting currentUserId={currentUserId} />
     </div>
   );
