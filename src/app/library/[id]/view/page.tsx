@@ -123,7 +123,7 @@ function Page() {
                   <h1 className="mb-2 text-xl">Speakers</h1>
                   <div className="flex flex-wrap gap-2">
                     {synopsis?.speakers?.map((speaker, index) => (
-                      <p key={index}>{speaker.name}</p>
+                      <p key={`${index + Date.now()}`}>{speaker.name}</p>
                     ))}
                   </div>
                 </>

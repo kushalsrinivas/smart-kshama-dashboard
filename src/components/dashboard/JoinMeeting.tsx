@@ -35,7 +35,7 @@ const JoinMeeting: React.FC<JoinMeetingProps> = ({ currentUserId }) => {
       meetLink.includes("google") ||
       meetLink.includes("teams")
     ) {
-      toast("Donna Notetaker is joining your meeting in 60 seconds.", {
+      toast("Kshama Notetaker is joining your meeting in 60 seconds.", {
         duration: 10000,
       });
 
@@ -52,7 +52,7 @@ const JoinMeeting: React.FC<JoinMeetingProps> = ({ currentUserId }) => {
             },
             body: JSON.stringify({
               meetingUrl: meetLink,
-              botName: name ?? "Donna Notetaker",
+              botName: name ?? "KSHAMA Notetaker",
               client_client_id: currentUserId,
               workspace: "Smart_donna",
             }),
@@ -81,7 +81,7 @@ const JoinMeeting: React.FC<JoinMeetingProps> = ({ currentUserId }) => {
         <Input
           value={meetLink}
           onChange={(e) => setMeetLink(e.target.value)}
-          placeholder="Please enter a Zoom/Google Meet/Teams Meeting Link"
+          placeholder="Please enter a Google Meet Meeting Link"
         />
         {/* <Input
           value={name}
@@ -92,7 +92,7 @@ const JoinMeeting: React.FC<JoinMeetingProps> = ({ currentUserId }) => {
       </CardContent>
       <CardFooter>
         <CardDescription>
-          Please note: It takes about a minute for Donna Notetaker to join.
+          Please note: It takes about a minute for Kshama Notetaker to join.
         </CardDescription>
       </CardFooter>
     </Card>

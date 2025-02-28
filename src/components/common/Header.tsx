@@ -8,14 +8,25 @@ const Header = async () => {
 
   return (
     <div className="flex justify-between p-4">
-      <Link href="/" className="text-2xl font-bold flex items-center">
-        <Image className="mr-2" src="/logo.svg" alt="Smart Donna" width={25} height={25} /> Smart Donna
+      <Link href="/" className="flex items-center text-2xl font-bold">
+        <Image
+          className="mr-2"
+          src="/logo.svg"
+          alt="Smart Donna"
+          width={25}
+          height={25}
+        />{" "}
+        Smart Kshama
       </Link>
+
       <div className="flex gap-4">
         <Link href="/">Home</Link>
-        <Link href="/spaces">Spaces</Link>
+        {/* <Link href="/spaces">Spaces</Link> */}
         <Link href="/library">Library</Link>
-        {process.env.ADMIN_USER_ID?.includes(session?.user?.id ?? '') ? <Link href="/coupons">Coupons</Link> : null}
+        {process.env.ADMIN_USER_ID?.includes(session?.user?.id ?? "") ? (
+          <Link href="/coupons">Coupons</Link>
+        ) : null}
+        <Link href="/teams">teams</Link>
       </div>
     </div>
   );

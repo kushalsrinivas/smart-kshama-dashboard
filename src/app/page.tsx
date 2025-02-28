@@ -7,7 +7,7 @@ import JoinMeeting from "~/components/dashboard/JoinMeeting";
 import Trial from "~/components/dashboard/Trial";
 import { getServerAuthSession } from "~/server/auth";
 import { api } from "~/trpc/server";
-import SpacesNavigation from '../components/dashboard/SpacesNavigation';
+import SpacesNavigation from "../components/dashboard/SpacesNavigation";
 
 export default async function Home() {
   const session = await getServerAuthSession();
@@ -34,8 +34,8 @@ export default async function Home() {
           <Pencil size={15} /> Manage Profile
         </Link>
       </div>
-      <Trial />
-      <SpacesNavigation />
+      {/* <Trial />  */}
+      {/* <SpacesNavigation /> */}
       {/* <ConnectCalender currentUserId={currentUserId}/> */}
       <JoinMeeting currentUserId={currentUserId} />
     </div>

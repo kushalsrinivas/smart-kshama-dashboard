@@ -7,7 +7,7 @@ import Header from "~/components/common/Header";
 import { Toaster } from "~/components/ui/sonner";
 
 export const metadata = {
-  title: "Smart Donna AI",
+  title: "Smart KSHAMA AI",
   description:
     "Automatically record, transcribe, and get actionable insights from your meetings.",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
