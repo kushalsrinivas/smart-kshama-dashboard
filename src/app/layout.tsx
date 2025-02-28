@@ -5,6 +5,7 @@ import { GeistSans } from "geist/font/sans";
 import { TRPCReactProvider } from "~/trpc/react";
 import Header from "~/components/common/Header";
 import { Toaster } from "~/components/ui/sonner";
+import { DashboardProvider } from "~/Context/DashboardContext";
 
 export const metadata = {
   title: "Smart KSHAMA AI",
@@ -22,13 +23,15 @@ export default async function RootLayout({
     <html lang="en" className={`${GeistSans.variable}`}>
       <body>
         <TRPCReactProvider>
-          <div className="min-h-screen bg-bg">
-            <div className="mx-auto w-full max-w-[1440px]">
-              <Header />
-              {children}
-              <Toaster />
+          <DashboardProvider>
+            <div className="min-h-screen bg-bg">
+              <div className="mx-auto w-full max-w-[1440px]">
+                <Header />
+                {children}
+                <Toaster />
+              </div>
             </div>
-          </div>
+          </DashboardProvider>
         </TRPCReactProvider>
       </body>
     </html>

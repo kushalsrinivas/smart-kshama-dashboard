@@ -8,6 +8,7 @@ import Todo from "~/components/meetings/Todo";
 import Keypoints from "~/components/meetings/Keypoints";
 import Tldr from "~/components/meetings/Tldr";
 import Player from "next-video/player";
+import { DashboardProvider } from "~/Context/DashboardContext";
 // import { Video } from "~/components/meetings/video";
 
 interface Synopsis {
@@ -170,7 +171,13 @@ function Page() {
                     {loading ? (
                       <p>Loading...</p>
                     ) : (
-                      <>{<Todo data={synopsis?.actionItems ?? []} />}</>
+                      <>
+                        {
+                          <DashboardProvider>
+                            <Todo data={synopsis?.actionItems ?? []} />
+                          </DashboardProvider>
+                        }
+                      </>
                     )}
                   </>
                 )}
